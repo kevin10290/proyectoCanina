@@ -13,14 +13,12 @@ if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) &&
 
 
 
-    $clientes = $mysql->efectuarConsulta("SELECT mascotas.empleado.id ,
-    mascotas.empleado.email, mascotas.empleado.pass FROM  mascotas.empleado where
-    mascotas.empleado.email= '" . $email . "' and  mascotas.empleado.pass = '" . $pass . "' ");
+    $clientes = $mysql->efectuarConsulta("SELECT bd_mascotas.empleado.idEmpleado ,
+    bd_mascotas.empleado.emailEmpleado, bd_mascotas.empleado.passEmpleado FROM  bd_mascotas.empleado where
+    bd_mascotas.empleado.emailEmpleado = '" . $email . "' and  bd_mascotas.empleado.passEmpleado = '" . $pass . "' ");
 
 
 
-    //se cuentan las filas de la consulta , por cada usuario que coincida es  una fila
-    // si la consulta arroja 1 y es mayor a cero existe el usuario sino no
     
 
         if (mysqli_num_rows($clientes)) {
@@ -45,9 +43,9 @@ if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) &&
 
             $mysql->conectar();
 
-            $usuario = $mysql->efectuarConsulta("SELECT mascotas.usuario.id ,
-            mascotas.usuario.email, mascotas.usuario.pass FROM  mascotas.usuario where
-            mascotas.usuario.email= '" . $email . "' and  mascotas.usuario.pass = '" . $pass . "' ");
+            $usuario = $mysql->efectuarConsulta("SELECT bd_mascotas.registrocliente.idClientes ,
+            bd_mascotas.registrocliente.emailCliente,bd_mascotas.registrocliente.passCliente FROM  bd_mascotas.registrocliente WHERE
+            bd_mascotas.registrocliente.emailCliente= '" . $email . "' and  bd_mascotas.registrocliente.passCliente = '" . $pass . "' ");
 
            $fila2 = mysqli_fetch_assoc($usuario);
 
