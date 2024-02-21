@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-02-2024 a las 14:26:55
+-- Tiempo de generación: 21-02-2024 a las 16:37:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -32,9 +32,15 @@ CREATE TABLE `cita` (
   `resgistroMascota_idMascota` int(11) NOT NULL,
   `registroCliente_idClientes` int(11) NOT NULL,
   `fechaCita` date NOT NULL,
-  `horaCita` time DEFAULT NULL,
-  `detalleServicio_idservicioCita` int(11) NOT NULL
+  `horaCita` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `cita`
+--
+
+INSERT INTO `cita` (`idCita`, `resgistroMascota_idMascota`, `registroCliente_idClientes`, `fechaCita`, `horaCita`) VALUES
+(1, 1, 1, '2024-02-01', '09:31:39');
 
 -- --------------------------------------------------------
 
@@ -48,6 +54,13 @@ CREATE TABLE `detalleprodcuto` (
   `registroCliente_idClientes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Volcado de datos para la tabla `detalleprodcuto`
+--
+
+INSERT INTO `detalleprodcuto` (`idproductoCita`, `inventarioProductos_idinventarioProducto`, `registroCliente_idClientes`) VALUES
+(1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -59,6 +72,13 @@ CREATE TABLE `detalleservicio` (
   `servicio_idservicio` int(11) NOT NULL,
   `cita_idCita` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalleservicio`
+--
+
+INSERT INTO `detalleservicio` (`idservicioCita`, `servicio_idservicio`, `cita_idCita`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -76,6 +96,13 @@ CREATE TABLE `empleado` (
   `rol_idRol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Volcado de datos para la tabla `empleado`
+--
+
+INSERT INTO `empleado` (`idEmpleado`, `nombreEmpleado`, `apellidoEmpleado`, `cedulaEmpelado`, `emailEmpleado`, `passEmpleado`, `rol_idRol`) VALUES
+(1, 'Alejo', 'asdada', '13123213', 'asdsad@gmail.com', '13123123', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -88,6 +115,13 @@ CREATE TABLE `facturaproducto` (
   `fechaVenta` date DEFAULT NULL,
   `detalleProdcuto_idproductoCita` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `facturaproducto`
+--
+
+INSERT INTO `facturaproducto` (`idfacturaProducto`, `total`, `fechaVenta`, `detalleProdcuto_idproductoCita`) VALUES
+(1, 123123, '2024-02-13', 1);
 
 -- --------------------------------------------------------
 
@@ -104,6 +138,13 @@ CREATE TABLE `facturaservicio` (
   `notaFactura` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Volcado de datos para la tabla `facturaservicio`
+--
+
+INSERT INTO `facturaservicio` (`idServicio`, `cita_idCita`, `totalServicio`, `estadoServicio`, `modoPago`, `notaFactura`) VALUES
+(1, 1, 21900, 'pago', 'efectivo', 'si pagó');
+
 -- --------------------------------------------------------
 
 --
@@ -116,6 +157,13 @@ CREATE TABLE `inventarioproductos` (
   `precioProducto` int(11) DEFAULT NULL,
   `strockProducto` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `inventarioproductos`
+--
+
+INSERT INTO `inventarioproductos` (`idinventarioProducto`, `nombreProducto`, `precioProducto`, `strockProducto`) VALUES
+(1, 'agua', 100, 5);
 
 -- --------------------------------------------------------
 
@@ -134,6 +182,13 @@ CREATE TABLE `registrocliente` (
   `rol_idRol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Volcado de datos para la tabla `registrocliente`
+--
+
+INSERT INTO `registrocliente` (`idClientes`, `nombreCliente`, `apellidoCliente`, `telefonoCliente`, `emailCliente`, `cedulaCliente`, `passCliente`, `rol_idRol`) VALUES
+(1, 'Javier', 'Serna', '12312412', 'sdasd@gmail.com', '31287956', '123', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -145,8 +200,16 @@ CREATE TABLE `resgistromascota` (
   `nombreMascota` varchar(45) NOT NULL,
   `edadMascota` varchar(45) DEFAULT NULL,
   `razaMascota` varchar(45) DEFAULT NULL,
-  `tipoMascota` varchar(45) NOT NULL
+  `tipoMascota` varchar(45) NOT NULL,
+  `IdCliente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `resgistromascota`
+--
+
+INSERT INTO `resgistromascota` (`idMascota`, `nombreMascota`, `edadMascota`, `razaMascota`, `tipoMascota`, `IdCliente`) VALUES
+(1, 'Tobi', '1', 'Piche', 'Perro', 1);
 
 -- --------------------------------------------------------
 
@@ -159,6 +222,14 @@ CREATE TABLE `rol` (
   `nombreRol` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`idRol`, `nombreRol`) VALUES
+(1, 'Admin'),
+(2, 'Cliente');
+
 -- --------------------------------------------------------
 
 --
@@ -169,9 +240,15 @@ CREATE TABLE `servicio` (
   `idservicio` int(11) NOT NULL,
   `nombreServicio` varchar(45) DEFAULT NULL,
   `precioServicio` float DEFAULT NULL,
-  `descripcionServicio` varchar(5000) DEFAULT NULL,
-  `fechaServicio` date DEFAULT NULL
+  `descripcionServicio` varchar(5000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `servicio`
+--
+
+INSERT INTO `servicio` (`idservicio`, `nombreServicio`, `precioServicio`, `descripcionServicio`) VALUES
+(1, 'peluqueria', 20000, 'lavado de pelos');
 
 --
 -- Índices para tablas volcadas
@@ -183,8 +260,7 @@ CREATE TABLE `servicio` (
 ALTER TABLE `cita`
   ADD PRIMARY KEY (`idCita`),
   ADD KEY `fk_cita_resgistroMascota1_idx` (`resgistroMascota_idMascota`),
-  ADD KEY `fk_cita_registroCliente1_idx` (`registroCliente_idClientes`),
-  ADD KEY `fk_cita_detalleServicio1_idx` (`detalleServicio_idservicioCita`);
+  ADD KEY `fk_cita_registroCliente1_idx` (`registroCliente_idClientes`);
 
 --
 -- Indices de la tabla `detalleprodcuto`
@@ -240,7 +316,8 @@ ALTER TABLE `registrocliente`
 -- Indices de la tabla `resgistromascota`
 --
 ALTER TABLE `resgistromascota`
-  ADD PRIMARY KEY (`idMascota`);
+  ADD PRIMARY KEY (`idMascota`),
+  ADD KEY `IdCliente` (`IdCliente`);
 
 --
 -- Indices de la tabla `rol`
@@ -255,6 +332,76 @@ ALTER TABLE `servicio`
   ADD PRIMARY KEY (`idservicio`);
 
 --
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `cita`
+--
+ALTER TABLE `cita`
+  MODIFY `idCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `detalleprodcuto`
+--
+ALTER TABLE `detalleprodcuto`
+  MODIFY `idproductoCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `detalleservicio`
+--
+ALTER TABLE `detalleservicio`
+  MODIFY `idservicioCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  MODIFY `idEmpleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `facturaproducto`
+--
+ALTER TABLE `facturaproducto`
+  MODIFY `idfacturaProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `facturaservicio`
+--
+ALTER TABLE `facturaservicio`
+  MODIFY `idServicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `inventarioproductos`
+--
+ALTER TABLE `inventarioproductos`
+  MODIFY `idinventarioProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `registrocliente`
+--
+ALTER TABLE `registrocliente`
+  MODIFY `idClientes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `resgistromascota`
+--
+ALTER TABLE `resgistromascota`
+  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `idRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `servicio`
+--
+ALTER TABLE `servicio`
+  MODIFY `idservicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -262,7 +409,6 @@ ALTER TABLE `servicio`
 -- Filtros para la tabla `cita`
 --
 ALTER TABLE `cita`
-  ADD CONSTRAINT `fk_cita_detalleServicio1` FOREIGN KEY (`detalleServicio_idservicioCita`) REFERENCES `detalleservicio` (`idservicioCita`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_cita_registroCliente1` FOREIGN KEY (`registroCliente_idClientes`) REFERENCES `registrocliente` (`idClientes`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_cita_resgistroMascota1` FOREIGN KEY (`resgistroMascota_idMascota`) REFERENCES `resgistromascota` (`idMascota`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -303,6 +449,12 @@ ALTER TABLE `facturaservicio`
 --
 ALTER TABLE `registrocliente`
   ADD CONSTRAINT `fk_registroCliente_rol1` FOREIGN KEY (`rol_idRol`) REFERENCES `rol` (`idRol`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `resgistromascota`
+--
+ALTER TABLE `resgistromascota`
+  ADD CONSTRAINT `resgistromascota_ibfk_1` FOREIGN KEY (`IdCliente`) REFERENCES `registrocliente` (`idClientes`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
