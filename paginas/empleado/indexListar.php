@@ -1,7 +1,13 @@
 <?php 
-require_once("../../modelo/Mysql.php")
+session_start();
+require_once("../../modelo/Mysql.php");
 $mysql = new Mysql;
-$resultado = mysqli_fetch_all($mysql->)
+$resultado = $mysql->consultVerificacion("SELECT * FROM empleado");
+if(($resultado)){
+  $usuario = mysqli_fetch_all($resultado);
+}else{
+  $usuario = false;
+}
 
 ?>
 
@@ -77,7 +83,7 @@ $resultado = mysqli_fetch_all($mysql->)
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
           >
-            <li><a class="dropdown-item" href="#!">perfil</a></li>
+            <li><a class="dropdown-item" href="#!"></a></li>
             <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
           </ul>
@@ -96,7 +102,7 @@ $resultado = mysqli_fetch_all($mysql->)
               </a>
               <a class="nav-link" href="index.html">
               <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"
-                  >add_shopping_cart </i>
+                  ></i>
                 
                 Nuevo 
               </a>
@@ -184,7 +190,7 @@ $resultado = mysqli_fetch_all($mysql->)
         <div class="card text-center m-2 bg-secondary">
          
           <div class="card-body">
-            <h4 class="card-title">Bienvenido Administrador </h4>
+            <h4 class="card-title"> <?php echo $resultado?> </h4>
             <p class="card-text"></p>
           </div>
         </div>
@@ -235,6 +241,7 @@ $resultado = mysqli_fetch_all($mysql->)
         </footer>
       </div>
     </div>
+    
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       crossorigin="anonymous"
