@@ -36,13 +36,26 @@
 					<span class="login100-form-title p-b-43">
 						Registrate
 					</span>
-					
+					<div class="wrap-input100 validate-input" data-validate="Password is required">
+						<input class="input100" type="number" name="cedula">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Cedula</span>
+					</div>
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
 						<input class="input100" type="text" name="nombre">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Nombre</span>
 					</div>
-
+					<div class="wrap-input100 validate-input" data-validate="Password is required">
+						<input class="input100" type="text" name="apellido">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Apellido</span>
+					</div>
+					<div class="wrap-input100 validate-input" data-validate="Password is required">
+						<input class="input100" type="text" name="tel">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Telefono</span>
+					</div>
                     <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="email" name="email">
 						<span class="focus-input100"></span>
@@ -53,6 +66,20 @@
 						<input class="input100" type="password" name="pass">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>
+					</div>
+					<div class="flex-sb-m w-full p-t-3 p-b-32">
+						<div >
+							
+						<label class="txt1" for="ckb1" >
+								¿Ya tienes cuenta?
+							</label>
+						</div>
+
+						<div>
+							<a href="./login.php" class="txt1" for="ckb1">
+								Logueate
+							</a>
+						</div>
 					</div>
 
 					
