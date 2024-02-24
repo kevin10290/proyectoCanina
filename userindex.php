@@ -235,76 +235,186 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
         <main>
        
 
-          <section class="featured spad">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title">
-                            <h2>Productos para tu mascota</h2>
-                        </div>
-                        <div class="featured__controls">
-                            <ul>
-                                <li class="" data-filter="*">Todos</li>
-                                <li data-filter=".limpieza" class="">Jabones y shampoos</li>
-                                <li data-filter=".herramienta" class="">Herramientas</li>
-                                <li data-filter=".juguete" class="">juguete</li>
-                              <!--  <li data-filter=".fastfood" class="active mixitup-control-active">Fastfood</li>-->
-                            </ul>
-                        </div>
-                    </div>
+
+
+        
+<!--                                  -->
+         
+
+
+
+
+<section class="p-5 row container-fluid d-flex align-content-start flex-wrap">
+        
+
+
+<div class=" col-9">
+              <div class="row">
+                <div class="">
+                  <div class="section-title">
+                    <h2>Productos para tu mascota</h2>
+                  </div>
+                  <div class="featured__controls">
+                    <ul>
+                      <li class="" data-filter="*">Todos</li>
+                      <li data-filter=".limpieza" class="">
+                        Jabones y shampoos
+                      </li>
+                      <li data-filter=".herramienta" class="">Herramientas</li>
+                      <li data-filter=".juguete" class="">juguete</li>
+                      <!--  <li data-filter=".fastfood" class="active mixitup-control-active">Fastfood</li>-->
+                    </ul>
+                  </div>
                 </div>
-               
-               <!--style="display: none;"   Estilo para mostrar producto o no-->
-               
-                <div class="row featured__filter" id="MixItUpB25F5E" >
-                  
+              </div>
+
+              <!--style="display: none;"   Estilo para mostrar producto o no-->
+
+              <div class="row featured__filter" id="MixItUpB25F5E">
                 <?php
 
             require_once 'Modelo/MySQL.PHP';
             $mysql = new MySQL;
-            $mysql->conectar();
-            $consulta = $mysql->efectuarConsulta("select inventarioproductos.idinventarioProducto, inventarioproductos.nombreProducto, inventarioproductos.precioProducto, categoria.nombreCategoria from inventarioproductos INNER JOIN categoria ON categoria.idCategoria = inventarioproductos.categoriaProdcuto WHERE inventarioproductos.strockProducto > 0");
-            $mysql->desconectar();
+            $mysql->conectar(); $consulta = $mysql->efectuarConsulta("select
+                inventarioproductos.idinventarioProducto,
+                inventarioproductos.nombreProducto,
+                inventarioproductos.precioProducto, categoria.nombreCategoria,
+                inventarioproductos.dirProducto from inventarioproductos INNER
+                JOIN categoria ON categoria.idCategoria =
+                inventarioproductos.categoriaProdcuto WHERE
+                inventarioproductos.strockProducto > 0"); $mysql->desconectar();
+                for ($i = 0; $i < mysqli_num_rows($consulta); $i++) { $fila =
+                mysqli_fetch_array($consulta); echo '
 
-            for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
-            
-                $fila = mysqli_fetch_array($consulta);
-   
-        echo '
-    
-    <div class="col-lg-3 col-md-4 col-sm-6 mix oranges '. $fila[3] . '" >
-                        <div class="featured__item">
-                            <div class="featured__item__pic set-bg" data-setbg="assets/img/ejemplo.png" style="background-image: url(&quot;assets/img/ejemplo.png&quot;);">
-                             
-                            </div>
-                            <div class="featured__item__text">
-                                <h6><a href="#">'.$fila[1].'</a></h6>
-                                <h5>'.$fila[2].'</h5>
-                            </div>
-                        </div>
+                <div
+                  class="col-lg-3 col-md-4 col-sm-6 mix oranges '. $fila[3] . '"
+                >
+                  <div class="featured__item">
+                  <img src="'.$fila[4].'" class="img-thumbnail" >
+                    <div class="featured__item__text">
+                      <h6><a   onclick=agregarcarrito(' . $fila[0] . ',"' . str_replace(" ","_",$fila[1]) . '","' . $fila[4] . '","' . $fila[3] .'","' . $fila[2]. '")        >'.$fila[1].'</a></h6>
+                      <h5>'.$fila[2].'</h5>
                     </div>
-    
-    
-        ';
-}
+                  </div>
+                </div>
 
+                '; } ?>
 
-?>
-
-
-
-                  <!--  Producto
+                <!--  Producto
                     
                     
                   -->
-                  
-                  
-                 
-                </div>
+              </div>
             </div>
-        </section>
 
 
+            <div class="col">
+
+
+<div class="col">
+  <div class="">
+    <div class="card mb-4">
+      <div class="card-header py-3">
+        <h5 class="mb-0">Carrito - <span id="carritocantidad"></span> </h5>
+      </div>
+      <div class="card-body">
+   
+      
+
+       
+        <div id="carrito">
+
+ <!-- Single item  
+
+
+ <div class="row">
+          <div class="">
+       
+            <div class="bg-image hover-overlay hover-zoom ripple rounded rounded-4" data-mdb-ripple-color="light">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/13a.webp"
+                class="img-thumbnail" />
+              <a href="#!">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+              </a>
+            </div>
+      
+          </div>
+
+
+
+          <div class=" mb-4 mb-lg-0">
+          
+            <p><strong>Red hoodie</strong></p>
+   
+
+            <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                  title="Remove item">
+                  <i class="fas fa-trash"></i>
+                </button>
+         
+          </div>
+
+       
+        </div>
+ 
+
+-->
+
+
+
+        
+        </div>
+       
+
+    
+     
+    
+    
+    </div>
+    </div>
+   
+    <div class="card mb-4">
+      <div class="card-header py-3">
+        <h5 class="mb-0">Total</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+            Productos
+            <span id="total"></span>
+          </li>
+         
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+            <div>
+              <strong>Total</strong>
+              <strong>
+                <p class="mb-0">(Incluyendo IVA)</p>
+              </strong>
+            </div>
+            <span><strong id="IVA"></strong></span>
+          </li>
+        </ul>
+
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Ir a comprar
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+  
+  </div>
+</div>
+
+
+      </div>
+
+          </section>
+
+
+        <!--                         -->
 
 
         </main>
@@ -333,6 +443,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/carrito.js"></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
