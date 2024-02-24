@@ -1,3 +1,11 @@
+<?php 
+require_once("../../modelo/Mysql.php")
+$mysql = new Mysql;
+$resultado = mysqli_fetch_all($mysql->)
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,7 +22,7 @@
       href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
       rel="stylesheet"
     />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../vista/css/styles.css">
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -27,7 +35,7 @@
   <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand-->
-      <a class="navbar-brand ps-3" href="index.html">Peluqueria Canina</a>
+      <a class="navbar-brand ps-3" href="../../index.html">Peluqueria Canina</a>
       <!-- Sidebar Toggle-->
       <button
         class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -81,22 +89,22 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
           <div class="sb-sidenav-menu">
             <div class="nav">
-              <div class="sb-sidenav-menu-heading">principal</div>
-              <a class="nav-link" href="index.html">
-                <div class="m-1"><i class="fas fa-tachometer-alt"></i></div>
-                Dashboard
+              <div class="sb-sidenav-menu-heading">Empleados</div>
+              <a class="nav-link" href="indexListar.php">
+                <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
+                Listar
               </a>
               <a class="nav-link" href="index.html">
-                <i class="material-icons" style="font-size: 20px"
-                  >add_shopping_cart</i
-                >
-                Carrito
+              <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"
+                  >add_shopping_cart </i>
+                
+                Nuevo 
               </a>
               <a class="nav-link" href="/crudEmpleados.html">
-                <i class="material-icons" style="font-size: 20px"
-                  >add_shopping_cart</i
-                >
-                Gestion Empleados
+              <i class="fa-solid fa-user-pen m-1" style="font-size: 20px">
+
+              </i>
+                Editar 
               </a>
 
               <div
@@ -231,17 +239,17 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       crossorigin="anonymous"
     ></script>
-    <script src="js/scripts.js"></script>
+    <script src="../../js/scripts.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
       crossorigin="anonymous"
     ></script>
-    <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="../../assets/demo/chart-area-demo.js"></script>
+    <script src="../../assets/demo/chart-bar-demo.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
       crossorigin="anonymous"
     ></script>
-    <script src="js/datatables-simple-demo.js"></script>
+    
   </body>
 </html>

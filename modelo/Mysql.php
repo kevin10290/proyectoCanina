@@ -38,5 +38,31 @@ class MySQL
 
     return $this->resultadoConsulta;
   }
+
+  public function consultVerificacion($consulta)
+{
+  try
+  {
+    if($this->conectar()){
+      $resultado = mysqli_query(this->conexion, $consulta);
+      if($this->desconectar()){
+        return $resultado;
+      } else{
+        echo "Error al desconectarse";
+        return false;
+      }
+    }else{
+      echo "Error al conectarse";
+      return false;
+    }
+  }
+  catch(mysqli_sql_exception $ex)
+  {
+    echo $ex;
+    return false;
+  }
 }
+}
+
+
 ?>
