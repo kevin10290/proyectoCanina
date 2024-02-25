@@ -1,10 +1,10 @@
 <?php 
 session_start();
 require_once("../../modelo/Mysql.php");
-$mysql = new Mysql;
-$resultado = $mysql->consultVerificacion("SELECT * FROM empleado");
-if(($resultado)){
-  $usuario = mysqli_fetch_all($resultado);
+$mysql = new MySql();
+$resultado = $mysql->ConsultaCompleja("SELECT * FROM empleado");
+if(!is_bool($resultado)){
+  $usuario = mysqli_fetch_all($resultado,MYSQLI_ASSOC);
 }else{
   $usuario = false;
 }
@@ -100,13 +100,13 @@ if(($resultado)){
                 <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
                 Listar
               </a>
-              <a class="nav-link" href="index.html">
+              <a class="nav-link" href="./nuevoEmpleado.php">
               <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"
                   ></i>
                 
                 Nuevo 
               </a>
-              <a class="nav-link" href="/crudEmpleados.html">
+              <a class="nav-link" href="">
               <i class="fa-solid fa-user-pen m-1" style="font-size: 20px">
 
               </i>
@@ -187,17 +187,18 @@ if(($resultado)){
       </div>
       <div id="layoutSidenav_content">
        
-        <div class="card text-center m-2 bg-secondary">
+        <div class="card text-center m-2 bg-dark">
          
           <div class="card-body">
-            <h4 class="card-title"> <?php echo $resultado?> </h4>
+            <h4 class="card-title text-white">Bienvenido Admin</h4>
             <p class="card-text"></p>
           </div>
         </div>
-
-        <div class="container bg-dark ">
-          <div class="row ">
-            <div class="col rounded-2">
+        
+        <div class="card text-center m-2 bg-dark d-flex">
+        <div class="container bg-dark m-2">
+          <div class="row">
+            <div class="col ">
               <div
             class="table-responsive-lg "
           >
@@ -206,16 +207,21 @@ if(($resultado)){
             >
               <thead>
                 <tr>
-                  <th scope="col">Column 1</th>
-                  <th scope="col">Column 2</th>
-                  <th scope="col">Column 3</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">cedula</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="">
-
-                </tr>
+                <?php foreach($usuario as $Lista) { ?>
                 
+                  <tr class="">
+                  <td><?php echo $Lista['nombreEmpleado']; ?></td>
+                  <td><?php echo $Lista['apellidoEmpleado']; ?></td>
+                  <td><?php echo $Lista['cedulaEmpelado']; ?></td>
+                </tr>
+              
+                <?php }?>  
               </tbody>
             </table>
           </div>
@@ -223,7 +229,8 @@ if(($resultado)){
           </div>
           
         </div>
-        
+
+        </div>
 
         <footer class="py-4 bg-light mt-auto">
           <div class="container-fluid px-4">
