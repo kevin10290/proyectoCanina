@@ -7,17 +7,18 @@ class MySQL
 
   //Datos de validacion para la conexion
 
-  private $ipServidor = "localhost";
-  private $usuario = 'root';
-  private $contrasena = '12345';
-
+  private $ipServidor = "localhost:4400";
+  private $user = "root";
+  private $pass = '';
+  private $bd = "bd_mascotas";
   private $conexion;
 
   //Metodo para conectar a la base de datos
   public function conectar()
   {
 
-    $this->conexion = mysqli_connect($this->ipServidor, $this->usuario, $this->contrasena);
+    $this->conexion = mysqli_connect($this->ipServidor, $this->user, $this->pass, $this->bd);
+   
   }
 
   //Metodo para cerrar la conexion
