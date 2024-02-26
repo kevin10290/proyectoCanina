@@ -39,7 +39,7 @@ let name = nombre + "";
     carrito.innerHTML += `
     <div class="row" id ="elemento${id}" value="${precio}">
              <div class="">
-          
+           
                <div class="bg-image hover-overlay hover-zoom ripple rounded rounded-4" data-mdb-ripple-color="light">
                  <img width="100" src="${url}"
                    class="img-thumbnail   />
