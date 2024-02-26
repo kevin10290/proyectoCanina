@@ -3,12 +3,16 @@
 
 
 
+$cedula = $_POST['cedula'];
+$telefono = $_POST['tel'];
+$apellido = $_POST['apellido'];
 $nombre = $_POST['nombre'];
 $email = $_POST['email'];
 $pass = md5($_POST['pass']);
 
 if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) && !empty($_POST['pass'])
-&& isset($_POST['nombre']) && !empty($_POST['nombre']) ){
+&& isset($_POST['nombre']) && !empty($_POST['nombre']) && isset($_POST['cedula']) && !empty($_POST['cedula'])
+&& isset($_POST['tel']) && !empty($_POST['tel']) && isset($_POST['apellido']) && !empty($_POST['apellido']) ){
 
 
     require_once '../modelo/MySQL.php';
@@ -38,7 +42,8 @@ if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) &&
         $mysql->conectar();
     
     
-        $consulta = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.registrocliente values (null,'".$email."','".$pass."','".$nombre."')");
+        $consulta = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.registrocliente values (null,'".$nombre."','".$apellido."',
+        '".$telefono."','".$email."','".$cedula."','".$pass."',2)");
     
     
         $mysql->desconectar();
