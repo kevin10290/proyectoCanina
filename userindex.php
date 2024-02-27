@@ -64,16 +64,16 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
       href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.min.css"rel="stylesheet" />
+    <link rel="stylesheet" href="css/font-awesome.min.css"rel="stylesheet" />
+    <link rel="stylesheet" href="css/elegant-icons.css"rel="stylesheet" />
+    <link rel="stylesheet" href="css/nice-select.css"rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery-ui.min.css"rel="stylesheet" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/slicknav.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" rel="stylesheet" />
    
-   
+
     <link href="css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script
