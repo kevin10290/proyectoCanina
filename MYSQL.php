@@ -1,6 +1,5 @@
 <?php
 // clase para conexiones
-session_start();
 class MYSQL
 {
     // Datos de validacion para la conexión

@@ -1,0 +1,7 @@
+.botonConsulta {
+  display: flex;
+  justify-content: center;
+}
+.btnConsulta {
+  width: 40%;
+}
