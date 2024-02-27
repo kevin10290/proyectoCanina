@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 21-02-2024 a las 16:37:07
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Servidor: 127.0.0.1:4400
+-- Tiempo de generación: 24-02-2024 a las 13:26:48
+-- Versión del servidor: 10.4.28-MariaDB 
+-- Versión de PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `bd_mascotas`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categoria`
+--
+
+CREATE TABLE `categoria` (
+  `idCategoria` int(11) NOT NULL,
+  `nombreCategoria` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`idCategoria`, `nombreCategoria`) VALUES
+(1, 'limpieza'),
+(2, 'herramienta'),
+(3, 'juguete');
 
 -- --------------------------------------------------------
 
@@ -155,15 +175,20 @@ CREATE TABLE `inventarioproductos` (
   `idinventarioProducto` int(11) NOT NULL,
   `nombreProducto` varchar(100) DEFAULT NULL,
   `precioProducto` int(11) DEFAULT NULL,
-  `strockProducto` int(11) DEFAULT NULL
+  `strockProducto` int(11) DEFAULT NULL,
+  `categoriaProdcuto` int(11) NOT NULL DEFAULT 1,
+  `dirProducto` varchar(8000) NOT NULL DEFAULT './Controlador//images/nod.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Volcado de datos para la tabla `inventarioproductos`
 --
 
-INSERT INTO `inventarioproductos` (`idinventarioProducto`, `nombreProducto`, `precioProducto`, `strockProducto`) VALUES
-(1, 'agua', 100, 5);
+INSERT INTO `inventarioproductos` (`idinventarioProducto`, `nombreProducto`, `precioProducto`, `strockProducto`, `categoriaProdcuto`, `dirProducto`) VALUES
+(1, 'Asuntol', 11000, 5, 1, './Controlador//images/nod.png'),
+(2, 'Pelota de tenis', 9000, 25, 3, './Controlador//images/nod.png'),
+(3, 'Cortauñas canino', 20000, 27, 2, './Controlador//images/nod.png'),
+(4, 'asdasd', 5000, 10, 1, './Controlador//images/nod.png');
 
 -- --------------------------------------------------------
 
@@ -255,6 +280,12 @@ INSERT INTO `servicio` (`idservicio`, `nombreServicio`, `precioServicio`, `descr
 --
 
 --
+-- Indices de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`idCategoria`);
+
+--
 -- Indices de la tabla `cita`
 --
 ALTER TABLE `cita`
@@ -303,7 +334,8 @@ ALTER TABLE `facturaservicio`
 -- Indices de la tabla `inventarioproductos`
 --
 ALTER TABLE `inventarioproductos`
-  ADD PRIMARY KEY (`idinventarioProducto`);
+  ADD PRIMARY KEY (`idinventarioProducto`),
+  ADD KEY `categoriaProdcuto` (`categoriaProdcuto`);
 
 --
 -- Indices de la tabla `registrocliente`
@@ -334,6 +366,12 @@ ALTER TABLE `servicio`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `cita`
@@ -375,7 +413,7 @@ ALTER TABLE `facturaservicio`
 -- AUTO_INCREMENT de la tabla `inventarioproductos`
 --
 ALTER TABLE `inventarioproductos`
-  MODIFY `idinventarioProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idinventarioProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `registrocliente`
@@ -443,6 +481,12 @@ ALTER TABLE `facturaproducto`
 --
 ALTER TABLE `facturaservicio`
   ADD CONSTRAINT `fk_facturaServicio_cita1` FOREIGN KEY (`cita_idCita`) REFERENCES `cita` (`idCita`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `inventarioproductos`
+--
+ALTER TABLE `inventarioproductos`
+  ADD CONSTRAINT `inventarioproductos_ibfk_1` FOREIGN KEY (`categoriaProdcuto`) REFERENCES `categoria` (`idCategoria`);
 
 --
 -- Filtros para la tabla `registrocliente`

@@ -1,3 +1,17 @@
+<?php 
+session_start();
+require_once("../../modelo/Mysql.php");
+$mysql = new MySql();
+$resultado = $mysql->ConsultaCompleja("SELECT * FROM empleado");
+if(!is_bool($resultado)){
+  $usuario = mysqli_fetch_all($resultado,MYSQLI_ASSOC);
+}else{
+  $usuario = false;
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,7 +28,7 @@
       href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
       rel="stylesheet"
     />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../vista/css/styles.css">
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -27,7 +41,7 @@
   <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand-->
-      <a class="navbar-brand ps-3" href="index.html">Peluqueria Canina</a>
+      <a class="navbar-brand ps-3" href="../../index.html">Peluqueria Canina</a>
       <!-- Sidebar Toggle-->
       <button
         class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -69,7 +83,7 @@
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
           >
-            <li><a class="dropdown-item" href="#!">perfil</a></li>
+            <li><a class="dropdown-item" href="#!"></a></li>
             <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
           </ul>
@@ -81,22 +95,22 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
           <div class="sb-sidenav-menu">
             <div class="nav">
-              <div class="sb-sidenav-menu-heading">principal</div>
-              <a class="nav-link" href="index.html">
-                <div class="m-1"><i class="fas fa-tachometer-alt"></i></div>
-                Dashboard
+              <div class="sb-sidenav-menu-heading">Empleados</div>
+              <a class="nav-link" href="indexListar.php">
+                <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
+                Listar
               </a>
-              <a class="nav-link" href="index.html">
-                <i class="material-icons" style="font-size: 20px"
-                  >add_shopping_cart</i
-                >
-                Carrito
+              <a class="nav-link" href="./nuevoEmpleado.php">
+              <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"
+                  ></i>
+                
+                Nuevo 
               </a>
-              <a class="nav-link" href="/crudEmpleados.html">
-                <i class="material-icons" style="font-size: 20px"
-                  >add_shopping_cart</i
-                >
-                Gestion Empleados
+              <a class="nav-link" href="">
+              <i class="fa-solid fa-user-pen m-1" style="font-size: 20px">
+
+              </i>
+                Editar 
               </a>
 
               <div
@@ -173,17 +187,18 @@
       </div>
       <div id="layoutSidenav_content">
        
-        <div class="card text-center m-2 bg-secondary">
+        <div class="card text-center m-2 bg-dark">
          
           <div class="card-body">
-            <h4 class="card-title">Bienvenido Administrador </h4>
+            <h4 class="card-title text-white">Bienvenido Admin</h4>
             <p class="card-text"></p>
           </div>
         </div>
-
-        <div class="container bg-dark ">
-          <div class="row ">
-            <div class="col rounded-2">
+        
+        <div class="card text-center m-2 bg-dark d-flex">
+        <div class="container bg-dark m-2">
+          <div class="row">
+            <div class="col ">
               <div
             class="table-responsive-lg "
           >
@@ -192,16 +207,21 @@
             >
               <thead>
                 <tr>
-                  <th scope="col">Column 1</th>
-                  <th scope="col">Column 2</th>
-                  <th scope="col">Column 3</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">cedula</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="">
-
-                </tr>
+                <?php foreach($usuario as $Lista) { ?>
                 
+                  <tr class="">
+                  <td><?php echo $Lista['nombreEmpleado']; ?></td>
+                  <td><?php echo $Lista['apellidoEmpleado']; ?></td>
+                  <td><?php echo $Lista['cedulaEmpelado']; ?></td>
+                </tr>
+              
+                <?php }?>  
               </tbody>
             </table>
           </div>
@@ -209,7 +229,8 @@
           </div>
           
         </div>
-        
+
+        </div>
 
         <footer class="py-4 bg-light mt-auto">
           <div class="container-fluid px-4">
@@ -227,21 +248,22 @@
         </footer>
       </div>
     </div>
+    
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       crossorigin="anonymous"
     ></script>
-    <script src="js/scripts.js"></script>
+    <script src="../../js/scripts.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
       crossorigin="anonymous"
     ></script>
-    <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="../../assets/demo/chart-area-demo.js"></script>
+    <script src="../../assets/demo/chart-bar-demo.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
       crossorigin="anonymous"
     ></script>
-    <script src="js/datatables-simple-demo.js"></script>
+    
   </body>
 </html>
