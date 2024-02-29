@@ -84,7 +84,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
   <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand-->
-      <a class="navbar-brand ps-3" href="userindex.html">Peluqueria Canina</a>
+      <a class="navbar-brand ps-3" href="userindex.php">Peluqueria Canina</a>
       <!-- Sidebar Toggle-->
       <button
         class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -149,7 +149,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
                 ⠀  Tienda
               </a>
 
-              <a class="nav-link" href="userpet.html">
+              <a class="nav-link" href="userpet.php">
                 <span class="material-symbols-outlined">
                   event
                   </span>
@@ -281,7 +281,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
                 inventarioproductos.precioProducto, categoria.nombreCategoria,
                 inventarioproductos.dirProducto from inventarioproductos INNER
                 JOIN categoria ON categoria.idCategoria =
-                inventarioproductos.categoriaProdcuto WHERE
+                inventarioproductos.categoriaProducto WHERE
                 inventarioproductos.strockProducto > 0"); $mysql->desconectar();
                 for ($i = 0; $i < mysqli_num_rows($consulta); $i++) { $fila =
                 mysqli_fetch_array($consulta); echo '
