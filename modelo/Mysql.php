@@ -1,34 +1,34 @@
 <?php
-// clase para conexiones
-session_start();
+
 class MYSQL
 {
-    // Datos de validacion para la conexión
-
     private $ipServidor = "localhost";
     private $usuarioBase = 'root';
-    private $contrasena = '12345';
-
-    private $conexion;
-    private $resultadoConsulta;
+    private $contrasena = '';
+    private $nombreBaseDatos = 'bd_mascotas';
     
-    // Metodo para conectar la base de datos 
     public function conectar()
     {
-        $this->conexion = mysqli_connect($this->ipServidor, $this->usuarioBase, $this->contrasena);
-    }
-    public function desconectar()
-    {
-        mysqli_close($this->conexion);
+        $conexion = mysqli_connect($this->ipServidor, $this->usuarioBase, $this->contrasena, $this->nombreBaseDatos);
+        if (!$conexion) {
+            die("La conexión ha fallado: " . mysqli_connect_error());
+        }
+        return $conexion;
     }
 
-    public function efectuarConsulta($consulta)
+    public function desconectar($conexion)
     {
-        mysqli_query($this->conexion, "SET lc_time_names = 'es_Es'");
-        // Añade el uso de caracteres especiales como tildes con el formato UTF-8
-        mysqli_query($this->conexion, "SET NAMES 'utf8'");
+        mysqli_close($conexion);
+    }
 
-        $this->resultadoConsulta = mysqli_query($this->conexion, $consulta);
-        return $this->resultadoConsulta;
+    public function efectuarConsulta($conexion, $consulta)
+    {
+        mysqli_query($conexion, "SET lc_time_names = 'es_Es'");
+        mysqli_query($conexion, "SET NAMES 'utf8'");
+
+        $resultadoConsulta = mysqli_query($conexion, $consulta);
+        return $resultadoConsulta;
     }
 }
+
+?>

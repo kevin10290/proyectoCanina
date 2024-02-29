@@ -2,14 +2,17 @@
 session_start();
 require_once("../../modelo/Mysql.php");
 $mysql = new MySql();
-$resultado = $mysql->ConsultaCompleja("SELECT * FROM empleado");
-if(!is_bool($resultado)){
-  $usuario = mysqli_fetch_all($resultado,MYSQLI_ASSOC);
-}else{
-  $usuario = false;
+$conexion = $mysql->conectar(); // Obtener la conexión
+$resultado = $mysql->efectuarConsulta($conexion, "SELECT * FROM empleado");
+if ($resultado) {
+    $usuario = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+} else {
+    echo "Error al ejecutar la consulta.";
 }
-
+$mysql->desconectar($conexion); // Desconectar de la base de datos al finalizar
 ?>
+
+
 
 
 <!DOCTYPE html>
