@@ -2,14 +2,17 @@
 session_start();
 require_once("../../modelo/Mysql.php");
 $mysql = new MySql();
-$resultado = $mysql->ConsultaCompleja("SELECT * FROM empleado");
-if(!is_bool($resultado)){
-  $usuario = mysqli_fetch_all($resultado,MYSQLI_ASSOC);
-}else{
-  $usuario = false;
+$conexion = $mysql->conectar(); // Obtener la conexión
+$resultado = $mysql->efectuarConsulta( "SELECT * FROM empleado");
+if ($resultado) {
+    $usuario = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+} else {
+    echo "Error al ejecutar la consulta.";
 }
-
+$mysql->desconectar(); // Desconectar de la base de datos al finalizar
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -100,13 +103,13 @@ if(!is_bool($resultado)){
                 <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
                 Listar
               </a>
-              <a class="nav-link" href="./nuevoEmpleado.php">
+              <a class="nav-link" href="./nuevoUsuario.php">
               <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"
                   ></i>
                 
                 Nuevo 
               </a>
-              <a class="nav-link" href="">
+              <a class="nav-link" href="EditarUsuario.php">
               <i class="fa-solid fa-user-pen m-1" style="font-size: 20px">
 
               </i>
@@ -195,10 +198,10 @@ if(!is_bool($resultado)){
           </div>
         </div>
         
-        <div class="card text-center m-2 bg-dark d-flex">
-        <div class="container bg-dark m-2">
-          <div class="row">
-            <div class="col ">
+        <div class="card text-center m-2 bg-dark  ">
+        <div class="container bg-dark m-2 rounded-4 p-1 border border-white mx-auto ">
+          <div class="row ">
+            <div class="col  ">
               <div
             class="table-responsive-lg "
           >
@@ -210,6 +213,7 @@ if(!is_bool($resultado)){
                   <th scope="col">Nombre</th>
                   <th scope="col">Apellido</th>
                   <th scope="col">cedula</th>
+                  <th scope="col">rol Usuario</th>
                 </tr>
               </thead>
               <tbody>
@@ -219,6 +223,7 @@ if(!is_bool($resultado)){
                   <td><?php echo $Lista['nombreEmpleado']; ?></td>
                   <td><?php echo $Lista['apellidoEmpleado']; ?></td>
                   <td><?php echo $Lista['cedulaEmpelado']; ?></td>
+                  <td><?php echo $Lista['rol_idRol']; ?></td>
                 </tr>
               
                 <?php }?>  
