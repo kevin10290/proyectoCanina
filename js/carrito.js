@@ -4,9 +4,23 @@ let carritocantidad = document.getElementById("carritocantidad")
 let total = 0
 
 
+
+
+
+
+
 let txtTotal = document.getElementById("total")
 let txtIVA = document.getElementById("IVA")
+
+
 function borrardecarrito(id) {
+
+
+  let productos = parseInt(document.getElementById("producto"+id).value)
+productos +=1
+document.getElementById("producto"+ id).value = productos
+
+
 carritocantidad.innerHTML = carrito.children.length-1
 
     let elemento = document.getElementById("elemento"+id)
@@ -17,7 +31,20 @@ for (let i = 0; i < carrito.children.length; i++) {
     objetos[i] =    carrito.children.item(i).id.replace("elemento","") 
  
 }
-console.log(objetos)
+if(objetos.length<= 0){
+
+  let comprar =document.getElementById("detallescompra").disabled = true
+  
+
+  }else{
+    let comprar =document.getElementById("detallescompra").disabled = false
+    let arregloproductos = document.getElementById("arregloproductos").value = objetos
+    let productos = document.getElementById("carrito").innerHTML
+    let productoshtml = document.getElementById("productoshtml").value =productos
+    console.log(arregloproductos)
+  
+  }
+
 
 
 let total = 0
@@ -25,14 +52,27 @@ for (let i = 0; i < carrito.children.length; i++) {
 
     let valor = 0
     valor = document.getElementById("valor"+  carrito.children.item(i).id.replace("elemento","") ).value
+    
+
     total += parseInt(valor)
 }
 txtIVA.innerHTML = total+ (total*0.19)
 txtTotal.innerHTML = total;
+
+
 }
 
 function agregarcarrito(id, nombre ,url,categoria,precio) {
+
+
+  let productos = document.getElementById("producto"+id).value
+
+if(productos >= 1){
+  productos -=1
+  document.getElementById("producto"+id).value = productos
+  
     carritocantidad.innerHTML = carrito.children.length+1
+
 
 let name = nombre + "";
 
@@ -58,7 +98,7 @@ let name = nombre + "";
                <h5>  ${precio}</h5>
         
    
-               <button onclick="borrardecarrito(${id})"  type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+               <button onclick="borrardecarrito(${id})" id="childeliminar"  type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                      title="Remove item">
                      <i class="fas fa-trash"></i>
                    </button>
@@ -79,5 +119,32 @@ let name = nombre + "";
     }
     txtTotal.innerHTML = total;
     txtIVA.innerHTML = total+ (total*0.19)
-    console.log(objetos)
+    if(objetos.length<= 0){
+
+      let comprar =document.getElementById("detallescompra").disabled = true
+      
+    
+      }else{
+        let comprar =document.getElementById("detallescompra").disabled = false
+        let arregloproductos = document.getElementById("arregloproductos").value = objetos
+        let productos = document.getElementById("carrito").innerHTML
+        let productoshtml = document.getElementById("productoshtml").value =productos
+        console.log(arregloproductos)
+ 
+      }
+}
+}
+if(document.location.href.includes("userbuy.php") == true){
+
+  for (let i = 0; i < carrito.children.length; i++) {
+    objetos[i] =    carrito.children.item(i).id.replace("elemento","") 
+  
+    let valor = 0
+    valor = document.getElementById("valor"+  carrito.children.item(i).id.replace("elemento","") ).value
+    total += parseInt(valor)
+    
+  }
+  
+  document.getElementById("arregloproductos").value = objetos
+  
 }

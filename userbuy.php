@@ -248,74 +248,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
         
 
 
-<div class=" col-9">
-              <div class="row">
-                <div class="">
-                  <div class="section-title">
-                    <h2>Productos para tu mascota</h2>
-                  </div>
-                  <div class="featured__controls">
-                    <ul>
-                      <li class="" data-filter="*">Todos</li>
-                      <li data-filter=".limpieza" class="">
-                        Jabones y shampoos
-                      </li>
-                      <li data-filter=".herramienta" class="">Herramientas</li>
-                      <li data-filter=".juguete" class="">juguete</li>
-                      <!--  <li data-filter=".fastfood" class="active mixitup-control-active">Fastfood</li>-->
-                    </ul>
-                  </div>
-                </div>
-              </div>
 
-              <!--style="display: none;"   Estilo para mostrar producto o no-->
-
-              <div class="row featured__filter" id="MixItUpB25F5E">
-                <?php
-
-            require_once 'Modelo/MySQL.PHP';
-            $mysql = new MySQL;
-            $mysql->conectar(); $consulta = $mysql->efectuarConsulta("select
-                inventarioproductos.idinventarioProducto,
-                inventarioproductos.nombreProducto,
-                inventarioproductos.precioProducto, categoria.nombreCategoria,
-                inventarioproductos.dirProducto,
-                inventarioproductos.strockProducto
-                from inventarioproductos INNER
-                JOIN categoria ON categoria.idCategoria =
-                inventarioproductos.categoriaProducto WHERE
-                inventarioproductos.strockProducto > 0"); $mysql->desconectar();
-                for ($i = 0; $i < mysqli_num_rows($consulta); $i++) { $fila =
-                mysqli_fetch_array($consulta); echo '
-
-                <div
-                  class="col-lg-3 col-md-4 col-sm-6 mix oranges '. $fila[3] . '"
-                >
-
-                <input type="hidden" id="producto'.$fila[0].'" value="'. $fila[5].'">
-                  <div class="featured__item">
-                  <img src="'.$fila[4].'" class="img-thumbnail" >
-                    <div class="featured__item__text">
-                      <h6><a   onclick=agregarcarrito(' . $fila[0] . ',"' . str_replace(" ","_",$fila[1]) . '","' . $fila[4] . '","' . $fila[3] .'","' . $fila[2]. '","' . $fila[5]. '")        >'.$fila[1].'</a></h6>
-                      <h5>'.$fila[2].'</h5>
-                    </div>
-                  </div>
-                </div>
-
-                '; } ?>
-
-                <!--  Producto
-                    
-                    
-                  -->
-              </div>
-            </div>
-
-
-            <div class="col">
-
-
-<div class="col">
   <div class="">
     <div class="card mb-4">
       <div class="card-header py-3">
@@ -327,6 +260,19 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
 
        
         <div id="carrito">
+
+<?php
+$arreglo =  $_POST['arregloproductos'];
+$productos = $_POST['productoshtml'];
+
+
+
+  echo $productos;
+
+
+?>
+
+
         
         </div>
        
@@ -342,6 +288,14 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
       <div class="card-header py-3">
         <h5 class="mb-0">Total</h5>
       </div>
+     
+     
+
+
+
+      
+     
+     
       <div class="card-body">
         <ul class="list-group list-group-flush">
           <li
@@ -362,18 +316,88 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
           </li>
         </ul>
 
-        <form action="userbuy.php" method="post">
+        <div class="card bg-primary text-white rounded-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h5 class="mb-0">Card details</h5>
+   <!--  <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+        class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">--> 
+    </div>
 
-<input id="productoshtml" type="hidden" name="productoshtml">
+    <p class="small mb-2">Card type</p>
+    <a href="#!" type="submit" class="text-white"><i
+        class="fab fa-cc-mastercard fa-2x me-2"></i></a>
+    <a href="#!" type="submit" class="text-white"><i
+        class="fab fa-cc-visa fa-2x me-2"></i></a>
+    <a href="#!" type="submit" class="text-white"><i
+        class="fab fa-cc-amex fa-2x me-2"></i></a>
+    <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
+
+    <form class="mt-4" action="controlador/confirmarCompra.php" method="post">
+      <div class="form-outline form-white mb-4">
+        <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
+          placeholder="Cardholder's Name" />
+        <label class="form-label" for="typeName">Cardholder's Name</label>
+      </div>
+
+      <div class="form-outline form-white mb-4">
+        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+          placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
+        <label class="form-label" for="typeText">Card Number</label>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="form-outline form-white">
+            <input type="text" id="typeExp" class="form-control form-control-lg"
+              placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
+            <label class="form-label" for="typeExp">Expiration</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-outline form-white">
+            <input type="password" id="typeText" class="form-control form-control-lg"
+              placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
+            <label class="form-label" for="typeText">Cvv</label>
+          </div>
+
+          <input id="productoshtml" type="hidden" name="productoshtml">
 
 <input  id="arregloproductos" type="hidden" name="arregloproductos">
 
-<button id="detallescompra" disabled type="submit" class="btn btn-primary btn-lg btn-block">
-    Ir a comprar
-  </button>
-</form>
+       
+       
+          <button  type="submit" id="detallescompra" class="btn btn-success btn-lg btn-block">
+          Confirmar compra
+        </button>
 
 
+        </div>
+      </div>
+      </div>
+      </div>
+
+     
+     
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+       
+         
+    
+        </ul>
+   
+  
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+  
+  </div>
+</div>
+
+
+     
       </div>
     </div>
   </div>
