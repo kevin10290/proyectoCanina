@@ -141,6 +141,56 @@ $MinID = $resultado[0][0] + 1;
                     <div class="row">
                         <div class="col ">
                             <!-- aqui va el ingreso de datos  -->
+                            <div class="bg-white border border-dark m-2 p-4">
+                    <h1 class="display-6 fs-2 fw-normal mb-0">Nuevo Usuario</h1>
+                    <p class="text-secondary">Aquí podrás agregar nuevos usuarios a la base de datos, solo debes llenar
+                        el siguiente formulario.</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4 ms-3">
+                            <form action="./controller/AgregarUsuario.php" method="POST">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="txtId" class="fs-5">ID</label>
+                                        <input type="number" min="<?php echo $MinID; ?>" value="<?php echo $MinID; ?>"
+                                            class="form-control-plaintext border border-1 border-dark px-2" name="txtId"
+                                            id="txtId">
+                                    </div>
+                                    <div class="col">
+                                        <label for="slEstado" class="fs-5">Estado</label>
+                                        <select class="form-control-plaintext border border-1 border-dark px-2"
+                                            name="slEstado" id="slEstado">
+                                            <option>Seleccionar...</option>
+                                            <option value="1">ACTIVO</option>
+                                            <option value="0">INACTIVO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="txtCorreo" class="fs-5">Correo</label>
+                                        <input type="email"
+                                            class="form-control-plaintext border border-1 border-dark px-2"
+                                            name="txtCorreo" id="txtCorreo">
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <label for="txtContraseña" class="fs-5">Contraseña</label>
+                                        <input type="password"
+                                            class="form-control-plaintext border border-1 border-dark px-2 mb-2"
+                                            name="txtContraseña" id="txtContraseña">
+                                        <p class="text-danger fw-semibold mb-0" id="lblError"></p>
+                                        <input type="password"
+                                            class="form-control-plaintext border border-1 border-dark px-2"
+                                            placeholder="Confirmar contraseña" id="txtConfirmPass">
+                                    </div>
+                                </div>
+                                <input type="submit" class="btn btn-dark rounded-0 w-100" value="Agregar">
+                            </form>
+                        </div>
+                    </div>
+                </div>
                         </div>
                     </div>
 
