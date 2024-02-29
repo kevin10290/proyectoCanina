@@ -3,7 +3,7 @@ session_start();
 require_once("../../modelo/Mysql.php");
 $mysql = new MySql();
 $conexion = $mysql->conectar(); // Obtener la conexión
-$resultado = $mysql->efectuarConsulta($conexion, "SELECT * FROM empleado");
+$resultado = $mysql->efectuarConsulta( "SELECT * FROM empleado");
 if ($resultado) {
     $usuario = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
 } else {

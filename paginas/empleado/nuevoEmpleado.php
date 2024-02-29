@@ -1,10 +1,13 @@
 <?php 
 session_start();
-require_once("../../modelo/MySql.php");
-$mysql = new MySql;
-$resultado = mysqli_fetch_all($mysql->efectuarConsulta("SELECT idEmpleado FROM empleado ORDER BY idEmpleado DESC LIMIT 1;"));
+require_once("../../modelo/Mysql.php");
+$mysql = new MySql();
+$conexion = $mysql->conectar(); // Obtener la conexión
+$resultadoConsulta = $mysql->ConsultaCompleja( "SELECT idEmpleado FROM empleado ORDER BY idEmpleado DESC LIMIT 1");
+$resultado = mysqli_fetch_all($resultadoConsulta);
 $MinID = $resultado[0][0] + 1;
 ?>
+
 
 
 <!DOCTYPE html>
