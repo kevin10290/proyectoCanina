@@ -69,12 +69,12 @@ $MinID = $resultado[0][0] + 1;
                             <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
                             Listar
                         </a>
-                        <a class="nav-link" href="./nuevoEmpleado.php">
+                        <a class="nav-link" href="./nuevoUsuario.php">
                             <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"></i>
 
                             Nuevo
                         </a>
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="./EditarUsuario.php">
                             <i class="fa-solid fa-user-pen m-1" style="font-size: 20px">
 
                             </i>
@@ -139,56 +139,90 @@ $MinID = $resultado[0][0] + 1;
             <div class="card text-center m-2 bg-dark d-flex">
                 <div class="container bg-dark m-2">
                     <div class="row">
-                        <div class="col ">
+                        <div class="col">
                             <!-- aqui va el ingreso de datos  -->
-                            <div class="bg-white border border-dark m-2 p-4">
-                    <h1 class="display-6 fs-2 fw-normal mb-0">Nuevo Usuario</h1>
-                    <p class="text-secondary">Aquí podrás agregar nuevos usuarios a la base de datos, solo debes llenar
-                        el siguiente formulario.</p>
+                           <div class="row ">
+                           <div class="bg-dark  border border-3 rounded-3 border-white m-1 p-2">
+                    <h1 class="display-6 fs-2 fw-normal mb-0 text-white">Nuevo Usuario</h1>
+                    <p class="text-secondary text-white mt-2">ingresa un nuevo Usuario a la lista de Usuario</p>
                     <hr>
                     <div class="row">
                         <div class="col-4 ms-3">
-                            <form action="./controller/AgregarUsuario.php" method="POST">
-                                <div class="row">
+                            <form action="./controlador/crearUsuario.php" method="POST">
+                                <div class="row ">
                                     <div class="col-4">
-                                        <label for="txtId" class="fs-5">ID</label>
+                                        <label for="txtId" class="fs-5 text-white">ID</label>
                                         <input type="number" min="<?php echo $MinID; ?>" value="<?php echo $MinID; ?>"
-                                            class="form-control-plaintext border border-1 border-dark px-2" name="txtId"
+                                            class="form-control-plaintext rounded-4 border border-2 border-secondary px-2 bg-white" name="txtId"
                                             id="txtId">
                                     </div>
                                     <div class="col">
                                         <label for="slEstado" class="fs-5">Estado</label>
-                                        <select class="form-control-plaintext border border-1 border-dark px-2"
+                                        <select class="form-control-plaintext rounded-4 border border-1 border-secondary px-2 bg-white"
                                             name="slEstado" id="slEstado">
-                                            <option>Seleccionar...</option>
-                                            <option value="1">ACTIVO</option>
-                                            <option value="0">INACTIVO</option>
+                                            <option>Seleccionar Rol</option>
+                                            <option value="1">admin</option>
+                                            <option value="2">cliente</option>
+                                            <option value="3">Empleado</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col">
-                                        <label for="txtCorreo" class="fs-5">Correo</label>
+                                    <div class="col-12">
+                                       
+
+                                            <label for="txtCorreo" class="fs-5 text-white">Correo</label>
                                         <input type="email"
-                                            class="form-control-plaintext border border-1 border-dark px-2"
+                                            class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
                                             name="txtCorreo" id="txtCorreo">
+
+                                            
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col">
-                                        <label for="txtContraseña" class="fs-5">Contraseña</label>
+                                        <label for="txtContraseña" class="fs-5 text-white">Contraseña</label>
                                         <input type="password"
-                                            class="form-control-plaintext border border-1 border-dark px-2 mb-2"
+                                            class="form-control-plaintext bg-white rounded-3 border border-1 border-secondary px-2 mb-2"
                                             name="txtContraseña" id="txtContraseña">
                                         <p class="text-danger fw-semibold mb-0" id="lblError"></p>
                                         <input type="password"
-                                            class="form-control-plaintext border border-1 border-dark px-2"
+                                            class="form-control-plaintext border border-1 rounded-3 border-dark px-2 bg-white"
                                             placeholder="Confirmar contraseña" id="txtConfirmPass">
                                     </div>
+
+                                   
                                 </div>
-                                <input type="submit" class="btn btn-dark rounded-0 w-100" value="Agregar">
+                           </div>
+
+
+                                <div class="col-4 ms-5">
+
+                            <label for="" class="fs-5 text-white">Nombre</label>
+                                <input type="text"
+                                    class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
+                                    name="txtNombre" id="txtNombre">
+
+                                    <label for="" class="fs-5 text-white">Apellido</label>
+                                <input type="text"
+                                    class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
+                                    name="txtApellido" id="txtApellido">
+
+                                    <label for="" class="fs-5 text-white">cedula</label>
+                                <input type="text"
+                                    class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
+                                    name="txtCedula" id="txtCedula">
+
+                                   <div class="col">
+                                   <input type="submit" class=" mt-3 btn btn-dark border-4 border-white rounded-3 w-100" value="Agregar">
+                                   </div>
+                            </div>
+
+
+                               
                             </form>
                         </div>
+                        
                     </div>
                 </div>
                         </div>
@@ -212,7 +246,7 @@ $MinID = $resultado[0][0] + 1;
             </footer>
         </div>
     </div>
-
+    <script src="../../assets/confirm_pass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../../js/scripts.js"></script>
@@ -220,6 +254,7 @@ $MinID = $resultado[0][0] + 1;
     <script src="../../assets/demo/chart-area-demo.js"></script>
     <script src="../../assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+    
         crossorigin="anonymous"></script>
 
 </body>

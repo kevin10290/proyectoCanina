@@ -29,7 +29,7 @@ class MYSQL
     }
 
     public function efectuarConsulta($consulta)
-{
+{           $this->conectar();
     if (!$this->conexion) {
         die("Error: No se ha establecido una conexión a la base de datos.");
     }
