@@ -139,7 +139,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
           <div class="sb-sidenav-menu">
             <div class="nav">
               <div class="sb-sidenav-menu-heading">principal</div>
-              <a class="nav-link" href="userindex.html">
+              <a class="nav-link" href="userindex.php">
            
                 <span class="material-symbols-outlined">
                   shopping_basket

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once "MYSQL.php";
+require_once "modelo/MYSQL.php";
 
 $mysql= new MYSQL;
 
