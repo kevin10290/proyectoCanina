@@ -341,9 +341,9 @@ $productos = $_POST['productoshtml'];
       </div>
 
       <div class="form-outline form-white mb-4">
-        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+        <input type="text" id="typeText2" class="form-control form-control-lg" siez="17"
           placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
-        <label class="form-label" for="typeText">Card Number</label>
+        <label class="form-label" for="typeText2">Card Number</label>
       </div>
 
       <div class="row mb-4">
@@ -448,12 +448,7 @@ $productos = $_POST['productoshtml'];
       crossorigin="anonymous"
     ></script>
     <script src="js/scripts.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="assets/demo/chart-bar-demo.js"></script>
+   
     <script
       src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
       crossorigin="anonymous"

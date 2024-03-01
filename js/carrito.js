@@ -15,12 +15,12 @@ let txtIVA = document.getElementById("IVA")
 
 function borrardecarrito(id) {
 
-
+if(document.location.href.includes("userbuy.php") == false){
   let productos = parseInt(document.getElementById("producto"+id).value)
 productos +=1
 document.getElementById("producto"+ id).value = productos
 
-
+}
 carritocantidad.innerHTML = carrito.children.length-1
 
     let elemento = document.getElementById("elemento"+id)
@@ -143,7 +143,10 @@ if(document.location.href.includes("userbuy.php") == true){
     valor = document.getElementById("valor"+  carrito.children.item(i).id.replace("elemento","") ).value
     total += parseInt(valor)
     
-  }
+  } 
+  carritocantidad.innerHTML = carrito.children.length
+  txtTotal.innerHTML = total;
+  txtIVA.innerHTML = total+ (total*0.19)
   
   document.getElementById("arregloproductos").value = objetos
   
