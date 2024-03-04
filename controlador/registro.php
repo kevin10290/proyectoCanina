@@ -27,7 +27,7 @@ if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) &&
     FROM bd_mascotas.registrocliente WHERE bd_mascotas.registrocliente.emailCliente = '".$email."'  ");
     
     $rows = mysqli_num_rows($consulta1);
-    echo $rows;
+  
     if($rows>0){
         $mysql->desconectar();
       

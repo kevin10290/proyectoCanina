@@ -21,12 +21,13 @@ $usuario = new Usuarios();
 $usuario = $_SESSION['usuario'];
 
 
-if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ( $_SESSION['rol' == "Root"] ||  $_SESSION['rol' == "Admin"])) {
+if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ( $_SESSION['rol']  == "1"||  $_SESSION['rol'] == "2" ||  $_SESSION['rol'] == "3")) {
 
 
     $user = $usuario->getUser();
     $id = $usuario->getId();
-    $rol = $usuario->getRol();
+    $idrol = $usuario->getRol();
+    $rol = array("ROOT","admin","cajero");
 } else {
     header("Location: ./login.php");
     exit();
@@ -34,7 +35,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ( $_SESSION['
 
 
 
-require_once "MYSQL.php";
+require_once "Modelo/MYSQL.php";
 $mysql = new MYSQL;
 $mysql->conectar();
 
@@ -118,9 +119,16 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
           >
-            <li><a class="dropdown-item" href="#!">perfil</a></li>
+            <li><a class="dropdown-item" href="#!"><?php echo $user . " - " . $rol[$idrol]?></a></li>
             <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
+            <li>  <form action="Controlador/cerrarsesion.php" method="post">
+
+
+<input class="dropdown-item" type="submit" value="Cerrar Sesion">
+
+
+
+</form></li>
           </ul>
         </li>
       </ul>
