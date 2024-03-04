@@ -3,8 +3,7 @@
 
 <?php
 
-/*
-Validación de inicio de sesión
+
 
 require_once 'Modelo/Usuarios.PHP';
 
@@ -18,29 +17,18 @@ $usuario = new Usuarios();
 $usuario = $_SESSION['usuario'];
 
 
-if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
+if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['rol' == "Cliente"]) {
 
 
     $user = $usuario->getUser();
     $id = $usuario->getId();
+    $rol = $usuario->getRol();
 } else {
-    header("Location: ./index.php");
+    header("Location: ./login.php");
     exit();
 }
-*/
+
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

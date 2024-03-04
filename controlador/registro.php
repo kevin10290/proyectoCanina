@@ -8,7 +8,7 @@ $telefono = $_POST['tel'];
 $apellido = $_POST['apellido'];
 $nombre = $_POST['nombre'];
 $email = $_POST['email'];
-$pass = md5($_POST['pass']);
+$pass = hash('SHA256',$_POST['pass']);
 
 if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) && !empty($_POST['pass'])
 && isset($_POST['nombre']) && !empty($_POST['nombre']) && isset($_POST['cedula']) && !empty($_POST['cedula'])
@@ -31,7 +31,7 @@ if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) &&
     if($rows>0){
         $mysql->desconectar();
       
-        header("Location: ../register.php");
+        header("Location: ../register.php?Error=true&Mensaje=Este correo ya existe");
         // sweetalert este correo ya existe
         
     
@@ -43,7 +43,7 @@ if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) &&
     
     
         $consulta = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.registrocliente values (null,'".$nombre."','".$apellido."',
-        '".$telefono."','".$email."','".$cedula."','".$pass."',2)");
+        '".$telefono."','".$email."','".$cedula."','".$pass."',1)");
     
     
         $mysql->desconectar();

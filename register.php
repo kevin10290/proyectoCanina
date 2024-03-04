@@ -128,3 +128,16 @@
 
 </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        if (<?php echo ($_GET['Error']) ?> == true) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "<?php echo ($_GET['Mensaje']) ?>",
+              
+            });
+
+        }
+    </script>

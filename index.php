@@ -1,5 +1,38 @@
+
+
+
+
+
+
+
+
 <?php 
+
+
+require_once 'Modelo/Usuarios.PHP';
+
+
 session_start();
+
+
+
+$usuario = new Usuarios();
+
+$usuario = $_SESSION['usuario'];
+
+
+if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ( $_SESSION['rol' == "Root"] ||  $_SESSION['rol' == "Admin"])) {
+
+
+    $user = $usuario->getUser();
+    $id = $usuario->getId();
+    $rol = $usuario->getRol();
+} else {
+    header("Location: ./login.php");
+    exit();
+}
+
+
 
 require_once "MYSQL.php";
 $mysql = new MYSQL;
