@@ -78,9 +78,9 @@ if (
 
         $usuario->setId($fila['idEmpleado']);
 
-        $usuario->setRol($fila['rolEmpleado']);
+        $usuario->setRol($fila['rol_idRol']);
 
-        $rol  = $fila['rolEmpleado'];
+        $rol  = $fila['rol_idRol'];
     } else {
 
         header("Location: ../login.php?Error=true&Mensaje=Verifique sus datos");

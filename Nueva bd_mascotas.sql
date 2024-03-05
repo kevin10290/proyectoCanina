@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-02-2024 a las 17:18:20
+-- Tiempo de generación: 05-03-2024 a las 14:02:35
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -113,17 +113,19 @@ CREATE TABLE `empleado` (
   `apellidoEmpleado` varchar(100) NOT NULL,
   `cedulaEmpelado` varchar(100) NOT NULL,
   `emailEmpleado` varchar(200) NOT NULL,
-  `passEmpleado` varchar(45) NOT NULL,
-  `rol_idRol` int(11) NOT NULL
+  `passEmpleado` varchar(1000) NOT NULL,
+  `rol_idRol` int(11) NOT NULL,
+  `estadoEmpleado` int(3) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Volcado de datos para la tabla `empleado`
 --
 
-INSERT INTO `empleado` (`idEmpleado`, `nombreEmpleado`, `apellidoEmpleado`, `cedulaEmpelado`, `emailEmpleado`, `passEmpleado`, `rol_idRol`) VALUES
-(1, 'gsdgserg', 'dfsgsdfger', '32453245', 'asdas@gmail.com', 'fghjkhk', 1),
-(2, 'fererhtbvnvnvbn', 'cvxcvx', '313123', 'dfggdf34@gmail.com', 'fs32f32f', 1);
+INSERT INTO `empleado` (`idEmpleado`, `nombreEmpleado`, `apellidoEmpleado`, `cedulaEmpelado`, `emailEmpleado`, `passEmpleado`, `rol_idRol`, `estadoEmpleado`) VALUES
+(1, 'gsdgserg', 'dfsgsdfger', '32453245', 'asdas@gmail.com', 'fghjkhk', 1, 1),
+(2, 'fererhtbvnvnvbn', 'cvxcvx', '313123', 'dfggdf34@gmail.com', 'fs32f32f', 1, 1),
+(3, 'fwefsdfds', 'yryrty', '456456', 'was@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -189,7 +191,7 @@ CREATE TABLE `inventarioproductos` (
 --
 
 INSERT INTO `inventarioproductos` (`idinventarioProducto`, `nombreProducto`, `precioProducto`, `strockProducto`, `categoriaProducto`, `dirProducto`) VALUES
-(1, 'Jabon', 100, 0, 1, './Controlador//images/nod.png');
+(1, 'Jabon', 100, 16, 1, './Controlador//images/nod.png');
 
 -- --------------------------------------------------------
 
@@ -204,16 +206,20 @@ CREATE TABLE `registrocliente` (
   `telefonoCliente` varchar(20) DEFAULT NULL,
   `emailCliente` varchar(200) DEFAULT NULL,
   `cedulaCliente` varchar(45) DEFAULT NULL,
-  `passCliente` varchar(45) DEFAULT NULL
+  `passCliente` varchar(1000) DEFAULT NULL,
+  `estadoCliente` int(3) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Volcado de datos para la tabla `registrocliente`
 --
 
-INSERT INTO `registrocliente` (`idClientes`, `nombreCliente`, `apellidoCliente`, `telefonoCliente`, `emailCliente`, `cedulaCliente`, `passCliente`) VALUES
-(1, '4te5yr5uy', 'r5ye5etye', '3453453', 'ead@gmail.com', '14234', '2323423'),
-(2, 'fwerfer', 'htrytutyu', '2555445', 'qwerbe@gmail.com', '44436654', 'fwefw424234');
+INSERT INTO `registrocliente` (`idClientes`, `nombreCliente`, `apellidoCliente`, `telefonoCliente`, `emailCliente`, `cedulaCliente`, `passCliente`, `estadoCliente`) VALUES
+(1, '4te5yr5uy', 'r5ye5etye', '3453453', 'ead@gmail.com', '14234', '2323423', 0),
+(2, 'fwerfer', 'htrytutyu', '2555445', 'qwerbe@gmail.com', '44436654', 'fwefw424234', 0),
+(3, 'Javier', 'asdasd', '142312', 'ffdsfs@gmail.com', '24124124', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa', 1),
+(4, 'Javier', 'asdasd', '142312', 'hola@gmail.com', '24124124', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa', 1),
+(6, 'Larz', 'asdasd', '123', 'wa@gmail.com', '123', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1);
 
 -- --------------------------------------------------------
 
@@ -395,7 +401,7 @@ ALTER TABLE `detalleservicio`
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `idEmpleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idEmpleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `facturaproducto`
@@ -419,7 +425,7 @@ ALTER TABLE `inventarioproductos`
 -- AUTO_INCREMENT de la tabla `registrocliente`
 --
 ALTER TABLE `registrocliente`
-  MODIFY `idClientes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idClientes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `resgistromascota`
