@@ -1,7 +1,20 @@
+
+
+
+
+
+
+
+
 <?php 
+
+
+require_once 'Modelo/Usuarios.PHP';
+
+
 session_start();
 
-require_once "modelo/MYSQL.php";
+require_once "MYSQL.php";
 $mysql = new MYSQL;
 $mysql->conectar();
 
@@ -85,9 +98,16 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
           >
-            <li><a class="dropdown-item" href="#!">perfil</a></li>
+            <li><a class="dropdown-item" href="#!"><?php echo $user . " - " . $rol[$idrol]?></a></li>
             <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
+            <li>  <form action="Controlador/cerrarsesion.php" method="post">
+
+
+<input class="dropdown-item" type="submit" value="Cerrar Sesion">
+
+
+
+</form></li>
           </ul>
         </li>
       </ul>

@@ -6,7 +6,7 @@ class MYSQL
 
     private $ipServidor = "localhost";
     private $usuarioBase = 'root';
-    private $contrasena = '12345';
+    private $contrasena = '';
 
     private $conexion;
     private $resultadoConsulta;

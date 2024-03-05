@@ -1,87 +1,119 @@
 <?php
-require_once '../modelo/Mysql.php';
+//Comprobar datos
 
 
-$mysql = new MySQL;
 
-$email = $_POST['email'];
-$pass = md5($_POST['pass']);
+if (
+    (isset($_POST['email']) && !empty($_POST['email'])) &&
+    (isset($_POST['pass']) && !empty($_POST['pass']))
+) {
 
-if(isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['pass']) && !empty($_POST['pass'])){
+    //llamado del modelo de conexón de consultas
 
+
+    require_once '../modelo/MySQL.php';
+
+
+    //Capturar variables
+
+  
+    $user = $_POST['email'];
+    $pass = hash('SHA256', $_POST['pass']);
+    $rol = "";
+
+
+    //Instanciar la clase
+    $mysql = new MySQL();
+
+    //Usar método del modelo
     $mysql->conectar();
 
 
+    //Realizo la consulta con mis comandos
 
-    $clientes = $mysql->efectuarConsulta("SELECT bd_mascotas.empleado.idEmpleado ,
-    bd_mascotas.empleado.emailEmpleado, bd_mascotas.empleado.passEmpleado FROM  bd_mascotas.empleado where
-    bd_mascotas.empleado.emailEmpleado = '" . $email . "' and  bd_mascotas.empleado.passEmpleado = '" . $pass . "' ");
-
+    require_once '../modelo/Usuarios.php';
 
 
-    
 
-        if (mysqli_num_rows($clientes)) {
-            session_start();
 
-            
-            require_once '../modelo/usuarios.php';
+    $usuarios = $mysql->efectuarConsulta("SELECT * FROM registrocliente WHERE emailCliente = '" . $user . "' and passCliente = '" . $pass . "' and estadoCliente = 1");
+    $usuario = new Usuarios();
+    $fila = mysqli_fetch_assoc($usuarios);
 
-            $usuarios = new usuarios();
+    if (mysqli_num_rows($usuarios) > 0) {
+        echo "Cliente";
 
-            $usuarios->setId($fila['id']);
+        session_start();
 
-            $_SESSION['usuario'] = $usuarios;
 
-            $_SESSION['acceso'] = true;
 
-            //cambiar a respectiva direccion de cliente
-            header("Location: ../gestionCliente.php");
-        }  else {
-           
-            $mysql->desconectar();
 
-            $mysql->conectar();
 
-            $usuario = $mysql->efectuarConsulta("SELECT bd_mascotas.registrocliente.idClientes ,
-            bd_mascotas.registrocliente.emailCliente,bd_mascotas.registrocliente.passCliente FROM  bd_mascotas.registrocliente WHERE
-            bd_mascotas.registrocliente.emailCliente= '" . $email . "' and  bd_mascotas.registrocliente.passCliente = '" . $pass . "' ");
+        $usuario->setUser($fila['emailCliente']);
 
-           $fila2 = mysqli_fetch_assoc($usuario);
+        $usuario->setId($fila['idClientes']);
 
-           echo $fila2['email'];
+        $usuario->setRol($rol);
 
-           if (mysqli_num_rows($usuario)) {
-            session_start();
-            
-            require_once '../modelo/usuarios.php';
+        $rol = "Cliente";
+    }
 
-            $usuarios = new usuarios();
+    $mysql->desconectar();
 
-            $usuarios->setId($fila2['id']);
 
-            $_SESSION['usuario'] = $usuarios;
+    $mysql->conectar();
 
-            $_SESSION['acceso'] = true;
+    $usuarios = $mysql->efectuarConsulta("SELECT * FROM empleado WHERE emailempleado = '" . $user . "' and passEmpleado = '" . $pass . "' and estadoEmpleado = 1");
 
-            //cambiar a respectiva direccion para usuarios
+    $fila = mysqli_fetch_assoc($usuarios);
+    if (mysqli_num_rows($usuarios) > 0) {
 
-            header("Location: ../ProductosMascotas.php");
-           }
-           else {
+ 
 
-            header("Location: ../index.php");
-        }
-           
 
-        }  
+        session_start();
+
+
+        $usuario->setUser($fila['emailEmpleado']);
+
+        $usuario->setId($fila['idEmpleado']);
+
+        $usuario->setRol($fila['rol_idRol']);
+
+        $rol  = $fila['rol_idRol'];
+    } else {
+
+        header("Location: ../login.php?Error=true&Mensaje=Verifique sus datos");
     }
 
 
 
-else{
-    header("Location: ../index.php");
+    //Desconectar de la base de datos para liberar memoria
 
+    $mysql->desconectar();
+
+    //Capturar los resultados de la consulta en una fila
+
+
+
+    //validar si se encuentran resultados
+
+
+    require_once '../modelo/Usuarios.php';
+
+
+    $_SESSION['usuario'] = $usuario;
+    $_SESSION['acceso'] = true;
+    $_SESSION['rol'] = $rol;
+
+    if ($rol == "Cliente") {
+
+        header("Location: ../userindex.php");
+    }
+    if ($rol == "1"||$rol == "2" || $rol == "3") {
+
+        header("Location: ../index.php");
+    }
+} else {
+    header("Location: ../login.php?Error=true&Mensaje=No se ha encontrado  el usuario o contraseña");
 }
-
-?>

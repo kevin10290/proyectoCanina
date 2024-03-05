@@ -1,10 +1,6 @@
-
-
-
 <?php
 
-/*
-Validación de inicio de sesión
+
 
 require_once 'Modelo/Usuarios.PHP';
 
@@ -18,21 +14,18 @@ $usuario = new Usuarios();
 $usuario = $_SESSION['usuario'];
 
 
-if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
+if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['rol'] == "Cliente") {
 
 
-    $user = $usuario->getUser();
-    $id = $usuario->getId();
+  $user = $usuario->getUser();
+  $id = $usuario->getId();
+  $rol = $usuario->getRol();
 } else {
-    header("Location: ./index.php");
-    exit();
+  header("Location: ./login.php");
+  exit();
 }
-*/
+
 ?>
-
-
-
-
 
 
 
@@ -112,25 +105,25 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null) {
       </form>
       <!-- Navbar-->
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            id="navbarDropdown"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            ><i class="fas fa-user fa-fw"></i
-          ></a>
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdown"
-          >
-            <li><a class="dropdown-item" href="">perfil</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="">Cerrar Sesion</a></li>
-          </ul>
-        </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href=""><?php echo $user . " - " . "Cliente"?></a></li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            <form action="Controlador/cerrarsesion.php" method="post">
+
+
+              <input class="dropdown-item" type="submit" value="Cerrar Sesion">
+
+
+
+            </form>
+          </li>
+        </ul>
+      </li>
       </ul>
     </nav>
     <div id="layoutSidenav">
@@ -341,9 +334,9 @@ $productos = $_POST['productoshtml'];
       </div>
 
       <div class="form-outline form-white mb-4">
-        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+        <input type="text" id="typeText2" class="form-control form-control-lg" siez="17"
           placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
-        <label class="form-label" for="typeText">Card Number</label>
+        <label class="form-label" for="typeText2">Card Number</label>
       </div>
 
       <div class="row mb-4">
@@ -448,12 +441,7 @@ $productos = $_POST['productoshtml'];
       crossorigin="anonymous"
     ></script>
     <script src="js/scripts.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="assets/demo/chart-bar-demo.js"></script>
+   
     <script
       src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
       crossorigin="anonymous"

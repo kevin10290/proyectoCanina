@@ -32,23 +32,24 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" action="controlador/login.php" method="post">
+			
+			<form class="login100-form validate-form" action="controlador/login.php" method="post">
 					<span class="login100-form-title p-b-43">
-						Login to continue
+						Ingrese para continuar
 					</span>
 					
 					
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="email">
+						<input required placeholder="Correo" class="input100" type="text" name="email">
 						<span class="focus-input100"></span>
-						<span class="label-input100">Email</span>
+						
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass">
+						<input required placeholder="Contraseña" class="input100" type="password" name="pass">
 						<span class="focus-input100"></span>
-						<span class="label-input100">Password</span>
+				
 					</div>
 
 					<div class="flex-sb-m w-full p-t-3 p-b-32">
@@ -106,3 +107,16 @@
 
 </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        if (<?php echo ($_GET['Error']) ?> == true) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "<?php echo ($_GET['Mensaje']) ?>",
+              
+            });
+
+        }
+    </script>

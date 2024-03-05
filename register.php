@@ -36,36 +36,29 @@
 					<span class="login100-form-title p-b-43">
 						Registrate
 					</span>
-					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="number" name="cedula">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Cedula</span>
+					<div class="wrap-input100 validate-input" data-validate="Cédula requerida">
+						<input required placeholder="Cédula" class="input100" type="number" name="cedula">
+	
 					</div>
-					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="text" name="nombre">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Nombre</span>
+					<div class="wrap-input100 validate-input" data-validate="Nombre requerido">
+						<input required class="input100" placeholder="Nombre" type="text" name="nombre">
+				</div>
+					<div class="wrap-input100 validate-input" data-validate="Apellido requerido">
+						<input required class="input100" type="text" placeholder="Apellido" name="apellido">
+				
 					</div>
-					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="text" name="apellido">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Apellido</span>
+					<div class="wrap-input100 validate-input" data-validate="Teléfono requerido">
+						<input required class="input100" type="text" placeholder="Teléfono" name="tel">
+					
 					</div>
-					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="text" name="tel">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Telefono</span>
-					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="email" name="email">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Email</span>
+                    <div class="wrap-input100 validate-input" data-validate = "Correo válido">
+						<input required class="input100" type="email" placeholder="Correo" name="email">
+				 
 					</div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Password</span>
+                    <div class="wrap-input100 validate-input" data-validate="Contraseña reuqerida">
+						<input required class="input100" type="password" placeholder="Contraseña" name="pass">
+					
 					</div>
 					<div class="flex-sb-m w-full p-t-3 p-b-32">
 						<div >
@@ -128,3 +121,16 @@
 
 </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        if (<?php echo ($_GET['Error']) ?> == true) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "<?php echo ($_GET['Mensaje']) ?>",
+              
+            });
+
+        }
+    </script>
