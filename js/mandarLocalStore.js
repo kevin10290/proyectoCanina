@@ -68,7 +68,7 @@ tabla.addEventListener("click", () => {
         }
 
         //aca voy a leer el localStore para agregar A la tabla de facturacion
-let local = window.localStorage;
+        let local = window.localStorage;
         let llavesNuevas = Object.keys(local);
         let id_llenarTabla = document.getElementById("id_llenarTabla");
         id_llenarTabla.innerHTML = "";
@@ -97,3 +97,18 @@ let local = window.localStorage;
   });
   console.log(localStore);
 });
+
+//aca voy hacer la funcion que se va ejecutar cuando le de click en el boton pagar
+
+const func_pagar = () => {
+  let localStorePagar = window.localStorage;
+
+  if (localStorePagar.length > 0) {
+  } else {
+    Swal.fire({
+      title: "No tiene Productos Selecionados!",
+      text: "Seleciona un producto para poder pagar",
+      icon: "info",
+    });
+  }
+};

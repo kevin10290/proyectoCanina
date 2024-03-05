@@ -4,7 +4,7 @@
 $id = $_POST['idCita'];
 
 // Incluir el archivo de conexión a la base de datos
-require_once "MYSQL.php";
+require_once "modelo/MYSQL.php";
 $mysql = new MYSQL;
 $mysql->conectar();
 

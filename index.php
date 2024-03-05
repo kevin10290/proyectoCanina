@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-require_once "MYSQL.php";
+require_once "modelo/MYSQL.php";
 $mysql = new MYSQL;
 $mysql->conectar();
 
@@ -225,6 +225,8 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
                     </div>
                     <div class="botonConsulta">
                     <button id="btnConsulta"  type="submit" class="btn btn-primary btnConsulta">Consultar</button>
+                    <button onclick="func_pagar()" style="  margin-left: 15px;" id="btnPagar"  type="submit" class="btn btn-primary btnConsulta">Pagar</button>
+
                     </div>
                     <div style="  margin-top: 25px;" id="id_mostrar_info" class="mostrar_info"></div>
                     
@@ -440,6 +442,10 @@ let id = document.getElementById("idCita").value;
     <!--aca voy hacer las pruebas para mirar si da mejor con la tabla-->
 
     <script>
+      //aca borro por si al cargar la pagian tiene datos
+      let borrar =  window.localStorage;
+      borrar.clear();
+//------------------------------------------------------
 
    let btnConsulta = document.getElementById("btnConsulta");
 let tablaDatosUsuario=document.getElementById("tablaDatosUsuario");
@@ -599,6 +605,27 @@ id_llenarTabla.innerHTML = "";
 
 
     }
+
+
+
+//aca voy hacer la funcion que se va ejecutar cuando le de click en el boton pagar
+
+
+
+
+const func_pagar = () => {
+  let localStorePagar = window.localStorage;
+
+  if (localStorePagar.length > 0) {
+  } else {
+    Swal.fire({
+      title: "No tiene Productos Selecionados!",
+      text: "Seleciona un producto para poder pagar",
+      icon: "info",
+    });
+  }
+};
+
 
 
 
