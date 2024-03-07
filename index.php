@@ -27,7 +27,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ( $_SESSION['
     $user = $usuario->getUser();
     $id = $usuario->getId();
     $idrol = $usuario->getRol();
-    $rol = array("ROOT","admin","cajero");
+    $rol = array("ROOT","admin"," ");
 } else {
     header("Location: ./login.php");
     exit();
