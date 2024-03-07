@@ -29,17 +29,25 @@ class MYSQL
     }
 
     public function efectuarConsulta($consulta)
-{           $this->conectar();
-    if (!$this->conexion) {
-        die("Error: No se ha establecido una conexión a la base de datos.");
+    {
+        $this->conectar();
+        if (!$this->conexion) {
+            die("Error: No se ha establecido una conexión a la base de datos.");
+        }
+    
+        mysqli_query($this->conexion, "SET lc_time_names = 'es_Es'");
+        mysqli_query($this->conexion, "SET NAMES 'utf8'");
+    
+        $resultadoConsulta = mysqli_query($this->conexion, $consulta);
+    
+        // Verificar si es una consulta de inserción y obtener el ID generado
+        if (strpos(strtoupper($consulta), 'INSERT') !== false) {
+            $id_generado = mysqli_insert_id($this->conexion);
+            return $id_generado;
+        }
+    
+        return $resultadoConsulta;
     }
-
-    mysqli_query($this->conexion, "SET lc_time_names = 'es_Es'");
-    mysqli_query($this->conexion, "SET NAMES 'utf8'");
-
-    $resultadoConsulta = mysqli_query($this->conexion, $consulta);
-    return $resultadoConsulta;
-}
 
 
     public function ConsultaCompleja($consulta)

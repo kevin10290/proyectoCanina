@@ -99,16 +99,70 @@ tabla.addEventListener("click", () => {
 });
 
 //aca voy hacer la funcion que se va ejecutar cuando le de click en el boton pagar
+let btnPagarFactura = document.getElementById("btnPagarFactura");
+let cedulaClientePagar = document.getElementById("cedulaClientePagar");
+let valorTotalProdcto = document.getElementById("valorTotalProdcto");
+let valorTotalServicio = document.getElementById("valorTotalServicio");
+let SelectorModoPago = document.getElementById("SelectorModoPago");
+btnPagarFactura.addEventListener("click", () => {
+  // Obtener el año actual
 
-const func_pagar = () => {
-  let localStorePagar = window.localStorage;
+  let fechaActual = new Date();
+  fechaActual = `${fechaActual.getFullYear()}-${
+    fechaActual.getMonth() + 1
+  }-${fechaActual.getDate()}`;
+  //------------------------------
 
-  if (localStorePagar.length > 0) {
+  if (SelectorModoPago.value != "Selecione modo de Pago") {
+    if (cedulaClientePagar.value.length > 0) {
+      //voy a meter los datos de LocalStore a un arreglo
+      let arregloPodructos = Array();
+      let localStoreGuardar = window.localStorage;
+      let llaveguardar = Object.keys(localStoreGuardar);
+
+      //aca meto los datos del localStore al arreglo
+      llaveguardar.forEach((llave) => {
+        let datosLocalStore = JSON.parse(localStoreGuardar.getItem(llave));
+
+        if (datosLocalStore.categoria != "Servicio") {
+          for (let i = 0; i < datosLocalStore.cantidad; i++) {
+            arregloPodructos.push(datosLocalStore.id);
+          }
+        }
+      });
+      //----------------------------------------
+      // aca ya creo el objeto para mandarlo
+      let parametros = {
+        totalPagoProductos: valorTotalProdcto.value,
+        totalPagoServicio: valorTotalServicio.value,
+        cedulaCliente: cedulaClientePagar.value,
+        SelectorModoPago: SelectorModoPago.value,
+        fechaVenta: fechaActual,
+        arregloPodructos: arregloPodructos,
+      };
+      console.log(parametros);
+      //----------------------------------------------------
+      //aca voy a mandar los datos a PHP por medio del Ajax
+      $.ajax({
+        data: parametros,
+        url: "codigoInsertarDatosFactura.php",
+        type: "POST",
+      }).done(function (res) {
+        alert(res);
+      });
+      //--------------------------------------------------------
+    } else {
+      Swal.fire({
+        title: "Ingrese la Cedula!",
+        text: "Es nesesario ingresar la Cedula Del Cliente",
+        icon: "info",
+      });
+    }
   } else {
     Swal.fire({
-      title: "No tiene Productos Selecionados!",
-      text: "Seleciona un producto para poder pagar",
+      title: "Selecione un modo de Pago!",
+      text: "Seleciona para poder Ejecutar la Accion",
       icon: "info",
     });
   }
-};
+});
