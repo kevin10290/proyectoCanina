@@ -27,7 +27,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ( $_SESSION['
     $user = $usuario->getUser();
     $id = $usuario->getId();
     $idrol = $usuario->getRol();
-    $rol = array("ROOT","admin"," ");
+    $rol = array("ROOT","admin","cajero");
 } else {
     header("Location: ./login.php");
     exit();
@@ -56,6 +56,13 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
+
+    <style>
+      .inpusDatos {
+      margin-top: 15px;
+}
+
+    </style>
     <!-- aca coloco la libreria de ajax con jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -266,7 +273,64 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
                     </div>
                     <div class="botonConsulta">
                     <button id="btnConsulta"  type="submit" class="btn btn-primary btnConsulta">Consultar</button>
+                    <button onclick="func_pagar()" style="  margin-left: 15px;" id="openModalBtn"  type="submit" class="btn btn-primary btnConsulta">Pagar</button>
+
                     </div>
+                    <!-- aca voy a colocar el modal que se va desplegar cuando le de click en el boton pagar-->
+   <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Facturacion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="tablaDescripcion">
+        <table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Venta</th>
+      <th>Cantidad</th>
+      <th>Total a Pagar</th>
+    </tr>
+  </thead>
+  <tbody id="tablaDescripcionPagar">
+
+  </tbody>
+      </table>
+      <input  id="valorTotalProdcto" type="text" hidden>
+      <input  id="valorTotalServicio" type="text" hidden>
+
+        </div>
+        <div class="inpusDatos">
+          <label for="">Cedula Cliente</label>
+        <input id="cedulaClientePagar" type="text" class="form-control" placeholder="Cedula" aria-label="Username" aria-describedby="addon-wrapping">
+
+        </div>
+        <div class="inpusDatos">
+        <label for="">Nombre Vendedor</label>
+
+        <input type="text" class="form-control" placeholder="Usuario" aria-label="Username" aria-describedby="addon-wrapping">
+
+        </div>
+
+        <div class="inpusDatos">
+        <select id="SelectorModoPago" class="form-select" aria-label="Default select example">
+  <option selected>Selecione modo de Pago</option>
+  <option value="Efectivo">Efectivo</option>
+  <option value="Débito">Débito</option>
+</select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button id="btnPagarFactura" type="button" class="btn btn-primary">Pagar</button>
+      </div>
+    </div>
+  </div>
+</div>
+                    <!--------------------------------------------------------------------------------------->
                     <div style="  margin-top: 25px;" id="id_mostrar_info" class="mostrar_info"></div>
                     
                   </div>
@@ -481,6 +545,10 @@ let id = document.getElementById("idCita").value;
     <!--aca voy hacer las pruebas para mirar si da mejor con la tabla-->
 
     <script>
+      //aca borro por si al cargar la pagian tiene datos
+      let borrar =  window.localStorage;
+      borrar.clear();
+//------------------------------------------------------
 
    let btnConsulta = document.getElementById("btnConsulta");
 let tablaDatosUsuario=document.getElementById("tablaDatosUsuario");
@@ -640,6 +708,61 @@ id_llenarTabla.innerHTML = "";
 
 
     }
+
+
+
+//aca voy hacer la funcion que se va ejecutar cuando le de click en el boton pagar
+
+
+// Obtener el botón para abrir el modal
+var btn = document.getElementById("openModalBtn");
+
+
+
+const func_pagar = () => {
+  let localStorePagar = window.localStorage;
+  let tablaDescripcionPagar = document.getElementById("tablaDescripcionPagar");
+  if (localStorePagar.length > 0) {
+    let sumaTotalProducto = 0;
+    let sumaTotalServicio = 0;
+    let cantidadProducto = 0;
+    let cantidadServicio = 0;
+
+    let llavesPagar = Object.keys(localStorePagar);
+    llavesPagar.forEach((llave) => {
+      let recorrerDatos = JSON.parse(localStorePagar.getItem(llave));
+
+      if (recorrerDatos.categoria == "Servicio") {
+        sumaTotalServicio = sumaTotalServicio + parseInt(recorrerDatos.total);
+        cantidadServicio = cantidadServicio + 1;
+      } else {
+        sumaTotalProducto = sumaTotalProducto + parseInt(recorrerDatos.total);
+        cantidadProducto = cantidadProducto + 1;
+      }
+    });
+
+    
+    document.getElementById("valorTotalProdcto").value = sumaTotalProducto;
+    document.getElementById("valorTotalServicio").value = sumaTotalServicio;
+
+    let descr = `<tr> <td>Productos</td> <td>${cantidadProducto}</td> <td id="total">${sumaTotalProducto}</td>   </tr>`;
+    tablaDescripcionPagar.innerHTML += descr;
+    descr = `<tr> <td>Servicios</td> <td>${cantidadServicio}</td> <td id="total">${sumaTotalServicio}</td>   </tr>`;
+    tablaDescripcionPagar.innerHTML += descr;
+
+      // Cuando el usuario haga clic en el botón, abre el modal
+      $("#exampleModal").modal("show"); // Utiliza jQuery para abrir el modal de Bootstrap
+      } else {
+      Swal.fire({
+      title: "No tiene Productos Selecionados!",
+      text: "Seleciona un producto para poder pagar",
+      icon: "info",
+      });
+     }
+     };
+
+
+//aca hare la funcion que se va ejecutar cuando le de click en el boton pagar definitiv
 
 
 
