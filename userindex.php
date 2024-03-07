@@ -294,6 +294,8 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                           </strong>
                         </div>
                         <span><strong id="IVA"></strong></span>
+                        <input  id="IVA2" type="hidden" name="total" value="">
+
                       </li>
                     </ul>
 

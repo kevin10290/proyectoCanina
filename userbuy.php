@@ -358,6 +358,10 @@ $productos = $_POST['productoshtml'];
 
 <input  id="arregloproductos" type="hidden" name="arregloproductos">
 
+<input  id="idcliente" type="hidden" name="idcliente" value="<?php echo  $id; ?>">
+
+<input  id="IVA2" type="hidden" name="total" value="">
+
        
        
           <button  type="submit" id="detallescompra" class="btn btn-success btn-lg btn-block">
