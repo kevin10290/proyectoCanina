@@ -58,7 +58,7 @@ for (let i = 0; i < carrito.children.length; i++) {
     total += parseInt(valor)
 }
 txtIVA.innerHTML = total+ (total*0.19)
-document.getElementById("IVA2").setAttribute("value",total+ total*0.19);
+document.getElementById("IVA2").setAttribute("value",total);
 txtTotal.innerHTML = total;
 
 
@@ -122,7 +122,7 @@ let name = nombre + "";
     txtTotal.innerHTML = total;
     txtIVA.innerHTML = total+ (total*0.19)
    
-    document.getElementById("IVA2").setAttribute("value",total+ total*0.19);
+    document.getElementById("IVA2").setAttribute("value",total);
     if(objetos.length<= 0){
 
       let comprar =document.getElementById("detallescompra").disabled = true
@@ -151,7 +151,7 @@ if(document.location.href.includes("userbuy.php") == true){
   carritocantidad.innerHTML = carrito.children.length
   txtTotal.innerHTML = total;
   txtIVA.innerHTML = total+ (total*0.19)
-  document.getElementById("IVA2").setAttribute("value",total+ total*0.19);
+  document.getElementById("IVA2").setAttribute("value",total);
   document.getElementById("arregloproductos").value = objetos
   
 }

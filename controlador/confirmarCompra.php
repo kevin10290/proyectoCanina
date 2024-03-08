@@ -77,6 +77,7 @@ echo $producto
 
 $elementos = explode(",",$_POST['arregloproductos']);
   $total =$_POST['total'];
+
 $pdf->Cell(50,9,"Producto",1);
 $pdf->Cell(50,9,"Precio",1);
 
@@ -85,7 +86,7 @@ $pdf->Cell(50,9,"Precio",1);
 
 $pdf->Ln();
     //Realizo la consulta con mis comandos\
-    $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total.",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
+    $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total + ($total * 0.19).",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
 $ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
 $fila = mysqli_fetch_array($ultimo);    
 
@@ -111,7 +112,7 @@ $lastid= $fila[0];
       
     
         $pdf->Ln();
-    $total += $fila[2];
+
  
         $usuarios = $mysql->efectuarConsulta("INSERT INTO detalleprodcuto  values ( Null,".$elementos[$i].",". $lastid  .")");
 
@@ -124,12 +125,12 @@ $lastid= $fila[0];
 
  $pdf->Cell(50,9,"Total",1);
  $pdf->Ln();
- $pdf->Cell(50,9,  utf8_decode($total - ($total *0.19)),1);
+ $pdf->Cell(50,9, $total,1);
  $pdf->Ln();
  $pdf->Ln();
  $pdf->Cell(50,9,"Total a pagar",1);
  $pdf->Ln();
- $pdf->Cell(50,9,  utf8_decode($total),1);
+ $pdf->Cell(50,9,  $total + ($total * 0.19),1);
 
 
  $pdf-> Output();
