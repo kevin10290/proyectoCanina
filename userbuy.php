@@ -362,6 +362,8 @@ $productos = $_POST['productoshtml'];
 
 <input  id="IVA2" type="hidden" name="total" value="">
 
+<input  id="" type="hidden" name="modoPago" value="Crédito">
+
        
        
           <button  type="submit" id="detallescompra" class="btn btn-success btn-lg btn-block">

@@ -85,7 +85,7 @@ $pdf->Cell(50,9,"Precio",1);
 
 $pdf->Ln();
     //Realizo la consulta con mis comandos\
-    $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total.",'". date_create()->format('Y-m-d')."',". $_POST['idcliente'].")");
+    $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total.",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
 $ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
 $fila = mysqli_fetch_array($ultimo);    
 
