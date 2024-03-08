@@ -70,7 +70,7 @@
 
 						<div>
 							<a href="./login.php" class="txt1" for="ckb1">
-								Logueate
+								Ingresar
 							</a>
 						</div>
 					</div>

@@ -294,7 +294,7 @@ $productos = $_POST['productoshtml'];
           <li
             class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
             Productos
-            <span id="total"></span>
+            <strong> <span id="total"></span> $</strong>
           </li>
          
           <li
@@ -305,7 +305,7 @@ $productos = $_POST['productoshtml'];
                 <p class="mb-0">(Incluyendo IVA)</p>
               </strong>
             </div>
-            <span><strong id="IVA"></strong></span>
+            <strong> <span id="IVA"></span> $</strong>
           </li>
         </ul>
 

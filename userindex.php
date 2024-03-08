@@ -233,7 +233,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                   <img src="' . $fila[4] . '" class="img-thumbnail" >
                     <div class="featured__item__text">
                       <h6><a   onclick=agregarcarrito(' . $fila[0] . ',"' . str_replace(" ", "_", $fila[1]) . '","' . $fila[4] . '","' . $fila[3] . '","' . $fila[2] . '","' . $fila[5] . '")        >' . $fila[1] . '</a></h6>
-                      <h5>' . $fila[2] . '</h5>
+                      <h5>$'. $fila[2] . '</h5>
                     </div>
                   </div>
                 </div>
@@ -283,7 +283,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                         Productos
-                        <span id="total"></span>
+                        <strong> <span id="total"></span> $</strong>
                       </li>
 
                       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
@@ -293,7 +293,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                             <p class="mb-0">(Incluyendo IVA)</p>
                           </strong>
                         </div>
-                        <span><strong id="IVA"></strong></span>
+                        <strong><span id="IVA"></span> $</strong>
                         <input  id="IVA2" type="hidden" name="total" value="">
 
                       </li>
