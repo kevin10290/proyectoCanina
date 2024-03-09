@@ -4,16 +4,11 @@ let carritocantidad = document.getElementById("carritocantidad")
 let total = 0
 
 
-
-
-
-
-
 let txtTotal = document.getElementById("total")
 let txtIVA = document.getElementById("IVA")
 
 
-
+//Borra individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 function borrardecarrito(id) {
 
 if(document.location.href.includes("userbuy.php") == false){
@@ -64,7 +59,7 @@ txtTotal.innerHTML = total;
 
 
 }
-
+//Agrega individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 function agregarcarrito(id, nombre ,url,categoria,precio) {
 
 
@@ -145,6 +140,8 @@ let name = nombre + "";
       }
 }
 }
+
+//Verifica si se encuentra en la pagina de confirmación para el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 if(document.location.href.includes("userbuy.php") == true){
 
   for (let i = 0; i < carrito.children.length; i++) {

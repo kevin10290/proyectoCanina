@@ -1,6 +1,4 @@
-
-
-  <!--  Validación del inicio de sesión para poder acceder a la página -->
+<!--  Validación del inicio de sesión para poder acceder a la página -->
 <?php
 
 require_once 'Modelo/Usuarios.PHP';
@@ -70,11 +68,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
       <div class="input-group">
-        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-          aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-          <i class="fas fa-search"></i>
-        </button>
+     
       </div>
     </form>
 
@@ -93,6 +87,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
           <li>
             <form action="Controlador/cerrarsesion.php" method="post">
 
+              <!--  Apartado para llamar el control para cerrar sesión -->
 
               <input class="dropdown-item" type="submit" value="Cerrar Sesion">
 
@@ -176,12 +171,6 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
       <main>
 
 
-
-
-
-
-
-
         <section class="p-5 row container-fluid d-flex align-content-start flex-wrap">
 
 
@@ -210,13 +199,13 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
             <div class="row featured__filter" id="MixItUpB25F5E">
 
-<!-- Apartado de php para consultar y mostrar los productos con sus respectivos identificadores, categorias e imágenes -->
+              <!-- Apartado de php para consultar y mostrar los productos con sus respectivos identificadores, categorias e imágenes -->
               <?php
 
               require_once 'Modelo/MySQL.PHP';
               $mysql = new MySQL;
               $mysql->conectar();
-             
+
               $consulta = $mysql->efectuarConsulta("select
                 inventarioproductos.idinventarioProducto,
                 inventarioproductos.nombreProducto,
@@ -227,10 +216,10 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                 JOIN categoria ON categoria.idCategoria =
                 inventarioproductos.categoriaProducto WHERE
                 inventarioproductos.strockProducto > 0");
-             
-                $mysql->desconectar();
-            
-                for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
+
+              $mysql->desconectar();
+
+              for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
                 $fila =
                   mysqli_fetch_array($consulta);
                 echo '
@@ -293,7 +282,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                         Productos
-                          <!--  Apartado para mostrar el total de productos desde el codigo js -->
+                        <!--  Apartado para mostrar el total de productos desde el codigo js -->
                         <strong> <span id="total"></span> $</strong>
                       </li>
 
@@ -304,13 +293,13 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                             <p class="mb-0">(Incluyendo IVA)</p>
                           </strong>
                         </div>
-                          <!--  Apartado para mostrar el IVA de productos desde el codigo js -->
+                        <!--  Apartado para mostrar el IVA de productos desde el codigo js -->
                         <strong><span id="IVA"></span> $</strong>
                         <input id="IVA2" type="hidden" name="total" value="">
 
                       </li>
                     </ul>
-  <!--  Formulario para enviar datos a la págian de confirmación de compra, contiene datos de este apartado -->
+                    <!--  Formulario para enviar datos a la págian de confirmación de compra, contiene datos de este apartado -->
                     <form action="userbuy.php" method="post">
 
                       <input id="productoshtml" type="hidden" name="productoshtml">
