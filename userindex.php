@@ -365,4 +365,15 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
   <script src="js/datatables-simple-demo.js"></script>
 </body>
 
-</html>
+</html>  
+  <script>
+        if (<?php echo ($_GET['Error']) ?> == true) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "<?php echo ($_GET['Mensaje']) ?>",
+              
+            });
+
+        }
+    </script>
