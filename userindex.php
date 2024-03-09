@@ -1,13 +1,12 @@
+
+
+  <!--  Validación del inicio de sesión para poder acceder a la página -->
 <?php
-
-
 
 require_once 'Modelo/Usuarios.PHP';
 
 
 session_start();
-
-
 
 $usuario = new Usuarios();
 
@@ -55,33 +54,39 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
 
   <link href="css/styles.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="sb-nav-fixed">
   <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <!-- Navbar Brand-->
+
     <a class="navbar-brand ps-3" href="userindex.php">Peluqueria Canina</a>
-    <!-- Sidebar Toggle-->
+
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="">
       <i class="fas fa-bars"></i>
     </button>
-    <!-- Navbar Search-->
+
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
       <div class="input-group">
-        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+          aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" id="btnNavbarSearch" type="button">
           <i class="fas fa-search"></i>
         </button>
       </div>
     </form>
-    <!-- Navbar-->
+
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href=""><?php echo $user . " - " . "Cliente"?></a></li>
+          <li><a class="dropdown-item" href="">
+              <!--  Mostrar el usuario que ha iniciado sesión -->
+              <?php echo $user . " - " . "Cliente" ?>
+            </a></li>
           <li>
             <hr class="dropdown-divider" />
           </li>
@@ -127,26 +132,30 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth"
+                  aria-expanded="false" aria-controls="pagesCollapseAuth">
                   Authentication
                   <div class="sb-sidenav-collapse-arrow">
                     <i class="fas fa-angle-down"></i>
                   </div>
                 </a>
-                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                  data-bs-parent="#sidenavAccordionPages">
                   <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="login.html">Login</a>
                     <a class="nav-link" href="register.html">Register</a>
                     <a class="nav-link" href="password.html">Forgot Password</a>
                   </nav>
                 </div>
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError"
+                  aria-expanded="false" aria-controls="pagesCollapseError">
                   Error
                   <div class="sb-sidenav-collapse-arrow">
                     <i class="fas fa-angle-down"></i>
                   </div>
                 </a>
-                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                  data-bs-parent="#sidenavAccordionPages">
                   <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="401.html">401 Page</a>
                     <a class="nav-link" href="404.html">404 Page</a>
@@ -170,9 +179,6 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
 
 
-        <!--                                  -->
-
-
 
 
 
@@ -194,20 +200,23 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                     </li>
                     <li data-filter=".herramienta" class="">Herramientas</li>
                     <li data-filter=".juguete" class="">juguete</li>
-                    <!--  <li data-filter=".fastfood" class="active mixitup-control-active">Fastfood</li>-->
+
                   </ul>
                 </div>
               </div>
             </div>
 
-            <!--style="display: none;"   Estilo para mostrar producto o no-->
+
 
             <div class="row featured__filter" id="MixItUpB25F5E">
+
+<!-- Apartado de php para consultar y mostrar los productos con sus respectivos identificadores, categorias e imágenes -->
               <?php
 
               require_once 'Modelo/MySQL.PHP';
               $mysql = new MySQL;
               $mysql->conectar();
+             
               $consulta = $mysql->efectuarConsulta("select
                 inventarioproductos.idinventarioProducto,
                 inventarioproductos.nombreProducto,
@@ -218,8 +227,10 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                 JOIN categoria ON categoria.idCategoria =
                 inventarioproductos.categoriaProducto WHERE
                 inventarioproductos.strockProducto > 0");
-              $mysql->desconectar();
-              for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
+             
+                $mysql->desconectar();
+            
+                for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
                 $fila =
                   mysqli_fetch_array($consulta);
                 echo '
@@ -233,7 +244,8 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                   <img src="' . $fila[4] . '" class="img-thumbnail" >
                     <div class="featured__item__text">
                       <h6><a   onclick=agregarcarrito(' . $fila[0] . ',"' . str_replace(" ", "_", $fila[1]) . '","' . $fila[4] . '","' . $fila[3] . '","' . $fila[2] . '","' . $fila[5] . '")        >' . $fila[1] . '</a></h6>
-                      <h5>$'. $fila[2] . '</h5>
+                      <h5>$' . $fila[2] . '</h5>
+                      <p class="fw-light">Unidades <span id= "unidad' . $fila[0] . '">' . $fila[5] . '</span></p>
                     </div>
                   </div>
                 </div>
@@ -241,10 +253,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                 ';
               } ?>
 
-              <!--  Producto
-                    
-                    
-                  -->
+
             </div>
           </div>
 
@@ -256,6 +265,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
               <div class="">
                 <div class="card mb-4">
                   <div class="card-header py-3">
+                    <!--  Apartado para mostrar la cantidad de productos desde el codigo js -->
                     <h5 class="mb-0">Carrito - <span id="carritocantidad"></span> </h5>
                   </div>
                   <div class="card-body">
@@ -283,6 +293,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                         Productos
+                          <!--  Apartado para mostrar el total de productos desde el codigo js -->
                         <strong> <span id="total"></span> $</strong>
                       </li>
 
@@ -293,12 +304,13 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                             <p class="mb-0">(Incluyendo IVA)</p>
                           </strong>
                         </div>
+                          <!--  Apartado para mostrar el IVA de productos desde el codigo js -->
                         <strong><span id="IVA"></span> $</strong>
-                        <input  id="IVA2" type="hidden" name="total" value="">
+                        <input id="IVA2" type="hidden" name="total" value="">
 
                       </li>
                     </ul>
-
+  <!--  Formulario para enviar datos a la págian de confirmación de compra, contiene datos de este apartado -->
                     <form action="userbuy.php" method="post">
 
                       <input id="productoshtml" type="hidden" name="productoshtml">
@@ -325,7 +337,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
         </section>
 
 
-        <!--                         -->
+
 
 
       </main>
@@ -354,11 +366,13 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
   <script src="js/main.js"></script>
   <script src="js/carrito.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
   <script src="js/scripts.js"></script>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+    crossorigin="anonymous"></script>
   <script src="js/datatables-simple-demo.js"></script>
 </body>
 

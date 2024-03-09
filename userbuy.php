@@ -1,6 +1,7 @@
+
+  <!--  Validación del inicio de sesión para poder acceder a la página -->
+
 <?php
-
-
 
 require_once 'Modelo/Usuarios.PHP';
 

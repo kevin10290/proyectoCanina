@@ -69,7 +69,7 @@
 			
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" type="submit">
+						<button class="pb-3 fs-20 pt-3 btn btn-primary btn-block" type="submit">
 							Ingresar
 						</button>
 					</div>

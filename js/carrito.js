@@ -21,6 +21,7 @@ if(document.location.href.includes("userbuy.php") == false){
 productos +=1
 document.getElementById("producto"+ id).value = productos
 
+document.getElementById("unidad"+id).innerText = productos;
 }
 carritocantidad.innerHTML = carrito.children.length-1
 
@@ -68,6 +69,8 @@ function agregarcarrito(id, nombre ,url,categoria,precio) {
 
 
   let productos = document.getElementById("producto"+id).value
+  let uniproductos = document.getElementById("producto"+id).value
+ document.getElementById("unidad"+id).innerText = uniproductos;
 
 if(productos >= 1){
   productos -=1
@@ -132,7 +135,11 @@ let name = nombre + "";
         let comprar =document.getElementById("detallescompra").disabled = false
         let arregloproductos = document.getElementById("arregloproductos").value = objetos
         let productos = document.getElementById("carrito").innerHTML
+      
         let productoshtml = document.getElementById("productoshtml").value =productos
+
+          let uniproductos = document.getElementById("producto"+id).value
+ document.getElementById("unidad"+id).innerText = uniproductos;
         console.log(arregloproductos)
  
       }
