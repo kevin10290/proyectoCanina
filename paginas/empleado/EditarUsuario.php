@@ -2,10 +2,36 @@
 session_start();
 require_once("../../modelo/Mysql.php");
 $mysql = new MySql();
-$conexion = $mysql->conectar(); // Obtener la conexión
-$resultadoConsulta = $mysql->ConsultaCompleja("SELECT idEmpleado FROM empleado ORDER BY idEmpleado DESC LIMIT 1");
-$resultado = mysqli_fetch_all($resultadoConsulta);
-$MinID = $resultado[0][0] + 1;
+$conexion = $mysql->conectar();
+
+if (isset($_GET['txtID'])) {
+    $resultado = $mysql->efectuarConsulta("SELECT * FROM empleado WHERE idEmplado = ".$_GET['txtID']);
+    if ($resultado) {
+        $usuario = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    } else {
+        echo "Error al ejecutar la consulta.";
+    }
+    $mysql->desconectar();
+}
+
+    if ($_POST) {
+    
+        //recolectamos los datos del metodo post
+        $txtID=(isset($_POST['txtID']))?$_POST['txtID']:"";
+        $nombreProducto=(isset($_POST["nombreProducto"])?$_POST["nombreProducto"]:"");
+    
+        //preparemos la inserccion de los datos
+ /*        $sentencia=$conexion->prepare("UPDATE tbl_producto SET nombreProducto=:nombreProducto
+        WHERE id=:id ");
+        //asignando los valores que vienen del metodo post (vienen del form)
+        $sentencia->bindParam(":nombreProducto",$nombreProducto);
+        $sentencia->bindParam(":id",$txtID);
+        $sentencia->execute();
+        header("Location:index.php"); */
+    
+    
+    }
+
 ?>
 
 
@@ -37,8 +63,7 @@ $MinID = $resultado[0][0] + 1;
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" />
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button">
                     <i class="fas fa-search"></i>
                 </button>
@@ -47,8 +72,7 @@ $MinID = $resultado[0][0] + 1;
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!"></a></li>
                     <li>
@@ -81,35 +105,28 @@ $MinID = $resultado[0][0] + 1;
                             Editar
                         </a>
 
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     Authentication
                                     <div class="sb-sidenav-collapse-arrow">
                                         <i class="fas fa-angle-down"></i>
                                     </div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="login.html">Login</a>
                                         <a class="nav-link" href="register.html">Register</a>
                                         <a class="nav-link" href="password.html">Forgot Password</a>
                                     </nav>
                                 </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                     Error
                                     <div class="sb-sidenav-collapse-arrow">
                                         <i class="fas fa-angle-down"></i>
                                     </div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="401.html">401 Page</a>
                                         <a class="nav-link" href="404.html">404 Page</a>
@@ -141,157 +158,33 @@ $MinID = $resultado[0][0] + 1;
                     <div class="row">
                         <div class="col">
                             <!-- aqui va el ingreso de datos  -->
-                            <div class="col">
-                                <div class="bg-dark border border-dark m-2 p-4">
-                                    <h1 class="display-6 fs-2 fw-normal mb-0 text-white">Editar Usuario</h1>
-                                    <p class="text-white">
-                                        <b>Editar</b> u <b>Eliminar</b> usuarios existentes, primero debes buscar
-                                        el usuario que desea editar o eliminar.
-                                    </p>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-8 pe-4 border-end">
-                                            <form action="" method="GET">
-                                                <div class="row">
-                                                    <div class="col-auto pe-0">
-                                                        <label for="slFiltro" class="fs-5 text-white">Filtrar:</label>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <select
-                                                            class="form-control-plaintext bg-dark border border-2 rounded-4 border-white text-white px-2"
-                                                            name="slFiltro" id="slFiltro">
-                                                            <option class="text-white">Seleccionar...</option>
-                                                            <option value="idUsuario" class="text-white">ID</option>
-                                                            <option value="Correo" class="text-white">Correo</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div
-                                                            class="form-control-plaintext rounded-3 border border-2 border-white px-2 d-flex py-0 pe-0">
-                                                            <input type="search"
-                                                                class="form-control-plaintext text-white"
-                                                                name="txtBuscar" id="txtBuscar">
-                                                            <button type="submit" name="btnBuscar" class="btn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24"
-                                                                    style="fill: rgba(255, 255, 255, 1);">
-                                                                    <path
-                                                                        d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z">
-                                                                    </path>
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <hr>
-                                            <table class="table table-striped table-hover mt-2">
-                                                <thead>
-                                                    <tr class="table-dark">
-                                                        <th>ID</th>
-                                                        <th>CORREO</th>
-                                                        <th>CONTRASEÑA</th>
-                                                        <th>NOMBRE</th>
-                                                        <th>APELLIDO</th>
-                                                        <th>CEDULA</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    if (isset($_GET["btnBuscar"])) {
-                                                        $Filtro = $_GET["slFiltro"];
-                                                        $Buscar = $_GET["txtBuscar"];
+                            <div class="card">
+                                <div class="card-header">
+                                    producto
+                                </div>
+                                <div class="card-body">
 
-                                                        require_once("../../modelo/Mysql.php");
-                                                        $mysql = new MySql;
-                                                        $UsuarioBuscado = mysqli_fetch_all($mysql->ConsultaCompleja("SELECT * FROM empleado WHERE $Filtro LIKE '%$Buscar%';"));
-                                                        for ($i = 0; $i < count($UsuarioBuscado); $i++) {
-                                                            ?>
-                                                            <tr>
-                                                                <td class="pt-3 text-warning ">
-                                                                    <?php echo $UsuarioBuscado[$i][0]; ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?php echo $UsuarioBuscado[$i][1]; ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?php echo $UsuarioBuscado[$i][2]; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="btn-group">
-                                                                        <form action="./controlador/eliminarUsuario.php"
-                                                                            method="POST"
-                                                                            class="btn btn-outline-danger rounded-0 py-0 px-2 m-0">
-                                                                            <button type="submit" name="btnEliminar"
-                                                                                value="<?php echo $UsuarioBuscado[$i][0]; ?>"
-                                                                                class="btn px-0 m-0">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                    width="20" height="20" viewBox="0 0 24 24"
-                                                                                    fill="currentColor">
-                                                                                    <path
-                                                                                        d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z">
-                                                                                    </path>
-                                                                                    <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
-                                                                                </svg>
-                                                                            </button>
-                                                                        </form>
-                                                                        <button class="btn btn-outline-info rounded-0 px-2"
-                                                                            id="btnEditar">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                fill="currentColor">
-                                                                                <path
-                                                                                    d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z">
-                                                                                </path>
-                                                                                <path
-                                                                                    d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z">
-                                                                                </path>
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col ps-4">
-                                            <form action="./controller/EditarUsuario.php" method="POST">
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <label for="txtId" class="fs-5">ID</label>
-                                                        <input type="text"
-                                                            class="form-control-plaintext border border-1 border-dark px-2"
-                                                            name="txtId" id="txtId" readonly>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="slEstado" class="fs-5">Estado</label>
-                                                        <select
-                                                            class="form-control-plaintext border border-1 border-dark px-2"
-                                                            name="slEstado" id="slEstado">
-                                                            <option>Seleccionar...</option>
-                                                            <option value="1">ACTIVO</option>
-                                                            <option value="0">INACTIVO</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <label for="txtCorreo" class="fs-5">Correo</label>
-                                                <input type="email"
-                                                    class="form-control-plaintext border border-1 border-dark px-2"
-                                                    name="txtCorreo" id="txtCorreo" required>
+                                    <form action="" method="post" enctype="multipart/form-data">
 
-                                                <label for="txtContraseña" class="fs-5">Contraseña</label>
-                                                <input type="password"
-                                                    class="form-control-plaintext border border-1 border-dark px-2 mb-4"
-                                                    name="txtContraseña" id="txtContraseña" required>
-                                                <input type="submit" class="btn btn-dark rounded-0 w-100"
-                                                    value="Editar">
-                                            </form>
+                                        <div class="mb-3">
+                                            <label for="nombreProducto" class="form-label">nombre del producto</label>
+
+                                            <div class="mb-3">
+                                                <label for="txtID" class="form-label">ID:</label>
+                                                <input readonly type="text" value="" class="form-control" name="txtID" id="txtID" aria-describedby="helpId" placeholder="ID" />
+                                            </div>
+
+
+                                            <input type="text" value="" class="form-control" name="nombreProducto" id="nombreProducto" aria-describedby="helpId" placeholder="nombre del producto" />
+                                            <br>
+                                            <button type="submit" class="btn btn-success">Actualizar</button>
+                                            <a name="btnEliminar" id="btnEliminar" class="btn btn-danger" href="index.php" role="button">cancelar</a>
+
                                         </div>
-                                    </div>
+
+
+                                    </form>
+
                                 </div>
                             </div>
 
@@ -317,14 +210,12 @@ $MinID = $resultado[0][0] + 1;
         </div>
     </div>
     <script src="../../assets/confirm_pass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="../../js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="../../assets/demo/chart-area-demo.js"></script>
     <script src="../../assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 
 </body>
 
