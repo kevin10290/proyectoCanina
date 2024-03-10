@@ -86,6 +86,24 @@ $pdf->Cell(50,9,"Precio",1);
 
 $pdf->Ln();
     //Realizo la consulta con mis comandos\
+ for ($i=0; $i < count($elementos); $i++) { 
+
+    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto = 0 and idinventarioProducto =".$elementos[$i]);
+    
+$fila = mysqli_fetch_array( $consulta ); 
+
+if($fila[0]){
+    header("Location: ../userindex.php?Error=true&Mensaje=Se han agotado los productos seleccionados");
+
+}   
+
+ }
+ 
+
+
+
+
+
     $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total + ($total * 0.19).",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
 $ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
 $fila = mysqli_fetch_array($ultimo);    
@@ -100,7 +118,7 @@ $lastid= $fila[0];
     
     $usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = ".$elementos[$i]." and strockProducto>=1");
 
-    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where idinventarioProducto =".$elementos[$i]);
+    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where idinventarioProducto =".$elementos[$i] ."and strockProducto>=1");
 
  
 

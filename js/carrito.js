@@ -4,16 +4,11 @@ let carritocantidad = document.getElementById("carritocantidad")
 let total = 0
 
 
-
-
-
-
-
 let txtTotal = document.getElementById("total")
 let txtIVA = document.getElementById("IVA")
 
 
-
+//Borra individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 function borrardecarrito(id) {
 
 if(document.location.href.includes("userbuy.php") == false){
@@ -21,6 +16,7 @@ if(document.location.href.includes("userbuy.php") == false){
 productos +=1
 document.getElementById("producto"+ id).value = productos
 
+document.getElementById("unidad"+id).innerText = productos;
 }
 carritocantidad.innerHTML = carrito.children.length-1
 
@@ -63,11 +59,13 @@ txtTotal.innerHTML = total;
 
 
 }
-
+//Agrega individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 function agregarcarrito(id, nombre ,url,categoria,precio) {
 
 
   let productos = document.getElementById("producto"+id).value
+  let uniproductos = document.getElementById("producto"+id).value
+ document.getElementById("unidad"+id).innerText = uniproductos;
 
 if(productos >= 1){
   productos -=1
@@ -132,12 +130,18 @@ let name = nombre + "";
         let comprar =document.getElementById("detallescompra").disabled = false
         let arregloproductos = document.getElementById("arregloproductos").value = objetos
         let productos = document.getElementById("carrito").innerHTML
+      
         let productoshtml = document.getElementById("productoshtml").value =productos
+
+          let uniproductos = document.getElementById("producto"+id).value
+ document.getElementById("unidad"+id).innerText = uniproductos;
         console.log(arregloproductos)
  
       }
 }
 }
+
+//Verifica si se encuentra en la pagina de confirmación para el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 if(document.location.href.includes("userbuy.php") == true){
 
   for (let i = 0; i < carrito.children.length; i++) {
