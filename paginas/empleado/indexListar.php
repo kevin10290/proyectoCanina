@@ -109,12 +109,8 @@ $mysql->desconectar(); // Desconectar de la base de datos al finalizar
                 
                 Nuevo 
               </a>
-              <a class="nav-link" href="EditarUsuario.php">
-              <i class="fa-solid fa-user-pen m-1" style="font-size: 20px">
-
-              </i>
-                Editar 
-              </a>
+           
+             
 
               <div
                 class="collapse"
@@ -214,6 +210,8 @@ $mysql->desconectar(); // Desconectar de la base de datos al finalizar
                   <th scope="col">Apellido</th>
                   <th scope="col">cedula</th>
                   <th scope="col">rol Usuario</th>
+                  <th scope="col">editar</th>
+                  <th scope="col">Borrar</th>
                 </tr>
               </thead>
               <tbody>
@@ -224,6 +222,10 @@ $mysql->desconectar(); // Desconectar de la base de datos al finalizar
                   <td><?php echo $Lista['apellidoEmpleado']; ?></td>
                   <td><?php echo $Lista['cedulaEmpelado']; ?></td>
                   <td><?php echo $Lista['rol_idRol']; ?></td>
+                  <td> <a class="nav-link" href="EditarUsuario.php?txtID=<?php echo $Lista['idEmpleado']; ?>">
+              <i class="fa-solid fa-user-pen m-1" style="font-size: 20px"></i></a></td>
+                  <td> <a class="nav-link" href="./indexListar.php?txtID=<?php echo $Lista['idEmpleado']; ?>">
+              <i class="fa-solid fa-trash m-1" style="font-size: 20px"></i> </td>
                 </tr>
               
                 <?php }?>  
