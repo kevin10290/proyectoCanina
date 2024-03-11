@@ -1,14 +1,37 @@
-<?php 
-session_start();
-require_once("../../modelo/Mysql.php");
-$mysql = new MySql();
-$conexion = $mysql->conectar(); // Obtener la conexión
-$resultadoConsulta = $mysql->ConsultaCompleja( "SELECT idEmpleado FROM empleado ORDER BY idEmpleado DESC LIMIT 1");
-$resultado = mysqli_fetch_all($resultadoConsulta);
-$MinID = $resultado[0][0] + 1;
+<?php
+include("../../modelo/mySQL2.php");
+
+if($_POST){
+    //recoleccion de datos 
+    $nombreEmpleado = (isset($_POST["txtNombre"])) ? $_POST["txtNombre"] :"";
+    $apellidoEmpleado = (isset($_POST["txtApellido"])) ? $_POST["txtApellido"] :"";
+    $cedulaEmpelado = (isset($_POST["txtCedula"])) ? $_POST["txtCedula"] :"";
+    $emailEmpleado = (isset($_POST["txtEmail"])) ? $_POST["txtEmail"] :"";
+    $txtContrasena = (isset($_POST["txtContrasena"])) ? $_POST["txtContrasena"] :"";
+    $cmbRol = (isset($_POST["cmbRol"])) ? $_POST["cmbRol"] :"";
+    $cmbEstado = (isset($_POST["cmbEstado"])) ? $_POST["cmbEstado"] :"";
+
+    //insercion de datos
+    $sentencia =$conexion->prepare("INSERT INTO empleado (idEmpleado, nombreEmpleado, apellidoEmpleado, cedulaEmpelado, emailEmpleado, passEmpleado, rol_idRol, estadoEmpleado) 
+    VALUES (NULL, :nombreEmpleado, :apellidoEmpleado, :cedulaEmpelado, :emailEmpleado, :passEmpleado, :cmbRol, :cmbEstado)");
+    //asignamos los valores que vienen desde el form
+    $sentencia->bindParam(":nombreEmpleado",$nombreEmpleado);
+    $sentencia->bindParam(":apellidoEmpleado",$apellidoEmpleado);
+    $sentencia->bindParam(":cedulaEmpelado",$cedulaEmpelado);
+    $sentencia->bindParam(":emailEmpleado",$emailEmpleado);
+    $sentencia->bindParam(":passEmpleado",$txtContrasena);
+    $sentencia->bindParam(":cmbRol",$cmbRol);
+    $sentencia->bindParam(":cmbEstado",$cmbEstado);
+    $sentencia->execute();
+
+    header("Location:indexListar.php");
+    
+
+
+}
+
+
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +52,7 @@ $MinID = $resultado[0][0] + 1;
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="../../index.html">Peluqueria Canina</a>
+        <a class="navbar-brand ps-3" href="../../index.php">Peluqueria Canina</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i>
@@ -73,12 +96,6 @@ $MinID = $resultado[0][0] + 1;
                             <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"></i>
 
                             Nuevo
-                        </a>
-                        <a class="nav-link" href="./EditarUsuario.php">
-                            <i class="fa-solid fa-user-pen m-1" style="font-size: 20px">
-
-                            </i>
-                            Editar
                         </a>
 
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
@@ -128,123 +145,82 @@ $MinID = $resultado[0][0] + 1;
         </div>
         <div id="layoutSidenav_content">
 
-            <div class="card text-center m-2 bg-dark">
-
+            <div class="card rounded-3 ms-3 mt-3 ">
+                <div class="card-header ">Crear Usuario</div>
                 <div class="card-body">
-                    <h4 class="card-title text-white">insertar empleado</h4>
-                    <p class="card-text"></p>
+
+                    <form action="" method="post" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="txtNombre" id="txtNombre"
+                                placeholder="ingrese el nombre" />
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" name="txtApellido" id="txtApellido"
+                                placeholder="ingrese su Apellido" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Cedula</label>
+                            <input type="text" class="form-control" name="txtCedula" id="txtCedula"
+                                placeholder="ingrese su Cedula" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Email</label>
+                            <input type="text" class="form-control" name="txtEmail" id="txtEmail"
+                                placeholder="ingrese su Email" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">contrasena</label>
+                            <input type="text" class="form-control" name="txtContrasena" id="txtContrasena"
+                                placeholder="ingrese su contrsena" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label" >idRol</label>
+                            <select class="form-select form-select-lg mb-3" name="cmbRol" id="cmbRol">
+                                <option selected>select</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Empleado</option>
+                                <option value="3">Cliente</option>
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label" >Estado</label>
+                            <select class="form-select form-select-lg mb-3" name="cmbEstado" id="cmbEstado">
+                                <option selected>select</option>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                                Registrar
+                            </button>
+
+                            <a class="btn btn-warning" href="./indexListar.php" role="button">cancelar</a>
+
+                    </form>
+
+
                 </div>
+                <div class="card-footer text-muted">Footer</div>
             </div>
 
-            <div class="card text-center m-2 bg-dark d-flex">
-                <div class="container bg-dark m-2">
-                    <div class="row">
-                        <div class="col">
-                            <!-- aqui va el ingreso de datos  -->
-                           <div class="row ">
-                           <div class="bg-dark  border border-3 rounded-3 border-white m-1 p-2">
-                    <h1 class="display-6 fs-2 fw-normal mb-0 text-white">Nuevo Usuario</h1>
-                    <p class="text-secondary text-white mt-2">ingresa un nuevo Usuario a la lista de Usuario</p>
-                    <hr>
-                    <div class="row">
-                        <div class="col-4 ms-3">
-                            <form action="./controlador/crearUsuario.php" method="POST">
-                                <div class="row ">
-                                    <div class="col-4">
-                                        <label for="txtId" class="fs-5 text-white">ID</label>
-                                        <input type="number" min="<?php echo $MinID; ?>" value="<?php echo $MinID; ?>"
-                                            class="form-control-plaintext rounded-4 border border-2 border-secondary px-2 bg-white" name="txtId"
-                                            id="txtId">
-                                    </div>
-                                    <div class="col">
-                                        <label for="slEstado" class="fs-5">Estado</label>
-                                        <select class="form-control-plaintext rounded-4 border border-1 border-secondary px-2 bg-white"
-                                            name="slEstado" id="slEstado">
-                                            <option>Seleccionar Rol</option>
-                                            <option value="1">admin</option>
-                                            <option value="2">cliente</option>
-                                            <option value="3">Empleado</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                       
-
-                                            <label for="txtCorreo" class="fs-5 text-white">Correo</label>
-                                        <input type="email"
-                                            class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
-                                            name="txtCorreo" id="txtCorreo">
-
-                                            
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col">
-                                        <label for="txtContraseña" class="fs-5 text-white">Contraseña</label>
-                                        <input type="password"
-                                            class="form-control-plaintext bg-white rounded-3 border border-1 border-secondary px-2 mb-2"
-                                            name="txtContraseña" id="txtContraseña">
-                                        <p class="text-danger fw-semibold mb-0" id="lblError"></p>
-                                        <input type="password"
-                                            class="form-control-plaintext border border-1 rounded-3 border-dark px-2 bg-white"
-                                            placeholder="Confirmar contraseña" id="txtConfirmPass">
-                                    </div>
-
-                                   
-                                </div>
-                           </div>
 
 
-                                <div class="col-4 ms-5">
-
-                            <label for="" class="fs-5 text-white">Nombre</label>
-                                <input type="text"
-                                    class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
-                                    name="txtNombre" id="txtNombre">
-
-                                    <label for="" class="fs-5 text-white">Apellido</label>
-                                <input type="text"
-                                    class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
-                                    name="txtApellido" id="txtApellido">
-
-                                    <label for="" class="fs-5 text-white">cedula</label>
-                                <input type="text"
-                                    class="form-control-plaintext rounded-3  border border-1 border-secondary bg-white px-2 "
-                                    name="txtCedula" id="txtCedula">
-
-                                   <div class="col">
-                                   <input type="submit" class=" mt-3 btn btn-dark border-4 border-white rounded-3 w-100" value="Agregar">
-                                   </div>
-                            </div>
-
-
-                               
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; canina Website 2024</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
+
+     
+    </div>
     </div>
     <script src="../../assets/confirm_pass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -254,7 +230,6 @@ $MinID = $resultado[0][0] + 1;
     <script src="../../assets/demo/chart-area-demo.js"></script>
     <script src="../../assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-    
         crossorigin="anonymous"></script>
 
 </body>

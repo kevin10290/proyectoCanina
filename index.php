@@ -84,7 +84,7 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
   <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand-->
-      <a class="navbar-brand ps-3" href="index.html">Peluqueria Canina</a>
+      <a class="navbar-brand ps-3" href="./index.php">Peluqueria Canina</a>
       <!-- Sidebar Toggle-->
       <button
         class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -146,19 +146,15 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
           <div class="sb-sidenav-menu">
             <div class="nav">
               <div class="sb-sidenav-menu-heading">principal</div>
-              <a class="nav-link" href="index.html">
-                <div class="m-1"><i class="fas fa-tachometer-alt"></i></div>
-                Dashboard
-              </a>
-              <a class="nav-link" href="index.html">
-                <i class="material-icons" style="font-size: 20px"
-                  >add_shopping_cart</i
+              <a class="nav-link" href="userindex.php">
+                <i class="fa-solid fa-shop me-1" style="font-size: 20px"
+                  ></i
                 >
                 Carrito
               </a>
-              <a class="nav-link" href="/crudEmpleados.html">
-                <i class="material-icons" style="font-size: 20px"
-                  >add_shopping_cart</i
+              <a class="nav-link" href="./paginas/empleado/indexListar.php">
+                <i class="fa-solid fa-users me-1" style="font-size: 20px"
+                  ></i
                 >
                 Gestion Empleados
               </a>
