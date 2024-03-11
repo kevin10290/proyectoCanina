@@ -96,6 +96,8 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
             <hr class="dropdown-divider" />
           </li>
           <li>
+
+
             <form action="Controlador/cerrarsesion.php" method="post">
               <!--  Apartado para llamar el control para cerrar sesión -->
 
@@ -193,25 +195,41 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
         <section class="p-5 row container-fluid d-flex align-content-start flex-wrap">
 
 
+        <?php 
+        
+        require_once 'Modelo/MySQL.PHP';
+        $mysql = new MySQL;
+        $mysql->conectar();
 
+        
+        $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos INNER
+              JOIN categoria ON categoria.idCategoria =
+              inventarioproductos.categoriaProducto WHERE
+              inventarioproductos.strockProducto > 0");
+              echo '<input id="categorias"  type="hidden" value="';
+              for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
+                $fila =  mysqli_fetch_array($consulta);
+                echo ','.$fila[0];
+              }
+              echo '" <input/>';
+  
+        
+              $mysql->desconectar();
+            ?>
 
           <div class="">
             <div class="card mb-4">
               <div class="card-header py-3">
                 <h5 class="mb-0">Carrito - <span id="carritocantidad"></span> </h5>
               </div>
+              <input type="hidden" id="arregloproductos" name="" value="<?php echo str_replace( '"','~',$_POST['arregloproductos'] ) ?>">
               <div class="card-body">
 
 
 
                 <!-- Motrar los productos que fueron enviados desde el formulario anterior -->
                 <div id="carrito">
-                  <?php
-                  $arreglo = $_POST['arregloproductos'];
-                  $productos = $_POST['productoshtml'];
-                  echo $productos;
-                  ?>
-
+         
 
 
                 </div>

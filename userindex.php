@@ -217,7 +217,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                 inventarioproductos.categoriaProducto WHERE
                 inventarioproductos.strockProducto > 0");
 
-              $mysql->desconectar();
+     
 
               for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
                 $fila =
@@ -240,7 +240,22 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                 </div>
 
                 ';
-              } ?>
+              }
+              $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos INNER
+              JOIN categoria ON categoria.idCategoria =
+              inventarioproductos.categoriaProducto WHERE
+              inventarioproductos.strockProducto > 0");
+              echo '<input id="categorias"  type="hidden" value="';
+              for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
+                $fila =  mysqli_fetch_array($consulta);
+                echo ','.$fila[0];
+              }
+              echo '" <input/>';
+  
+        
+              $mysql->desconectar();
+          
+              ?>
 
 
             </div>
@@ -358,7 +373,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
     crossorigin="anonymous"></script>
   <script src="js/scripts.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
     crossorigin="anonymous"></script>

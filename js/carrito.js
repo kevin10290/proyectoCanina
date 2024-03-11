@@ -1,87 +1,138 @@
-let carrito = document.getElementById("carrito")
-let objetos =[]
-let carritocantidad = document.getElementById("carritocantidad")
-let total = 0
+let carrito = document.getElementById("carrito");
+let objetos = [];
+let carritocantidad = document.getElementById("carritocantidad");
+let total = 0;
+let irdetalle = document.getElementById("detallescompra");
+let txtTotal = document.getElementById("total");
+let txtIVA = document.getElementById("IVA");
+let listaproducto = document.getElementById("categorias").value;
 
-
-let txtTotal = document.getElementById("total")
-let txtIVA = document.getElementById("IVA")
-
+let arreglolista = [];
+arreglolista = listaproducto.substring(1).split(",");
 
 //Borra individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 function borrardecarrito(id) {
+  productosCarrito.forEach((element) => {
+    if ("elemento" + element.idE == "elemento" + id) {
+      iduscar = element.idP;
+      productosCarrito = productosCarrito.filter(
+        (element) => element.idE != id
+      );
+      MostrarCarrito(productosCarrito);
+    }
+  });
 
-if(document.location.href.includes("userbuy.php") == false){
-  let productos = parseInt(document.getElementById("producto"+id).value)
-productos +=1
-document.getElementById("producto"+ id).value = productos
+  let productos = parseInt(
+    document.getElementById("unidad" + iduscar).innerHTML
+  );
 
-document.getElementById("unidad"+id).innerText = productos;
+  productos += 1;
+  document.getElementById("unidad" + iduscar).innerHTML = productos;
+
+  document.getElementById("arregloproductos").value =
+    JSON.stringify(productosCarrito);
 }
-carritocantidad.innerHTML = carrito.children.length-1
 
-    let elemento = document.getElementById("elemento"+id)
-elemento.remove()
-objetos =[]
-for (let i = 0; i < carrito.children.length; i++) {
-    
-    objetos[i] =    carrito.children.item(i).id.replace("elemento","") 
+let productosCarrito = [];
+//Agrega individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
+function agregarcarrito(id, nombre, url, categoria, precio) {
+  let productos = parseInt(document.getElementById("unidad" + id).innerHTML);
+
+  if (productos >= 1) {
+    productosCarrito[productosCarrito.length] = {
+      idP: id,
+      nombreP: nombre.replace("_", " "),
+      urlP: url,
+      categoriaP: categoria,
+      precioP: parseInt(precio),
+      idE: productosCarrito.length,
+    };
+
+    MostrarCarrito(productosCarrito);
+    document.getElementById("arregloproductos").value =
+      JSON.stringify(productosCarrito);
+    productos -= 1;
+    document.getElementById("unidad" + id).innerHTML = productos;
+  }
+}
+
+//Verifica si se encuentra en la pagina de confirmación para el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
+if (document.location.href.includes("userbuy.php") == true) {
+  let arreglo = document.getElementById("arregloproductos").value;
+  let arregloremplazo = arreglo.replace(/~/g, '"');
+  productosCarrito = JSON.parse(arregloremplazo);
+
+  MostrarCarrito(productosCarrito);
+  
+}
+
+function MostrarCarrito(productosCarrito) {
+
+
+  var output = Object.values(productosCarrito.reduce((obj, {
+    nombreP
+ }) => {
+    if (obj[nombreP] === undefined) obj[nombreP] = {
+      nombreP: nombreP,
+    occurrences: 1
+    };
+    else obj[nombreP].occurrences++;
+    return obj;
+ }, {}));
  
+
+let primer = []
+
+for (let limite = 0; limite < arreglolista.length; limite++) {
+primer[limite]= 1;
+  
 }
-if(objetos.length<= 0){
 
-  let comprar =document.getElementById("detallescompra").disabled = true
-  
-
-  }else{
-    let comprar =document.getElementById("detallescompra").disabled = false
-    let arregloproductos = document.getElementById("arregloproductos").value = objetos
-    let productos = document.getElementById("carrito").innerHTML
-    let productoshtml = document.getElementById("productoshtml").value =productos
-    console.log(arregloproductos)
-  
+  if (productosCarrito.length >= 1) {
+    irdetalle.disabled = false;
+  }
+  if (productosCarrito.length == 0) {
+    irdetalle.disabled = true;
   }
 
+  carrito.innerHTML = "";
+  let valor = 0;
+  let index = 0;
+  productosCarrito.forEach((element) => {
+
+    let name = element.nombreP + "";
+    valor += element.precioP;
 
 
-let total = 0
-for (let i = 0; i < carrito.children.length; i++) {
+    var output = Object.values(
+      productosCarrito.reduce((obj, { nombreP }) => {
+        if (obj[nombreP] === undefined)
+          obj[nombreP] = {
+            nombreP: nombreP,
+            occurrences: 1,
+          };
+        else obj[nombreP].occurrences++;
+        return obj;
+      }, {})
+    );
 
-    let valor = 0
-    valor = document.getElementById("valor"+  carrito.children.item(i).id.replace("elemento","") ).value
-    
-
-    total += parseInt(valor)
-}
-txtIVA.innerHTML = total+ (total*0.19)
-document.getElementById("IVA2").setAttribute("value",total);
-txtTotal.innerHTML = total;
-
-
-}
-//Agrega individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
-function agregarcarrito(id, nombre ,url,categoria,precio) {
-
-
-  let productos = document.getElementById("producto"+id).value
-  let uniproductos = document.getElementById("producto"+id).value
- document.getElementById("unidad"+id).innerText = uniproductos;
-
-if(productos >= 1){
-  productos -=1
-  document.getElementById("producto"+id).value = productos
   
-    carritocantidad.innerHTML = carrito.children.length+1
+let unidades = 0;
+   
+  if(element.nombreP.replace("_", " ") == arreglolista[element.idP-1] && primer[element.idP-1] == 1){
 
-
-let name = nombre + "";
-
+    output.forEach(value => {
+      if(value.nombreP == element.nombreP){
+    unidades = value.occurrences;
+      }
+    });
+    primer[element.idP-1] = 0
     carrito.innerHTML += `
-    <div class="row" id ="elemento${id}" value="${precio}">
+    <div class="row" id ="elemento${element.idE}" value="${element.precioP}">
              <div class="">
            
                <div class="bg-image hover-overlay hover-zoom ripple rounded rounded-4" data-mdb-ripple-color="light">
-                 <img width="100" src="${url}"
+                 <img width="100" src="${element.urlP}"
                    class="img-thumbnail   />
                  <a href="#!">
                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
@@ -90,72 +141,43 @@ let name = nombre + "";
          
              </div>
    
-             <input type="hidden" id="valor${id}" value="${precio}">
+             <input type="hidden" id="valor${element.idP}" value="${
+      element.precioP
+    }">
    
              <div class=" mb-4 mb-lg-0">
              
-               <p><strong>${name.replace("_"," ")} - ${categoria}</strong></p>
-               <h5>  ${precio}</h5>
+               <p><strong>${element.nombreP.replace("_", " ")} - ${
+      element.categoriaP
+    }</strong></p>
+               <h5>  ${element.precioP}</h5>
         
    
-               <button onclick="borrardecarrito(${id})" id="childeliminar"  type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+               <button onclick="borrardecarrito(${
+                 element.idE
+               })" id="childeliminar"  type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                      title="Remove item">
                      <i class="fas fa-trash"></i>
                    </button>
-            
+               <span class="badge text-bg-secondary"> ${unidades} </span> 
              </div>
+         
    
           
            </div>
-    `
-    let total = 0
-    for (let i = 0; i < carrito.children.length; i++) {
-        objetos[i] =    carrito.children.item(i).id.replace("elemento","") 
-      
-        let valor = 0
-        valor = document.getElementById("valor"+  carrito.children.item(i).id.replace("elemento","") ).value
-        total += parseInt(valor)
-        
-    }
-    txtTotal.innerHTML = total;
-    txtIVA.innerHTML = total+ (total*0.19)
-   
-    document.getElementById("IVA2").setAttribute("value",total);
-    if(objetos.length<= 0){
+    `;
 
-      let comprar =document.getElementById("detallescompra").disabled = true
-      
-    
-      }else{
-        let comprar =document.getElementById("detallescompra").disabled = false
-        let arregloproductos = document.getElementById("arregloproductos").value = objetos
-        let productos = document.getElementById("carrito").innerHTML
-      
-        let productoshtml = document.getElementById("productoshtml").value =productos
 
-          let uniproductos = document.getElementById("producto"+id).value
- document.getElementById("unidad"+id).innerText = uniproductos;
-        console.log(arregloproductos)
- 
-      }
+  }
+  index +=1;
+
+
+
+  });
+
+
+  txtTotal.innerText = valor;
+  txtIVA.innerText = valor + valor * 0.19;
 }
-}
-
-//Verifica si se encuentra en la pagina de confirmación para el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
-if(document.location.href.includes("userbuy.php") == true){
-
-  for (let i = 0; i < carrito.children.length; i++) {
-    objetos[i] =    carrito.children.item(i).id.replace("elemento","") 
-  
-    let valor = 0
-    valor = document.getElementById("valor"+  carrito.children.item(i).id.replace("elemento","") ).value
-    total += parseInt(valor)
-    
-  } 
-  carritocantidad.innerHTML = carrito.children.length
-  txtTotal.innerHTML = total;
-  txtIVA.innerHTML = total+ (total*0.19)
-  document.getElementById("IVA2").setAttribute("value",total);
-  document.getElementById("arregloproductos").value = objetos
-  
-}
+txtTotal.innerText = 0;
+txtIVA.innerText = 0;

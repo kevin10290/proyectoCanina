@@ -81,34 +81,37 @@ $elementos = explode(",",$_POST['arregloproductos']);
 $pdf->Cell(50,9,"Producto",1);
 $pdf->Cell(50,9,"Precio",1);
 
-
+$facturar = true;
 
 
 $pdf->Ln();
     //Realizo la consulta con mis comandos\
- for ($i=0; $i < count($elementos); $i++) { 
 
-    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto = 0 and idinventarioProducto =".$elementos[$i]);
+
+    for ($i=0; $i < $elementos; $i++) { 
+
+        $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto>=1 and idinventarioProducto =".$elementos[$i]);
     
-$fila = mysqli_fetch_array( $consulta ); 
 
-if($fila[0]){
-    header("Location: ../userindex.php?Error=true&Mensaje=Se han agotado los productos seleccionados");
+    
+    if(empty(mysqli_fetch_array($consulta))){
+$facturar = false;
+    }
+     
+        # code...
+    }
 
-}   
+if($facturar == true){
 
- }
- 
-
-
-
-
-
+       
     $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total + ($total * 0.19).",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
-$ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
-$fila = mysqli_fetch_array($ultimo);    
+    $ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
+    $fila = mysqli_fetch_array($ultimo);    
+    
+    $lastid= $fila[0];
+}
 
-$lastid= $fila[0];
+
  for ($i=0; $i < count($elementos); $i++) { 
 
 
@@ -116,28 +119,65 @@ $lastid= $fila[0];
 
     
     
-    $usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = ".$elementos[$i]." and strockProducto>=1");
 
-    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where idinventarioProducto =".$elementos[$i] ."and strockProducto>=1");
-
- 
-
-        $fila = mysqli_fetch_array($consulta);
-      
-        $pdf->Cell(50,9,  utf8_decode($fila[1]),1);
-        $pdf->Cell(50,9,  utf8_decode($fila[2]),1);
-  
-      
+    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto>=1 and idinventarioProducto =".$elementos[$i]);
     
-        $pdf->Ln();
+    $fila =  mysqli_fetch_array($consulta);
 
- 
-        $usuarios = $mysql->efectuarConsulta("INSERT INTO detalleprodcuto  values ( Null,".$elementos[$i].",". $lastid  .")");
+if($fila[1] != "" || $fila[1] != null){
+
+
 
 
     
-    # code...
- }
+    $pdf->Cell(50,9,  utf8_decode($fila[1]),1);
+    $pdf->Cell(50,9,  utf8_decode($fila[2]),1);
+
+
+$pdf->Ln();
+
+
+$usuarios = $mysql->efectuarConsulta("INSERT INTO detalleprodcuto  values ( Null,".$elementos[$i].",". $lastid  .")");
+
+
+$usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = ".$elementos[$i]." and strockProducto>=1");
+
+
+
+}else{
+
+    $pdf->Ln();
+
+
+    $pdf->Cell(50,9,"Total",1);
+    $pdf->Ln();
+    $pdf->Cell(50,9, $total,1);
+    $pdf->Ln();
+    $pdf->Ln();
+    $pdf->Cell(50,9,"Total a pagar",1);
+    $pdf->Ln();
+    $pdf->Cell(50,9,  $total + ($total * 0.19),1);
+    ob_clean();
+    $pdf-> Output();
+   
+   
+   
+   
+   
+       //Desconectar de la base de datos para liberar memoria
+   
+       $mysql->desconectar();
+   
+
+}
+
+
+
+    }
+
+
+
+
  $pdf->Ln();
 
 
@@ -149,9 +189,9 @@ $lastid= $fila[0];
  $pdf->Cell(50,9,"Total a pagar",1);
  $pdf->Ln();
  $pdf->Cell(50,9,  $total + ($total * 0.19),1);
-
-
+ ob_clean();
  $pdf-> Output();
+
 
 
 
@@ -171,4 +211,5 @@ else{
 
    
 }
+
 ?>
