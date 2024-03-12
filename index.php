@@ -26,6 +26,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ( $_SESSION['
 
     $user = $usuario->getUser();
     $id = $usuario->getId();
+    $_SESSION['idUsuario']=$id;
     $idrol = $usuario->getRol();
     $rol = array("ROOT","admin","cajero");
 } else {
@@ -311,7 +312,7 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
         <div class="inpusDatos">
         <label for="">Nombre Vendedor</label>
 
-        <input type="text" class="form-control" placeholder="Usuario" aria-label="Username" aria-describedby="addon-wrapping">
+        <input disabled type="text" Value="<?php echo $user ?>" class="form-control" placeholder="Usuario" aria-label="Username" aria-describedby="addon-wrapping">
 
         </div>
 
@@ -338,7 +339,7 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
 
                   <!--aca voy a poner la tabla como para probar una mejor manera-->
 
-                  <table class="table table-hover">
+                  <table style=" width: 100%;" class="table table-hover">
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -346,7 +347,7 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
                         <th>Nombre Mascota</th>
                         <th>Fecha</th>
                         <th>Hora</th>
-
+                        <th>Estado</th>
 
 
                       </tr>
@@ -575,12 +576,14 @@ let tablaDatosUsuario=document.getElementById("tablaDatosUsuario");
 
    datos.forEach((dato)=>{
 
-    let descrip = `<tr onclick="func_SelecionarServicios('${dato.id}')">
+    let descrip = `<tr onclick="func_SelecionarServicios('${dato.id}','${dato.estadoServicio}')">
                 <td>${dato.id}</td>
                 <td>${dato.nombreCliente}</td>
                 <td>${dato.nombreMascota}</td>
                 <td>${dato.fechaCita}</td>
                 <td>${dato.horaCita}</td>
+                <td>${dato.estadoServicio}</td>
+
               </tr>`;
     
     
@@ -598,114 +601,125 @@ let tablaDatosUsuario=document.getElementById("tablaDatosUsuario");
     });
 
 
-    const func_SelecionarServicios=(id)=>{
+    const func_SelecionarServicios=(id,estadoServicio)=>{
+      if(estadoServicio == "pendiente")
+      {
+        let local = window.localStorage;
 
-      let local = window.localStorage;
+let id_llenarTabla=document.getElementById("id_llenarTabla");
+id_llenarTabla.innerHTML="";
 
-      let id_llenarTabla=document.getElementById("id_llenarTabla");
-      id_llenarTabla.innerHTML="";
+var parametros = {
+idCita: id,
+};
 
-      var parametros = {
-    idCita: id,
-  };
+//antes de mandar los servicios al localStore voy a eliminar los que ya estan por si ya tienen
 
-  //antes de mandar los servicios al localStore voy a eliminar los que ya estan por si ya tienen
+let llaves = Object.keys(local);
 
-  let llaves = Object.keys(local);
+llaves.forEach((llave) => {
+let datos = JSON.parse(local.getItem(llave));
 
-  llaves.forEach((llave) => {
-  let datos = JSON.parse(local.getItem(llave));
-
-  if (datos.categoria == "Servicio") {
-    local.removeItem(llave);
-  }
+if (datos.categoria == "Servicio") {
+local.removeItem(llave);
+}
 });
 
- $.ajax({
-    data: parametros,
-    url: "codigoLlenarTablaCita.php",
-    type: "POST",
-  
-  }).done(function(res){
-    var datos = JSON.parse(res);
-   console.log(datos[0]);
+$.ajax({
+data: parametros,
+url: "codigoLlenarTablaCita.php",
+type: "POST",
+
+}).done(function(res){
+var datos = JSON.parse(res);
+console.log(datos[0]);
 
 
 
 
 
 
-   //aca voy hacer para mandar los datos al localStore
+//aca voy hacer para mandar los datos al localStore
 
 
-    datos.forEach((dato)=>{
+datos.forEach((dato)=>{
 
-   //aca de una vez lo coloco en la tabla de los productos
+//aca de una vez lo coloco en la tabla de los productos
 
-    let descrip = `<tr>
-                <td>${dato.id}</td>
-                <td>${dato.nombreServicio}</td>
-                <td>${dato.Servicio}</td>
-                <td>${dato.precioServicio}</td>
-                <td>${dato.cantidad}</td>
-                <td>${dato.total}</td>
+let descrip = `<tr>
+          <td>${dato.id}</td>
+          <td>${dato.nombreServicio}</td>
+          <td>${dato.Servicio}</td>
+          <td>${dato.precioServicio}</td>
+          <td>${dato.cantidad}</td>
+          <td>${dato.total}</td>
 
-              </tr>`;
+        </tr>`;
 
-              id_llenarTabla.innerHTML+=descrip;
-
-
-      let datosObjet={
-      id:dato.id,
-       venta:dato.nombreServicio,
-       categoria:dato.Servicio,
-     precio:dato.precioServicio,
-    cantidad:dato.cantidad,
-     total:dato.total
-      };
+        id_llenarTabla.innerHTML+=descrip;
 
 
+let datosObjet={
+id:dato.id,
+ venta:dato.nombreServicio,
+ categoria:dato.Servicio,
+precio:dato.precioServicio,
+cantidad:dato.cantidad,
+total:dato.total
+};
 
-      local.setItem(
-            Math.round(Math.random() * 1000) + 1,
-            JSON.stringify(datosObjet)
-          );
 
-    });
+
+local.setItem(
+      Math.round(Math.random() * 1000) + 1,
+      JSON.stringify(datosObjet)
+    );
+
+});
 
 //-------------------------------------------------------------
 
-   
 
-  });
+
+});
 
 //aca voy a ver si tiene datos el localStore y comienzo a llenar la tabla si tiene productos
 let local2 = window.localStorage;
 id_llenarTabla.innerHTML = "";
 
-        let llavesNuevas = Object.keys(local2);
+  let llavesNuevas = Object.keys(local2);
 
-        llavesNuevas.forEach((key) => {
-          let todosLosDatos = JSON.parse(local2.getItem(key));
-          
-            let descrip = `<tr>
-          <td>${todosLosDatos.id}</td>
-          <td>${todosLosDatos.venta}</td>
-          <td>${todosLosDatos.categoria}</td>
-          <td>${todosLosDatos.precio}</td>
-          <td>${todosLosDatos.cantidad}</td>
-          <td>${todosLosDatos.total}</td>
+  llavesNuevas.forEach((key) => {
+    let todosLosDatos = JSON.parse(local2.getItem(key));
+    
+      let descrip = `<tr>
+    <td>${todosLosDatos.id}</td>
+    <td>${todosLosDatos.venta}</td>
+    <td>${todosLosDatos.categoria}</td>
+    <td>${todosLosDatos.precio}</td>
+    <td>${todosLosDatos.cantidad}</td>
+    <td>${todosLosDatos.total}</td>
 
-        </tr>`;
+  </tr>`;
 
-          id_llenarTabla.innerHTML += descrip;
-          
-         
-        });
+    id_llenarTabla.innerHTML += descrip;
+    
+   
+  });
 
-        //---------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------
 
 
+      }
+      else{
+        Swal.fire({
+        title: "Cita no se encuentra Pendiente!",
+        text: "Esta Cita ya esta Paga o Cancelada",
+        icon: "info",
+      });
+      }
+
+     
 
     }
 
@@ -722,6 +736,8 @@ var btn = document.getElementById("openModalBtn");
 const func_pagar = () => {
   let localStorePagar = window.localStorage;
   let tablaDescripcionPagar = document.getElementById("tablaDescripcionPagar");
+  //aca borro la tabla por si depronto tiene datos
+  tablaDescripcionPagar.innerHTML="";
   if (localStorePagar.length > 0) {
     let sumaTotalProducto = 0;
     let sumaTotalServicio = 0;

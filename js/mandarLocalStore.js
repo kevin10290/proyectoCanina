@@ -106,7 +106,8 @@ let valorTotalServicio = document.getElementById("valorTotalServicio");
 let SelectorModoPago = document.getElementById("SelectorModoPago");
 btnPagarFactura.addEventListener("click", () => {
   // Obtener el año actual
-
+  //aca voy hacer una variable booleana
+  let hayServicios = false;
   let fechaActual = new Date();
   fechaActual = `${fechaActual.getFullYear()}-${
     fechaActual.getMonth() + 1
@@ -117,6 +118,8 @@ btnPagarFactura.addEventListener("click", () => {
     if (cedulaClientePagar.value.length > 0) {
       //voy a meter los datos de LocalStore a un arreglo
       let arregloPodructos = Array();
+      let idServicio = null;
+
       let localStoreGuardar = window.localStorage;
       let llaveguardar = Object.keys(localStoreGuardar);
 
@@ -128,19 +131,27 @@ btnPagarFactura.addEventListener("click", () => {
           for (let i = 0; i < datosLocalStore.cantidad; i++) {
             arregloPodructos.push(datosLocalStore.id);
           }
+        } else {
+          idServicio = datosLocalStore.id;
         }
       });
       //----------------------------------------
+      console.log("aca voy a mirar " + hayServicios);
+      console.log(idServicio);
+      let parametros;
+
       // aca ya creo el objeto para mandarlo
-      let parametros = {
+      parametros = {
         totalPagoProductos: valorTotalProdcto.value,
         totalPagoServicio: valorTotalServicio.value,
         cedulaCliente: cedulaClientePagar.value,
         SelectorModoPago: SelectorModoPago.value,
         fechaVenta: fechaActual,
         arregloPodructos: arregloPodructos,
+        idServicio: idServicio,
       };
       console.log(parametros);
+
       //----------------------------------------------------
       //aca voy a mandar los datos a PHP por medio del Ajax
       $.ajax({
@@ -148,7 +159,36 @@ btnPagarFactura.addEventListener("click", () => {
         url: "codigoInsertarDatosFactura.php",
         type: "POST",
       }).done(function (res) {
-        alert(res);
+        //aca voy hacer las desiciones para saber que codigo resivio y dependiendo del codigo que devolvio se desplegara
+        //el mensaje
+        if (res == 200) {
+          Swal.fire({
+            title: "Pago Exitoso",
+            text: "¿Deseas Imprimir la Factura?",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, Emprimir!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              //aca voy hacer el codigo para que Emprima la Factura
+              window.location.href = "codigoGenerarPdfFactura.php";
+            }
+          });
+        } else if (res == 404) {
+          Swal.fire({
+            title: "No se encontró ningún cliente con esa cédula.",
+            text: "Verifique bien la Cedula!",
+            icon: "warning",
+          });
+        } else if (res == 505) {
+          Swal.fire({
+            title: "Hubo un error por parte del Servidor!.",
+            text: "Conctata el tecnico",
+            icon: "error",
+          });
+        }
       });
       //--------------------------------------------------------
     } else {
