@@ -10,7 +10,7 @@ $fechaCita =$_POST['fechaCita'];
 
 
 $mysql->conectar();
-$consultarCita =  $mysql->efectuarConsulta("SELECT registrocliente.nombreCliente, resgistromascota.nombreMascota,cita.fechaCita,cita.horaCita,cita.idCita from bd_mascotas.cita INNER JOIN bd_mascotas.resgistromascota ON cita.resgistroMascota_idMascota= resgistromascota.idMascota INNER JOIN bd_mascotas.registrocliente ON cita.registroCliente_idClientes=registrocliente.idClientes WHERE registrocliente.cedulaCliente = '$cedulaCliente' and cita.fechaCita ='$fechaCita';");
+$consultarCita =  $mysql->efectuarConsulta("SELECT registrocliente.nombreCliente, resgistromascota.nombreMascota,cita.fechaCita,cita.horaCita,cita.idCita,cita.estadoServicio from bd_mascotas.cita INNER JOIN bd_mascotas.resgistromascota ON cita.resgistroMascota_idMascota= resgistromascota.idMascota INNER JOIN bd_mascotas.registrocliente ON cita.registroCliente_idClientes=registrocliente.idClientes WHERE registrocliente.cedulaCliente = '$cedulaCliente' and cita.fechaCita ='$fechaCita';");
 
  
 
@@ -35,7 +35,8 @@ while($fila = mysqli_fetch_array($consultarCita)) {
         "nombreCliente" => $fila['nombreCliente'],
         "nombreMascota" => $fila['nombreMascota'],
         "fechaCita" => $fila['fechaCita'],
-        "horaCita" => $fila['horaCita']
+        "horaCita" => $fila['horaCita'],
+        "estadoServicio"=>$fila['estadoServicio']
     );
 
     // Agregar los datos al arreglo principal
@@ -44,7 +45,3 @@ while($fila = mysqli_fetch_array($consultarCita)) {
 
 // Devolver los datos como JSON
 echo json_encode($arreglo);
-
-
-
-// header("location: index.php"); 
