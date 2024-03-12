@@ -6,6 +6,8 @@ let irdetalle = document.getElementById("detallescompra");
 let txtTotal = document.getElementById("total");
 let txtIVA = document.getElementById("IVA");
 let listaproducto = document.getElementById("categorias").value;
+txtTotal.innerText = 0;
+txtIVA.innerText = 0;
 
 let arreglolista = [];
 arreglolista = listaproducto.substring(1).split(",");
@@ -22,12 +24,6 @@ function borrardecarrito(id) {
     }
   });
 
-  let productos = parseInt(
-    document.getElementById("unidad" + iduscar).innerHTML
-  );
-
-  productos += 1;
-  document.getElementById("unidad" + iduscar).innerHTML = productos;
 
   document.getElementById("arregloproductos").value =
     JSON.stringify(productosCarrito);
@@ -63,30 +59,26 @@ if (document.location.href.includes("userbuy.php") == true) {
   productosCarrito = JSON.parse(arregloremplazo);
 
   MostrarCarrito(productosCarrito);
-  
 }
-
+//Hace lectura del arreglo 'productosCarrito' para mostrarlos agrupados por productos y mostrando sus cantidades
 function MostrarCarrito(productosCarrito) {
+  var output = Object.values(
+    productosCarrito.reduce((obj, { nombreP }) => {
+      if (obj[nombreP] === undefined)
+        obj[nombreP] = {
+          nombreP: nombreP,
+          occurrences: 1,
+        };
+      else obj[nombreP].occurrences++;
+      return obj;
+    }, {})
+  );
 
+  let primer = [];
 
-  var output = Object.values(productosCarrito.reduce((obj, {
-    nombreP
- }) => {
-    if (obj[nombreP] === undefined) obj[nombreP] = {
-      nombreP: nombreP,
-    occurrences: 1
-    };
-    else obj[nombreP].occurrences++;
-    return obj;
- }, {}));
- 
-
-let primer = []
-
-for (let limite = 0; limite < arreglolista.length; limite++) {
-primer[limite]= 1;
-  
-}
+  for (let limite = 0; limite < arreglolista.length; limite++) {
+    primer[limite] = 1;
+  }
 
   if (productosCarrito.length >= 1) {
     irdetalle.disabled = false;
@@ -99,10 +91,8 @@ primer[limite]= 1;
   let valor = 0;
   let index = 0;
   productosCarrito.forEach((element) => {
-
     let name = element.nombreP + "";
     valor += element.precioP;
-
 
     var output = Object.values(
       productosCarrito.reduce((obj, { nombreP }) => {
@@ -116,24 +106,25 @@ primer[limite]= 1;
       }, {})
     );
 
-  
-let unidades = 0;
-   
-  if(element.nombreP.replace("_", " ") == arreglolista[element.idP-1] && primer[element.idP-1] == 1){
+    let unidades = 0;
 
-    output.forEach(value => {
-      if(value.nombreP == element.nombreP){
-    unidades = value.occurrences;
-      }
-    });
-    primer[element.idP-1] = 0
-    carrito.innerHTML += `
+    if (
+      element.nombreP.replace("_", " ") == arreglolista[element.idP - 1] &&
+      primer[element.idP - 1] == 1
+    ) {
+      output.forEach((value) => {
+        if (value.nombreP == element.nombreP) {
+          unidades = value.occurrences;
+        }
+      });
+      primer[element.idP - 1] = 0;
+      carrito.innerHTML += `
     <div class="row" id ="elemento${element.idE}" value="${element.precioP}">
              <div class="">
            
                <div class="bg-image hover-overlay hover-zoom ripple rounded rounded-4" data-mdb-ripple-color="light">
                  <img width="100" src="${element.urlP}"
-                   class="img-thumbnail   />
+                   class="img-thumbnail  rounded-5"   />
                  <a href="#!">
                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                  </a>
@@ -142,14 +133,14 @@ let unidades = 0;
              </div>
    
              <input type="hidden" id="valor${element.idP}" value="${
-      element.precioP
-    }">
+        element.precioP
+      }">
    
              <div class=" mb-4 mb-lg-0">
              
                <p><strong>${element.nombreP.replace("_", " ")} - ${
-      element.categoriaP
-    }</strong></p>
+        element.categoriaP
+      }</strong></p>
                <h5>  ${element.precioP}</h5>
         
    
@@ -166,18 +157,20 @@ let unidades = 0;
           
            </div>
     `;
+    }
+    index += 1;
+    if (document.location.href.includes("userbuy.php") == true) {
+let elemntosventa =[];
+for (let i = 0; i <productosCarrito.length; i++) {
 
+  elemntosventa[i]= productosCarrito[i].idP
+}
 
-  }
-  index +=1;
-
-
-
+    document.getElementById("arregloproductof").value =elemntosventa.toString();
+    document.getElementById("IVA2").value = valor
+    }
   });
-
 
   txtTotal.innerText = valor;
   txtIVA.innerText = valor + valor * 0.19;
 }
-txtTotal.innerText = 0;
-txtIVA.innerText = 0;

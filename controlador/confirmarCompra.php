@@ -1,19 +1,19 @@
 <?php
 //Comprobar datos
 require("fpdf.php");
-$pdf = new FPDF();
-$pdf -> AddPage('L');
-$pdf->SetFont('Arial', '', 10);
+   $pdf = new FPDF();
+   $pdf->AddPage('L');
+   $pdf->SetFont('Arial', '', 10);
 
 
 
 
 if (
-      ((isset($_POST['arregloproductos']) && !empty($_POST['arregloproductos']))&& isset($_POST['idcliente']) && !empty($_POST['idcliente']))
+    ((isset($_POST['arregloproductof']) && !empty($_POST['arregloproductof'])) && isset($_POST['idcliente']) && !empty($_POST['idcliente']))
 ) {
     //llamado del modelo de conexón de consultas
 
-
+  
     require_once '../modelo/MySQL.php';
     require_once '../modelo/usuarios.php';
 
@@ -24,14 +24,14 @@ if (
 
 
 
-   // $usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = 0");
-  
+    // $usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = 0");
+
 
 
 
 
     // Get reference to uploaded image
- 
+
 
     session_start();
 
@@ -42,7 +42,118 @@ if (
     //Usar método del modelo
     $mysql->conectar();
 
-   /*     while ( $fila = mysqli_fetch_array($consulta)) {
+
+    $usuario = $_SESSION['usuario'];
+
+    $elementos = explode(",", $_POST['arregloproductof']);
+    $total = $_POST['total'];
+
+
+
+
+    $consulta = $mysql->efectuarConsulta("select idinventarioProducto,strockProducto from inventarioproductos ");
+
+ 
+  $resultado=  $consulta ->fetch_all(MYSQLI_NUM);
+  
+for ($i=0; $i < count( $resultado) ; $i++) { 
+
+ 
+ for ($j=0; $j < count($elementos); $j++) { 
+   if( $elementos[$j] ==$resultado[$i][0] ){
+   $resultado[$i][1]=$resultado[$i][1]-1;
+   if($resultado[$i][1] <0){
+    header("Location: ../userindex.php?Error=true&Mensaje=Lo sentimos, no hay suficientes unidades");
+  throw new Exception("Error Processing Request", 1);
+  
+ }
+   }
+}
+
+}
+
+$usuario = $_SESSION['usuario'];
+
+
+ $pdf->Cell(50,9,"Cliente",1);
+ $pdf->Cell(50,9,"Fecha",1);
+ $pdf->Ln();
+ $pdf->Cell(50,9,  utf8_decode($usuario->getUser()),1);
+ $pdf->Cell(50,9,  utf8_decode( date_create()->format('Y-m-d')),1);
+ $pdf->Ln();
+ $pdf->Ln();
+
+$elementos = explode(",",$_POST['arregloproductof']);
+  $total =$_POST['total'];
+
+$pdf->Cell(50,9,"Producto",1);
+$pdf->Cell(50,9,"Precio",1);
+
+
+
+
+$pdf->Ln();
+    //Realizo la consulta con mis comandos\
+    $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total + ($total * 0.19).",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
+$ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
+$fila = mysqli_fetch_array($ultimo);    
+
+$lastid= $fila[0];
+ for ($i=0; $i < count($elementos); $i++) { 
+
+
+
+
+    
+    
+    $usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = ".$elementos[$i]." and strockProducto>=1");
+
+    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where idinventarioProducto =".$elementos[$i]);
+
+ 
+
+        $fila = mysqli_fetch_array($consulta);
+      
+        $pdf->Cell(50,9,  utf8_decode($fila[1]),1);
+        $pdf->Cell(50,9,  utf8_decode($fila[2]),1);
+  
+      
+    
+        $pdf->Ln();
+
+ 
+        $usuarios = $mysql->efectuarConsulta("INSERT INTO detalleprodcuto  values ( Null,".$elementos[$i].",". $lastid  .")");
+
+
+    
+    # code...
+ }
+ $pdf->Ln();
+
+
+ $pdf->Cell(50,9,"Total",1);
+ $pdf->Ln();
+ $pdf->Cell(50,9, $total,1);
+ $pdf->Ln();
+ $pdf->Ln();
+ $pdf->Cell(50,9,"Total a pagar",1);
+ $pdf->Ln();
+ $pdf->Cell(50,9,  $total + ($total * 0.19),1);
+
+
+ $pdf-> Output();
+
+
+
+
+    //Desconectar de la base de datos para liberar memoria
+
+    $mysql->desconectar();
+
+
+
+
+    /*     while ( $fila = mysqli_fetch_array($consulta)) {
        
         
         if ($producto ==  $fila[1]) {
@@ -64,152 +175,5 @@ echo $producto
 
     # code...
  } */
- $usuario = $_SESSION['usuario'];
-
-
- $pdf->Cell(50,9,"Cliente",1);
- $pdf->Cell(50,9,"Fecha",1);
- $pdf->Ln();
- $pdf->Cell(50,9,  utf8_decode($usuario->getUser()),1);
- $pdf->Cell(50,9,  utf8_decode( date_create()->format('Y-m-d')),1);
- $pdf->Ln();
- $pdf->Ln();
-
-$elementos = explode(",",$_POST['arregloproductos']);
-  $total =$_POST['total'];
-
-$pdf->Cell(50,9,"Producto",1);
-$pdf->Cell(50,9,"Precio",1);
-
-$facturar = true;
-
-
-$pdf->Ln();
-    //Realizo la consulta con mis comandos\
-
-
-    for ($i=0; $i < $elementos; $i++) { 
-
-        $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto>=1 and idinventarioProducto =".$elementos[$i]);
-    
-
-    
-    if(empty(mysqli_fetch_array($consulta))){
-$facturar = false;
-    }
-     
-        # code...
-    }
-
-if($facturar == true){
-
-       
-    $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total + ($total * 0.19).",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
-    $ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
-    $fila = mysqli_fetch_array($ultimo);    
-    
-    $lastid= $fila[0];
+} else {
 }
-
-
- for ($i=0; $i < count($elementos); $i++) { 
-
-
-
-
-    
-    
-
-    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto>=1 and idinventarioProducto =".$elementos[$i]);
-    
-    $fila =  mysqli_fetch_array($consulta);
-
-if($fila[1] != "" || $fila[1] != null){
-
-
-
-
-    
-    $pdf->Cell(50,9,  utf8_decode($fila[1]),1);
-    $pdf->Cell(50,9,  utf8_decode($fila[2]),1);
-
-
-$pdf->Ln();
-
-
-$usuarios = $mysql->efectuarConsulta("INSERT INTO detalleprodcuto  values ( Null,".$elementos[$i].",". $lastid  .")");
-
-
-$usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = ".$elementos[$i]." and strockProducto>=1");
-
-
-
-}else{
-
-    $pdf->Ln();
-
-
-    $pdf->Cell(50,9,"Total",1);
-    $pdf->Ln();
-    $pdf->Cell(50,9, $total,1);
-    $pdf->Ln();
-    $pdf->Ln();
-    $pdf->Cell(50,9,"Total a pagar",1);
-    $pdf->Ln();
-    $pdf->Cell(50,9,  $total + ($total * 0.19),1);
-    ob_clean();
-    $pdf-> Output();
-   
-   
-   
-   
-   
-       //Desconectar de la base de datos para liberar memoria
-   
-       $mysql->desconectar();
-   
-
-}
-
-
-
-    }
-
-
-
-
- $pdf->Ln();
-
-
- $pdf->Cell(50,9,"Total",1);
- $pdf->Ln();
- $pdf->Cell(50,9, $total,1);
- $pdf->Ln();
- $pdf->Ln();
- $pdf->Cell(50,9,"Total a pagar",1);
- $pdf->Ln();
- $pdf->Cell(50,9,  $total + ($total * 0.19),1);
- ob_clean();
- $pdf-> Output();
-
-
-
-
-
-    //Desconectar de la base de datos para liberar memoria
-
-    $mysql->desconectar();
-
-    //Capturar los resultados de la consulta en una fila
-
-  
-    
-   // header("Location: ../userindex.php");
- 
-}
-else{
-
-   
-}
-
-?>

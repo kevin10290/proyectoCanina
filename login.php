@@ -110,11 +110,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        if (<?php echo ($_GET['Error']) ?> == true) {
+        if (<?php if(isset($_GET['Error'])){ echo ($_GET['Error']); } else{echo "false";}?>  == true) {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "<?php echo ($_GET['Mensaje']) ?>",
+                text: "<?php if(isset($_GET['Mensaje'])){ echo ($_GET['Mensaje']); }?>",
               
             });
 

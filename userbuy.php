@@ -202,16 +202,13 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
         $mysql->conectar();
 
         
-        $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos INNER
-              JOIN categoria ON categoria.idCategoria =
-              inventarioproductos.categoriaProducto WHERE
-              inventarioproductos.strockProducto > 0");
+        $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos ");
               echo '<input id="categorias"  type="hidden" value="';
               for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
                 $fila =  mysqli_fetch_array($consulta);
                 echo ','.$fila[0];
               }
-              echo '" <input/>';
+              echo '" input/>';
   
         
               $mysql->desconectar();
@@ -322,7 +319,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
                           <input id="productoshtml" type="hidden" name="productoshtml">
 
-                          <input id="arregloproductos" type="hidden" name="arregloproductos">
+                          <input id="arregloproductof" type="hidden" name="arregloproductof">
 
                           <input id="idcliente" type="hidden" name="idcliente" value="<?php echo $id; ?>">
 

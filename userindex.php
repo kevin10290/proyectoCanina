@@ -214,43 +214,62 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                 inventarioproductos.strockProducto
                 from inventarioproductos INNER
                 JOIN categoria ON categoria.idCategoria =
-                inventarioproductos.categoriaProducto WHERE
-                inventarioproductos.strockProducto > 0");
+                inventarioproductos.categoriaProducto ");
 
      
 
               for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
                 $fila =
                   mysqli_fetch_array($consulta);
-                echo '
+               
 
-                <div
-                  class="col-lg-3 col-md-4 col-sm-6 mix oranges ' . $fila[3] . '"
-                >
+if( $fila[5] == 0 ){
 
-                <input type="hidden" id="producto' . $fila[0] . '" value="' . $fila[5] . '">
-                  <div class="featured__item">
-                  <img src="' . $fila[4] . '" class="img-thumbnail" >
-                    <div class="featured__item__text">
-                      <h6><a   onclick=agregarcarrito(' . $fila[0] . ',"' . str_replace(" ", "_", $fila[1]) . '","' . $fila[4] . '","' . $fila[3] . '","' . $fila[2] . '","' . $fila[5] . '")        >' . $fila[1] . '</a></h6>
-                      <h5>$' . $fila[2] . '</h5>
-                      <p class="fw-light">Unidades <span id= "unidad' . $fila[0] . '">' . $fila[5] . '</span></p>
-                    </div>
-                  </div>
-                </div>
+  echo '
 
-                ';
+  <div
+    class=" ' . $fila[3] . '"
+  >
+
+  <input type="hidden" id="producto' . $fila[0] . '" value="' . $fila[5] . '">
+   
+    
+    </div>
+ 
+
+  ';
+}else{
+
+  echo '
+
+  <div
+    class="col-lg-3 col-md-4 col-sm-6 mix oranges ' . $fila[3] . '"
+  >
+
+  <input type="hidden" id="producto' . $fila[0] . '" value="' . $fila[5] . '">
+    <div class="featured__item">
+    <img src="' . $fila[4] . '" class="img-thumbnail rounded-5" >
+      <div class="featured__item__text">
+        <h6><a   onclick=agregarcarrito(' . $fila[0] . ',"' . str_replace(" ", "_", $fila[1]) . '","' . $fila[4] . '","' . $fila[3] . '","' . $fila[2] . '","' . $fila[5] . '")        >' . $fila[1] . '</a></h6>
+        <h5>$' . $fila[2] . '</h5>
+        <p class="fw-light">Unidades <span id= "unidad' . $fila[0] . '">' . $fila[5] . '</span></p>
+      </div>
+    </div>
+  </div>
+
+  ';
+
+
+}
+
               }
-              $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos INNER
-              JOIN categoria ON categoria.idCategoria =
-              inventarioproductos.categoriaProducto WHERE
-              inventarioproductos.strockProducto > 0");
+              $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos  ");
               echo '<input id="categorias"  type="hidden" value="';
               for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
                 $fila =  mysqli_fetch_array($consulta);
                 echo ','.$fila[0];
               }
-              echo '" <input/>';
+              echo '" input/>';
   
         
               $mysql->desconectar();
@@ -382,11 +401,11 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
 </html>  
   <script>
-        if (<?php echo ($_GET['Error']) ?> == true) {
+        if (<?php if(isset($_GET['Error'])){ echo ($_GET['Error']); } else{echo "false";}?> == true) {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "<?php echo ($_GET['Mensaje']) ?>",
+                text: "<?php if(isset($_GET['Mensaje'])){ echo ($_GET['Mensaje']); }?>",
               
             });
 
