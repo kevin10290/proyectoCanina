@@ -1,14 +1,51 @@
+
 <?php
-session_start();
-require_once("../../modelo/Mysql.php");
-$mysql = new MySql();
-$conexion = $mysql->conectar(); // Obtener la conexión
-$resultadoConsulta = $mysql->ConsultaCompleja("SELECT idEmpleado FROM empleado ORDER BY idEmpleado DESC LIMIT 1");
-$resultado = mysqli_fetch_all($resultadoConsulta);
-$MinID = $resultado[0][0] + 1;
+include("../../modelo/mySQL2.php");
+
+if(isset($_GET['txtID'])){
+    $txtID=(isset($_GET['txtID']))?$_GET['txtID']:"";
+  
+    $sentencia =$conexion->prepare("SELECT * FROM empleado WHERE empleado.idEmpleado =:idEmpleado");
+    $sentencia->bindParam(":idEmpleado",$txtID);
+    $sentencia->execute();
+    $registro= $sentencia->fetch(PDO::FETCH_LAZY);
+    $nombre =$registro["nombreEmpleado"];
+    $apellido =$registro["apellidoEmpleado"];
+    $cedula =$registro["cedulaEmpelado"];
+    $email =$registro["emailEmpleado"];
+    $contrasenaa =$registro["passEmpleado"];
+  }
+
+  if ($_POST) {
+    // Recolectamos datos 
+    $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+    $nombreEmpleado = (isset($_POST["txtNombre"])) ? $_POST["txtNombre"] : "";
+    $apellidoEmpleado = (isset($_POST["txtApellido"])) ? $_POST["txtApellido"] : "";
+    $cedulaEmpelado = (isset($_POST["txtCedula"])) ? $_POST["txtCedula"] : "";
+    $emailEmpleado = (isset($_POST["txtEmail"])) ? $_POST["txtEmail"] : "";
+    $txtContrasena = (isset($_POST["txtContrasena"])) ? $_POST["txtContrasena"] : "";
+    $cmbRol = (isset($_POST["cmbRol"])) ? $_POST["cmbRol"] : "";
+    $cmbEstado = (isset($_POST["cmbEstado"])) ? $_POST["cmbEstado"] : "";
+
+    // Inserción de datos
+    $sentencia = $conexion->prepare("UPDATE empleado SET nombreEmpleado = :nombreEmpleado, apellidoEmpleado = :apellidoEmpleado, cedulaEmpelado = :cedulaEmpelado, emailEmpleado = :emailEmpleado, passEmpleado = :passEmpleado, rol_idRol = :rol_idRol, estadoEmpleado = :estadoEmpleado WHERE idEmpleado = :idEmpleado");
+    
+    // Asignamos los valores que vienen desde el formulario
+    $sentencia->bindParam(":nombreEmpleado", $nombreEmpleado);
+    $sentencia->bindParam(":apellidoEmpleado", $apellidoEmpleado);
+    $sentencia->bindParam(":cedulaEmpelado", $cedulaEmpelado);
+    $sentencia->bindParam(":emailEmpleado", $emailEmpleado);
+    $sentencia->bindParam(":passEmpleado", $txtContrasena);
+    $sentencia->bindParam(":rol_idRol", $cmbRol); // Cambiado de :cmbRol a :rol_idRol
+    $sentencia->bindParam(":estadoEmpleado", $cmbEstado); // Cambiado de :cmbEstado a :estadoEmpleado
+    $sentencia->bindParam(":idEmpleado", $txtID);
+    $sentencia->execute();
+    header("Location: indexListar.php");
+    exit(); // Agregado para asegurar que la ejecución del script finalice después de redireccionar
+}
+
+
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -131,190 +168,115 @@ $MinID = $resultado[0][0] + 1;
             <div class="card text-center m-2 bg-dark">
 
                 <div class="card-body">
-                    <h4 class="card-title text-white">insertar empleado</h4>
+                    <h4 class="card-title text-white">Editar empleado</h4>
                     <p class="card-text"></p>
                 </div>
-            </div>
+                <!-- codigo de edicion -->
 
-            <div class="card text-center m-2 bg-dark d-flex">
-                <div class="container bg-dark m-2">
-                    <div class="row">
-                        <div class="col">
-                            <!-- aqui va el ingreso de datos  -->
-                            <div class="col">
-                                <div class="bg-dark border border-dark m-2 p-4">
-                                    <h1 class="display-6 fs-2 fw-normal mb-0 text-white">Editar Usuario</h1>
-                                    <p class="text-white">
-                                        <b>Editar</b> u <b>Eliminar</b> usuarios existentes, primero debes buscar
-                                        el usuario que desea editar o eliminar.
-                                    </p>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-8 pe-4 border-end">
-                                            <form action="" method="GET">
-                                                <div class="row">
-                                                    <div class="col-auto pe-0">
-                                                        <label for="slFiltro" class="fs-5 text-white">Filtrar:</label>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <select
-                                                            class="form-control-plaintext bg-dark border border-2 rounded-4 border-white text-white px-2"
-                                                            name="slFiltro" id="slFiltro">
-                                                            <option class="text-white">Seleccionar...</option>
-                                                            <option value="idUsuario" class="text-white">ID</option>
-                                                            <option value="Correo" class="text-white">Correo</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div
-                                                            class="form-control-plaintext rounded-3 border border-2 border-white px-2 d-flex py-0 pe-0">
-                                                            <input type="search"
-                                                                class="form-control-plaintext text-white"
-                                                                name="txtBuscar" id="txtBuscar">
-                                                            <button type="submit" name="btnBuscar" class="btn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24"
-                                                                    style="fill: rgba(255, 255, 255, 1);">
-                                                                    <path
-                                                                        d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z">
-                                                                    </path>
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <hr>
-                                            <table class="table table-striped table-hover mt-2">
-                                                <thead>
-                                                    <tr class="table-dark">
-                                                        <th>ID</th>
-                                                        <th>CORREO</th>
-                                                        <th>CONTRASEÑA</th>
-                                                        <th>NOMBRE</th>
-                                                        <th>APELLIDO</th>
-                                                        <th>CEDULA</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    if (isset($_GET["btnBuscar"])) {
-                                                        $Filtro = $_GET["slFiltro"];
-                                                        $Buscar = $_GET["txtBuscar"];
+                
+                
 
-                                                        require_once("../../modelo/Mysql.php");
-                                                        $mysql = new MySql;
-                                                        $UsuarioBuscado = mysqli_fetch_all($mysql->ConsultaCompleja("SELECT * FROM empleado WHERE $Filtro LIKE '%$Buscar%';"));
-                                                        for ($i = 0; $i < count($UsuarioBuscado); $i++) {
-                                                            ?>
-                                                            <tr>
-                                                                <td class="pt-3 text-warning ">
-                                                                    <?php echo $UsuarioBuscado[$i][0]; ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?php echo $UsuarioBuscado[$i][1]; ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?php echo $UsuarioBuscado[$i][2]; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="btn-group">
-                                                                        <form action="./controlador/eliminarUsuario.php"
-                                                                            method="POST"
-                                                                            class="btn btn-outline-danger rounded-0 py-0 px-2 m-0">
-                                                                            <button type="submit" name="btnEliminar"
-                                                                                value="<?php echo $UsuarioBuscado[$i][0]; ?>"
-                                                                                class="btn px-0 m-0">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                    width="20" height="20" viewBox="0 0 24 24"
-                                                                                    fill="currentColor">
-                                                                                    <path
-                                                                                        d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z">
-                                                                                    </path>
-                                                                                    <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
-                                                                                </svg>
-                                                                            </button>
-                                                                        </form>
-                                                                        <button class="btn btn-outline-info rounded-0 px-2"
-                                                                            id="btnEditar">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                fill="currentColor">
-                                                                                <path
-                                                                                    d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z">
-                                                                                </path>
-                                                                                <path
-                                                                                    d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z">
-                                                                                </path>
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col ps-4">
-                                            <form action="./controller/EditarUsuario.php" method="POST">
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <label for="txtId" class="fs-5">ID</label>
-                                                        <input type="text"
-                                                            class="form-control-plaintext border border-1 border-dark px-2"
-                                                            name="txtId" id="txtId" readonly>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="slEstado" class="fs-5">Estado</label>
-                                                        <select
-                                                            class="form-control-plaintext border border-1 border-dark px-2"
-                                                            name="slEstado" id="slEstado">
-                                                            <option>Seleccionar...</option>
-                                                            <option value="1">ACTIVO</option>
-                                                            <option value="0">INACTIVO</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <label for="txtCorreo" class="fs-5">Correo</label>
-                                                <input type="email"
-                                                    class="form-control-plaintext border border-1 border-dark px-2"
-                                                    name="txtCorreo" id="txtCorreo" required>
+                <div class="card  p-3">
+                    <div class="card-header"></div>
+                    <div class="card-body">
 
-                                                <label for="txtContraseña" class="fs-5">Contraseña</label>
-                                                <input type="password"
-                                                    class="form-control-plaintext border border-1 border-dark px-2 mb-4"
-                                                    name="txtContraseña" id="txtContraseña" required>
-                                                <input type="submit" class="btn btn-dark rounded-0 w-100"
-                                                    value="Editar">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <form action="" method="post" enctype="multipart/form-data">
 
-                        </div>
-                    </div>
-
+                        <div class="mb-3">
+                    <label for="txtID" class="form-label">ID:</label>
+                    <input
+                        type="text"
+                        value="<?php echo $txtID; ?>"
+                        class="form-control"
+                        readonly
+                        name="txtID"
+                        id="txtID"
+                        aria-describedby="helpId"
+                        placeholder=""
+                    />
                 </div>
 
+                        <div class="mb-3">
+                            <label for="" class="form-label">Nombre</label>
+                            <input type="text" value="<?php echo $nombre; ?>" class="form-control" name="txtNombre" id="txtNombre"
+                                placeholder="ingrese el nombre" />
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Apellido</label>
+                            <input type="text" value="<?php echo $apellido; ?>" class="form-control" name="txtApellido" id="txtApellido"
+                                placeholder="ingrese su Apellido" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Cedula</label>
+                            <input type="text" value="<?php echo $cedula; ?>" class="form-control" name="txtCedula" id="txtCedula"
+                                placeholder="ingrese su Cedula" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Email</label>
+                            <input type="text" value="<?php echo $email; ?>" class="form-control" name="txtEmail" id="txtEmail"
+                                placeholder="ingrese su Email" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">contrasena</label>
+                            <input type="text" value="<?php echo $contrasenaa; ?>" class="form-control" name="txtContrasena" id="txtContrasena"
+                                placeholder="ingrese su contrsena" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label" >idRol</label>
+                            <select class="form-select form-select-lg mb-3" name="cmbRol" id="cmbRol">
+                                <option selected>select</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Empleado</option>
+                                <option value="3">Cliente</option>
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="form-label" >Estado</label>
+                            <select class="form-select form-select-lg mb-3" name="cmbEstado" id="cmbEstado">
+                                <option selected>select</option>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                                Registrar
+                            </button>
+
+                            <a class="btn btn-warning" href="./indexListar.php" role="button">cancelar</a>
+
+
+
+                    </div>
+
+
+
+                    </form>
+
+                </div>
+                <div class="card-footer text-muted">Footer</div>
             </div>
 
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; canina Website 2024</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
+
+
+
+    </div>
+
+    </div>
+
+    </div>
+
+   
+    </div>
     </div>
     <script src="../../assets/confirm_pass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

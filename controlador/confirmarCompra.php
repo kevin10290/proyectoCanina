@@ -9,12 +9,14 @@ $pdf->SetFont('Arial', '', 10);
 
 
 if (
-      (isset($_POST['arregloproductos']) && !empty($_POST['arregloproductos']))
+      ((isset($_POST['arregloproductos']) && !empty($_POST['arregloproductos']))&& isset($_POST['idcliente']) && !empty($_POST['idcliente']))
 ) {
     //llamado del modelo de conexón de consultas
 
 
     require_once '../modelo/MySQL.php';
+    require_once '../modelo/usuarios.php';
+
 
 
     //Capturar variables
@@ -31,8 +33,11 @@ if (
     // Get reference to uploaded image
  
 
+    session_start();
+
     //Instanciar la clase
     $mysql = new MySQL();
+    $usuario = new usuarios();
 
     //Usar método del modelo
     $mysql->conectar();
@@ -59,17 +64,54 @@ echo $producto
 
     # code...
  } */
- 
+ $usuario = $_SESSION['usuario'];
+
+
+ $pdf->Cell(50,9,"Cliente",1);
+ $pdf->Cell(50,9,"Fecha",1);
+ $pdf->Ln();
+ $pdf->Cell(50,9,  utf8_decode($usuario->getUser()),1);
+ $pdf->Cell(50,9,  utf8_decode( date_create()->format('Y-m-d')),1);
+ $pdf->Ln();
+ $pdf->Ln();
+
 $elementos = explode(",",$_POST['arregloproductos']);
-  
+  $total =$_POST['total'];
+
 $pdf->Cell(50,9,"Producto",1);
 $pdf->Cell(50,9,"Precio",1);
 
-
+$facturar = true;
 
 
 $pdf->Ln();
-    //Realizo la consulta con mis comandos
+    //Realizo la consulta con mis comandos\
+
+
+    for ($i=0; $i < $elementos; $i++) { 
+
+        $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto>=1 and idinventarioProducto =".$elementos[$i]);
+    
+
+    
+    if(empty(mysqli_fetch_array($consulta))){
+$facturar = false;
+    }
+     
+        # code...
+    }
+
+if($facturar == true){
+
+       
+    $usuarios = $mysql->efectuarConsulta("INSERT INTO facturaproducto  values ( Null,". $total + ($total * 0.19).",'". date_create()->format('Y-m-d')."',Null,". $_POST['idcliente'].",'".$_POST['modoPago']."')");
+    $ultimo = $mysql->efectuarConsulta("SELECT idfacturaproducto FROM facturaproducto ORDER BY idfacturaproducto DESC LIMIT 1");
+    $fila = mysqli_fetch_array($ultimo);    
+    
+    $lastid= $fila[0];
+}
+
+
  for ($i=0; $i < count($elementos); $i++) { 
 
 
@@ -77,31 +119,79 @@ $pdf->Ln();
 
     
     
-    $usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = ".$elementos[$i]." and strockProducto>=1");
 
-    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where idinventarioProducto =".$elementos[$i]);
+    $consulta = $mysql->efectuarConsulta("select * from inventarioproductos where strockProducto>=1 and idinventarioProducto =".$elementos[$i]);
+    
+    $fila =  mysqli_fetch_array($consulta);
 
- 
+if($fila[1] != "" || $fila[1] != null){
 
-        $fila = mysqli_fetch_array($consulta);
-      
-        $pdf->Cell(50,9,  utf8_decode($fila[1]),1);
-        $pdf->Cell(50,9,  utf8_decode($fila[2]),1);
-  
-      
-    
-        $pdf->Ln();
-    
-  
-    
+
 
 
     
-    # code...
- }
+    $pdf->Cell(50,9,  utf8_decode($fila[1]),1);
+    $pdf->Cell(50,9,  utf8_decode($fila[2]),1);
 
 
+$pdf->Ln();
+
+
+$usuarios = $mysql->efectuarConsulta("INSERT INTO detalleprodcuto  values ( Null,".$elementos[$i].",". $lastid  .")");
+
+
+$usuarios = $mysql->efectuarConsulta("UPDATE  inventarioproductos set strockProducto = strockProducto-1 where idinventarioProducto = ".$elementos[$i]." and strockProducto>=1");
+
+
+
+}else{
+
+    $pdf->Ln();
+
+
+    $pdf->Cell(50,9,"Total",1);
+    $pdf->Ln();
+    $pdf->Cell(50,9, $total,1);
+    $pdf->Ln();
+    $pdf->Ln();
+    $pdf->Cell(50,9,"Total a pagar",1);
+    $pdf->Ln();
+    $pdf->Cell(50,9,  $total + ($total * 0.19),1);
+    ob_clean();
+    $pdf-> Output();
+   
+   
+   
+   
+   
+       //Desconectar de la base de datos para liberar memoria
+   
+       $mysql->desconectar();
+   
+
+}
+
+
+
+    }
+
+
+
+
+ $pdf->Ln();
+
+
+ $pdf->Cell(50,9,"Total",1);
+ $pdf->Ln();
+ $pdf->Cell(50,9, $total,1);
+ $pdf->Ln();
+ $pdf->Ln();
+ $pdf->Cell(50,9,"Total a pagar",1);
+ $pdf->Ln();
+ $pdf->Cell(50,9,  $total + ($total * 0.19),1);
+ ob_clean();
  $pdf-> Output();
+
 
 
 
@@ -121,4 +211,5 @@ else{
 
    
 }
+
 ?>
