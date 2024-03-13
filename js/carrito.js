@@ -15,8 +15,17 @@ arreglolista = listaproducto.substring(1).split(",");
 //Borra individualmente el producto que se está mostrado y modifica las unidades disponibles y los precios con IVA
 function borrardecarrito(id) {
   productosCarrito.forEach((element) => {
+
+
+
     if ("elemento" + element.idE == "elemento" + id) {
       iduscar = element.idP;
+
+
+      let productos = parseInt(document.getElementById("unidad" + iduscar).innerHTML);
+      productos += 1;
+      document.getElementById("unidad" + iduscar).innerHTML = productos;
+      
       productosCarrito = productosCarrito.filter(
         (element) => element.idE != id
       );
