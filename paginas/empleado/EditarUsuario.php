@@ -1,3 +1,34 @@
+<?php
+//Validación de inicio de sesión como administrador
+
+require_once '../../Modelo/Usuarios.PHP';
+
+
+session_start();
+
+
+
+$usuario = new Usuarios();
+
+$usuario = $_SESSION['usuario'];
+
+
+if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ($_SESSION['rol']  == "1" ||  $_SESSION['rol'] == "2" ||  $_SESSION['rol'] == "3")) {
+
+
+    $user = $usuario->getUser();
+    $id = $usuario->getId();
+    $_SESSION['idUsuario'] = $id;
+    $idrol = $usuario->getRol();
+    $rol = array("ROOT", "admin", "cajero");
+} else {
+    header("Location: ../../login.php");
+    exit();
+}
+
+?>
+
+
 
 <?php
 include("../../modelo/mySQL2.php");
@@ -83,18 +114,26 @@ if(isset($_GET['txtID'])){
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!"></a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
-                </ul>
-            </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href="#!"><?php echo $user . " - " . $rol[$idrol] ?></a></li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            <form action="Controlador/cerrarsesion.php" method="post">
+
+
+              <input class="dropdown-item" type="submit" value="Cerrar Sesion">
+
+
+
+            </form>
+          </li>
         </ul>
+      </li>
+    </ul>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -111,6 +150,12 @@ if(isset($_GET['txtID'])){
 
                             Nuevo
                         </a>
+
+                        <a class="nav-link" href="../../index.php">
+              <i class="fa-solid fa-arrow-left m-1" style="font-size: 20px"></i>
+
+              Regresar
+            </a>
 
 
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
@@ -226,9 +271,9 @@ if(isset($_GET['txtID'])){
                             <label for="" class="form-label" >idRol</label>
                             <select class="form-select form-select-lg mb-3" name="cmbRol" id="cmbRol">
                                 <option selected>select</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Empleado</option>
-                                <option value="3">Cliente</option>
+                                <option value="1">ROOT</option>
+                                <option value="2">admin</option>
+                                <option value="3">Cajero</option>
                             </select>
 
                         </div>

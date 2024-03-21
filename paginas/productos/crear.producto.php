@@ -1,31 +1,105 @@
 <?php
+//Validación de inicio de sesión como administrador
+
+require_once '../../Modelo/Usuarios.PHP';
+
+
+session_start();
+
+
+
+$usuario = new Usuarios();
+
+$usuario = $_SESSION['usuario'];
+
+
+if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ($_SESSION['rol']  == "1" ||  $_SESSION['rol'] == "2" ||  $_SESSION['rol'] == "3")) {
+
+
+    $user = $usuario->getUser();
+    $id = $usuario->getId();
+    $_SESSION['idUsuario'] = $id;
+    $idrol = $usuario->getRol();
+    $rol = array("ROOT", "admin", "cajero");
+} else {
+    header("Location: ../../login.php");
+    exit();
+}
+
+?>
+
+
+<?php
 include("../../modelo/mySQL2.php");
 
-if($_POST){
-  
+if ($_POST) {
+
     //recoleccion de datos 
-    
-    $nombreProducto = (isset($_POST["txtProducto"])) ? $_POST["txtProducto"] :"";
-    $precioProducto = (isset($_POST["txtPrecio"])) ? $_POST["txtPrecio"] :"";
-    $strockProducto = (isset($_POST["txtStock"])) ? $_POST["txtStock"] :"";
-    $dirProducto = (isset($_POST['txtDirproducto'])) ? $_POST["txtDirproducto"] :"";
-    $cmbRol = (isset($_POST["cmbCategoria"])) ? $_POST["cmbCategoria"] :"";
+
+    $nombreProducto = (isset($_POST["txtProducto"])) ? $_POST["txtProducto"] : "";
+    $precioProducto = (isset($_POST["txtPrecio"])) ? $_POST["txtPrecio"] : "";
+    $strockProducto = (isset($_POST["txtStock"])) ? $_POST["txtStock"] : "";
+    $dirProducto = (isset($_POST['txtDirproducto'])) ? $_POST["txtDirproducto"] : "";
+    $cmbRol = (isset($_POST["cmbCategoria"])) ? $_POST["cmbCategoria"] : "";
+
+
+
+
+
 
     //insercion de datos
-    $sentencia =$conexion->prepare("INSERT INTO inventarioproductos (idinventarioProducto, nombreProducto, precioProducto, strockProducto, categoriaProducto, dirProducto) 
+    $sentencia = $conexion->prepare("INSERT INTO inventarioproductos (idinventarioProducto, nombreProducto, precioProducto, strockProducto, categoriaProducto, dirProducto) 
     VALUES (NULL, :nombreProducto, :precioProducto, :strockProducto, :categoriaProducto, :dirProducto)");
-    //asignamos los valores que vienen desde el form
-    $sentencia->bindParam(":nombreProducto",$nombreProducto);
-    $sentencia->bindParam(":precioProducto",$precioProducto);
-    $sentencia->bindParam(":strockProducto",$strockProducto);
-    $sentencia->bindParam(":categoriaProducto",$cmbRol);
-    $sentencia->bindParam(":dirProducto",$dirProducto);
+   
+   
+   
+   
+   $image_file = $_FILES["fileDirproducto"];
+   //obtiene la imagen
+ 
+     $nombre = $image_file['name'];
+     //obtiene el nombre de la imagen
+ 
+ 
+     if (isset($_POST['dirProducto']) && !empty($_POST['dirProducto'])) {
+ 
+         $guardar_imagen =  $_POST["imagenurl"];
+     } else {
+ 
+         // Mueve el archivo de forma temporal
+ 
+         move_uploaded_file(
+             // hace una ruta temporal
+             $image_file["tmp_name"],
+ 
+             // hace una copia en la ruta del servidor
+             $imagen = ("../../Controlador/" . "/images/$nombre")
+ 
+         );
+ //crea la ruta basado en el almacenamiento de la página
+         $guardar_imagen = "../../Controlador/" . "/images/$nombre";
+     }
+ 
+ //si no se encuentra un archivo de imagen a cambio elegirá una imagen de relleno
+     if ($_POST['imagenurl'] == "" && $nombre == "") {
+ 
+         $guardar_imagen = "../../Controlador//images/nod.png";
+     }
+     //si se encuentra una url pondrá esta
+     if(strlen($dirProducto) >=1 && $nombre == ""){
+ 
+         $guardar_imagen = $dirProducto;
+     }
+   
+   //asignamos los valores que vienen desde el form
+    $sentencia->bindParam(":nombreProducto", $nombreProducto);
+    $sentencia->bindParam(":precioProducto", $precioProducto);
+    $sentencia->bindParam(":strockProducto", $strockProducto);
+    $sentencia->bindParam(":categoriaProducto", $cmbRol);
+    $sentencia->bindParam(":dirProducto", $guardar_imagen);
     $sentencia->execute();
 
     header("Location: index.producto.php");
-    
-
-
 }
 
 
@@ -58,8 +132,7 @@ if($_POST){
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" />
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button">
                     <i class="fas fa-search"></i>
                 </button>
@@ -68,14 +141,22 @@ if($_POST){
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!"></a></li>
+                    <li><a class="dropdown-item" href="#!"><?php echo $user . " - " . $rol[$idrol] ?></a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
+                    <li>
+                        <form action="../../Controlador/cerrarsesion.php" method="post">
+
+
+                            <input class="dropdown-item" type="submit" value="Cerrar Sesion">
+
+
+
+                        </form>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -86,45 +167,42 @@ if($_POST){
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Productos</div>
-                        <a class="nav-link" href="./indexListar.php">
+                        <a class="nav-link" href="./index.producto.php">
                             <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
                             Listar
                         </a>
-                        <a class="nav-link" href="./nuevoUsuario.php">
+                        <a class="nav-link" href="./crear/producto.php">
                             <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"></i>
 
                             Nuevo
                         </a>
+                        <a class="nav-link" href="../../index.php">
+                            <i class="fa-solid fa-arrow-left m-1" style="font-size: 20px"></i>
 
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
+                            Regresar
+                        </a>
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     Authentication
                                     <div class="sb-sidenav-collapse-arrow">
                                         <i class="fas fa-angle-down"></i>
                                     </div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="login.html">Login</a>
                                         <a class="nav-link" href="register.html">Register</a>
                                         <a class="nav-link" href="password.html">Forgot Password</a>
                                     </nav>
                                 </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                     Error
                                     <div class="sb-sidenav-collapse-arrow">
                                         <i class="fas fa-angle-down"></i>
                                     </div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="401.html">401 Page</a>
                                         <a class="nav-link" href="404.html">404 Page</a>
@@ -151,31 +229,40 @@ if($_POST){
 
                         <div class="mb-3">
                             <label for="" class="form-label">Producto</label>
-                            <input type="text" class="form-control" name="txtProducto" id="txtProducto"
-                                placeholder="ingrese el Producto" />
+                            <input type="text" class="form-control" name="txtProducto" id="txtProducto" placeholder="ingrese el Producto" />
                         </div>
 
 
                         <div class="mb-3">
                             <label for="" class="form-label">Precio</label>
-                            <input type="text" class="form-control" name="txtPrecio" id="txtPrecio"
-                                placeholder="ingrese su precio" />
+                            <input type="text" class="form-control" name="txtPrecio" id="txtPrecio" placeholder="ingrese su precio" />
                         </div>
 
                         <div class="mb-3">
                             <label for="" class="form-label">stock</label>
-                            <input type="text" class="form-control" name="txtStock" id="txtStock"
-                                placeholder="ingrese su stock" />
+                            <input type="text" class="form-control" name="txtStock" id="txtStock" placeholder="ingrese su stock" />
+                        </div>
+
+
+                        <label for="" class="form-label">Vista</label>
+                        <div class="text-center  mb-3 card p-2">
+
+                            <div class=" align-items-center">
+
+
+                                <span>⠀⠀Ruta:⠀⠀</span><input value="" type="text" class="form-control form-control-user" name="txtDirproducto" id="txtDirproducto" placeholder="URL Imagen">
+
+                                <p>⠀⠀O⠀⠀</p>
+
+                                <span>Imagen local:</span><input id="archivoima" value="" type="file" accept="image/*" class="form-control form-control-user" name="fileDirproducto" id="fileDirproducto">
+
+
+                            </div>
+
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="form-label">dirProductos</label>
-                            <input type="text" class="form-control" name="txtDirproducto" id="txtDirproducto"
-                                placeholder="ingrese su contrsena" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="" class="form-label" >idCategoria</label>
+                            <label for="" class="form-label">idCategoria</label>
                             <select class="form-select form-select-lg mb-3" name="cmbCategoria" id="cmbCategoria">
                                 <option selected>select</option>
                                 <option value="1">limpieza</option>
@@ -186,10 +273,10 @@ if($_POST){
                         </div>
 
                         <button type="submit" class="btn btn-success">
-                                Registrar
-                            </button>
+                            Registrar
+                        </button>
 
-                            <a class="btn btn-warning" href="./index.producto.php" role="button">cancelar</a>
+                        <a class="btn btn-warning" href="./index.producto.php" role="button">cancelar</a>
 
                     </form>
 
@@ -202,18 +289,16 @@ if($_POST){
 
         </div>
 
-     
+
     </div>
     </div>
     <script src="../../assets/confirm_pass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="../../js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="../../assets/demo/chart-area-demo.js"></script>
     <script src="../../assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 
 </body>
 

@@ -1,4 +1,35 @@
 <?php
+//Validación de inicio de sesión como administrador
+
+require_once '../../Modelo/Usuarios.PHP';
+
+
+session_start();
+
+
+
+$usuario = new Usuarios();
+
+$usuario = $_SESSION['usuario'];
+
+
+if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ($_SESSION['rol']  == "1" ||  $_SESSION['rol'] == "2" ||  $_SESSION['rol'] == "3")) {
+
+
+    $user = $usuario->getUser();
+    $id = $usuario->getId();
+    $_SESSION['idUsuario'] = $id;
+    $idrol = $usuario->getRol();
+    $rol = array("ROOT", "admin", "cajero");
+} else {
+    header("Location: ../../login.php");
+    exit();
+}
+
+?>
+
+
+<?php
 include("../../modelo/mySQL2.php");
 
 if(isset($_GET['txtID'])){
@@ -57,14 +88,22 @@ $listaUsuarios = $sentencia->fetchAll(PDO::FETCH_ASSOC);
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-          aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="#!"></a></li>
+          <li><a class="dropdown-item" href="#!"><?php echo $user . " - " . $rol[$idrol] ?></a></li>
           <li>
             <hr class="dropdown-divider" />
           </li>
-          <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
+          <li>
+            <form action="Controlador/cerrarsesion.php" method="post">
+
+
+              <input class="dropdown-item" type="submit" value="Cerrar Sesion">
+
+
+
+            </form>
+          </li>
         </ul>
       </li>
     </ul>
@@ -84,7 +123,11 @@ $listaUsuarios = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
               Nuevo
             </a>
+            <a class="nav-link" href="../../index.php">
+              <i class="fa-solid fa-arrow-left m-1" style="font-size: 20px"></i>
 
+              Regresar
+            </a>
 
             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">

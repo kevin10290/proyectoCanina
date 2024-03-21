@@ -133,7 +133,7 @@ function MostrarCarrito(productosCarrito) {
              <div class="">
            
                <div class="bg-image hover-overlay hover-zoom ripple rounded rounded-4" data-mdb-ripple-color="light">
-                 <img width="100" src="${"../../"+element.urlP}"
+                 <img width="100" src="${element.urlP}"
                    class="img-thumbnail  rounded-5"   />
                  <a href="#!">
                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>

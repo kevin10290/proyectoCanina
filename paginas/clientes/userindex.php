@@ -10,16 +10,30 @@ $usuario = new Usuarios();
 
 $usuario = $_SESSION['usuario'];
 
-
+// si entra un cliente
 if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['rol'] == "Cliente") {
 
 
   $user = $usuario->getUser();
   $id = $usuario->getId();
-  $rol = $usuario->getRol();
+  $rol = "Cliente";
+  // en cambio si entra administradores
 } else {
-  header("Location: ./login.php");
-  exit();
+
+  if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ($_SESSION['rol']  == "1" ||  $_SESSION['rol'] == "2" ||  $_SESSION['rol'] == "3")) {
+
+
+    $user = $usuario->getUser();
+    $id = $usuario->getId();
+    $_SESSION['idUsuario'] = $id;
+    $idrol = $usuario->getRol();
+    $role = array("","ROOT", "admin", "cajero");
+    
+    $rol = $role[ $_SESSION['rol']  ]; // cerrar página
+  } else {
+    header("Location: ./login.php");
+    exit();
+  }
 }
 
 ?>
@@ -79,7 +93,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
           <li><a class="dropdown-item" href="">
               <!--  Mostrar el usuario que ha iniciado sesión -->
-              <?php echo $user . " - " . "Cliente" ?>
+              <?php echo $user . " - " . $rol?>
             </a></li>
           <li>
             <hr class="dropdown-divider" />
@@ -248,7 +262,7 @@ if( $fila[5] == 0 ){
 
   <input type="hidden" id="producto' . $fila[0] . '" value="' . $fila[5] . '">
     <div class="featured__item">
-    <img src="../../' . $fila[4] . '" class="img-thumbnail rounded-5" >
+    <img src="' . $fila[4] . '" class="img-thumbnail rounded-5" >
       <div class="featured__item__text">
         <h6><a   onclick=agregarcarrito(' . $fila[0] . ',"' . str_replace(" ", "_", $fila[1]) . '","' . $fila[4] . '","' . $fila[3] . '","' . $fila[2] . '","' . $fila[5] . '")        >' . $fila[1] . '</a></h6>
         <h5>$' . $fila[2] . '</h5>

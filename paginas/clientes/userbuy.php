@@ -2,33 +2,42 @@
 
 <?php
 
-require_once '../../Modelo/Usuarios.PHP';
+require_once '../../modelo/usuarios.PHP';
 
 
 session_start();
-
-
 
 $usuario = new Usuarios();
 
 $usuario = $_SESSION['usuario'];
 
-
+// si entra un cliente
 if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['rol'] == "Cliente") {
 
 
   $user = $usuario->getUser();
   $id = $usuario->getId();
-  $rol = $usuario->getRol();
+  $rol = "Cliente";
+  // en cambio si entra administradores
 } else {
-  header("Location: ./login.php");
-  exit();
+
+  if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ($_SESSION['rol']  == "1" ||  $_SESSION['rol'] == "2" ||  $_SESSION['rol'] == "3")) {
+
+
+    $user = $usuario->getUser();
+    $id = $usuario->getId();
+    $_SESSION['idUsuario'] = $id;
+    $idrol = $usuario->getRol();
+    $role = array("ROOT", "admin", "cajero");
+    
+    $rol = $role[ $_SESSION['rol']  ]; // cerrar página
+  } else {
+    header("Location: ./login.php");
+    exit();
+  }
 }
 
 ?>
-
-
-
 
 
 
@@ -285,7 +294,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
                     <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-amex fa-2x me-2"></i></a>
                     <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
 
-                    <form class="mt-4" action="controlador/confirmarCompra.php" method="post">
+                    <form class="mt-4" action="../../controlador/confirmarCompra.php" method="post">
                       <!--  Formulario para enviar los datos  y crear la factura llamando la función de confirmar compra -->
 
 

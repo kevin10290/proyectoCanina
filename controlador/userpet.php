@@ -60,7 +60,7 @@ if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) &&
 
         //poner alerta de que ya hay cita agendada
 
-        header("Location: ../userpet.php?Error=true&Mensaje=Ya existe una cita agendada a esa hora");
+        header("Location: ../paginas/clientes/userpet.php?Error=true&Mensaje=Ya existe una cita agendada a esa hora");
 
         }
         else{
@@ -93,7 +93,7 @@ $consulta3 = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.cita VALUES (null
 
 //lo envio a pagina userpet por agenda de cita existosa
 
-header("Location: ../userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente");
+header("Location: ../paginas/clientes/userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente");
 
 
           }
@@ -120,7 +120,7 @@ $consulta3 = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.cita VALUES (null
 '".$horaInicial."', 'pendiente')");
 
 //lo envio a pagina userpet por agenda de cita existosa
-header("Location: ../userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente");
+header("Location: ../paginas/clientes/userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente");
 
 
           }
@@ -132,7 +132,7 @@ header("Location: ../userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente")
 }
 else{
   //sweetalert campos incompletos
-  header("Location: ../userpet.php?Error=true&Mensaje=Completa los campos");
+  header("Location: ../paginas/clientes/userpet.php?Error=true&Mensaje=Completa los campos");
  
 
 }

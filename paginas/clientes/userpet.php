@@ -2,7 +2,7 @@
 
 <?php
 
-require_once '../../Modelo/Usuarios.PHP';
+require_once '../../modelo/usuarios.PHP';
 
 
 session_start();
@@ -11,16 +11,30 @@ $usuario = new Usuarios();
 
 $usuario = $_SESSION['usuario'];
 
-
+// si entra un cliente
 if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['rol'] == "Cliente") {
 
 
   $user = $usuario->getUser();
   $id = $usuario->getId();
-  $rol = $usuario->getRol();
+  $rol = "Cliente";
+  // en cambio si entra administradores
 } else {
-  header("Location: ./login.php");
-  exit();
+
+  if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && ($_SESSION['rol']  == "1" ||  $_SESSION['rol'] == "2" ||  $_SESSION['rol'] == "3")) {
+
+
+    $user = $usuario->getUser();
+    $id = $usuario->getId();
+    $_SESSION['idUsuario'] = $id;
+    $idrol = $usuario->getRol();
+    $role = array("","ROOT", "admin", "cajero");
+    
+    $rol = $role[ $_SESSION['rol']  ]; // cerrar página
+  } else {
+    header("Location: ./login.php");
+    exit();
+  }
 }
 
 ?>
@@ -176,7 +190,7 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
     </div>
     <div id="layoutSidenav_content">
       <main>
-        <form action="controlador/userpet.php" method="post">
+        <form action="../../controlador/userpet.php" method="post">
           <div class="col-12 py-xl-4">
             <br>
             <h1>Programación de citas</h1>
@@ -272,7 +286,7 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
                     </td>
 
                     <td class="bg-warning">
-                      <form action="controlador/cancelarUserpet.php? idCita=<?php echo $row['idCita'] ?>" method="post">
+                      <form action="../../controlador/cancelarUserpet.php? idCita=<?php echo $row['idCita'] ?>" method="post">
                         <button class="btn btn-danger" type="submit">Cancelar</button>
                       </form>
                     </td>
