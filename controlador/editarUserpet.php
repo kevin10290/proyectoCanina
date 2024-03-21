@@ -36,11 +36,11 @@ isset($_POST['tipoMascota']) && !empty($_POST['tipoMascota']) ){
 
     
     
-   header("Location: ../userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
+   header("Location: ../paginas/clientes/userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
    
 }
 else{
-    header("Location: ../editUserpet.php");
+    header("Location:  ../paginas/clientes/editUserpet.php");
 }
 
 ?>

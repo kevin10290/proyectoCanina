@@ -6,26 +6,26 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+	<link rel="icon" type="image/png" href="../../images/icons/favicon.ico" />
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/bootstrap/css/bootstrap.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="../../fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/animate/animate.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/css-hamburgers/hamburgers.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/animsition/css/animsition.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/select2/select2.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/daterangepicker/daterangepicker.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vista/css/util.css">
-	<link rel="stylesheet" type="text/css" href="vista/css/main.css">
+	<link rel="stylesheet" type="text/css" href="../../vista/css/util.css">
+	<link rel="stylesheet" type="text/css" href="../../vista/css/main.css">
 	<!--===============================================================================================-->
 </head>
 
@@ -34,9 +34,9 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" action="controlador/editarUserpet.php" method="post">
+				<form class="login100-form validate-form" action="../../controlador/editarUserpet.php" method="post">
 					<span class="login100-form-title p-b-43">
-						Edita tu cita!!!
+						Editar cita
 					</span>
                     <input  type="hidden" name="idMascota" value="<?php echo $_POST['idMascota']?>">
                     
@@ -75,7 +75,7 @@
 
 
 
-					<div class="col-12 d-flex pt-3 justify-content-between">
+					<div class="col-12 d-flex pt-3 justify-content-center">
                         <div class="col-5">
                         <button class="btn btn-primary py-sm-4 px-sm-5 " type="submit">
 							Editar
@@ -83,7 +83,7 @@
                         </div>
                     </form>
 					<div class="col-5">
-                    <form action="userpet.php">
+                    <form action="./userpet.php">
                         <button class="btn btn-danger py-sm-4 px-sm-5  " type="submit">
 							cancelar
 						</button>
@@ -96,7 +96,7 @@
 
 				
 
-				<div class="login100-more" style="background-image: url('images/bgEditCita2.jpg');">
+				<div class="login100-more" style="background-image: url('../../images/bgEditCita2.jpg');">
 				</div>
 			</div>
 		</div>

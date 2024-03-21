@@ -108,7 +108,7 @@ if (
 
     if ($rol == "Cliente") {
 
-        header("Location: ../userindex.php");
+        header("Location: ../paginas/clientes/userindex.php");
     }
     if ($rol == "1"||$rol == "2" || $rol == "3") {
 

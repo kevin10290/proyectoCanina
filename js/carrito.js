@@ -21,11 +21,12 @@ function borrardecarrito(id) {
     if ("elemento" + element.idE == "elemento" + id) {
       iduscar = element.idP;
 
-
+if(document.location.href.includes("userbuy.php") == false){
       let productos = parseInt(document.getElementById("unidad" + iduscar).innerHTML);
       productos += 1;
+  
       document.getElementById("unidad" + iduscar).innerHTML = productos;
-      
+    }
       productosCarrito = productosCarrito.filter(
         (element) => element.idE != id
       );
@@ -132,7 +133,7 @@ function MostrarCarrito(productosCarrito) {
              <div class="">
            
                <div class="bg-image hover-overlay hover-zoom ripple rounded rounded-4" data-mdb-ripple-color="light">
-                 <img width="100" src="${element.urlP}"
+                 <img width="100" src="${"../../"+element.urlP}"
                    class="img-thumbnail  rounded-5"   />
                  <a href="#!">
                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
@@ -168,6 +169,8 @@ function MostrarCarrito(productosCarrito) {
     `;
     }
     index += 1;
+//Consulta si se encuentra en la página de confirmación de compra para realizar acciones diferentes
+
     if (document.location.href.includes("userbuy.php") == true) {
 let elemntosventa =[];
 for (let i = 0; i <productosCarrito.length; i++) {
