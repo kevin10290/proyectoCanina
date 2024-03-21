@@ -2,7 +2,7 @@
 
 <?php
 
-require_once 'Modelo/Usuarios.PHP';
+require_once '../../Modelo/Usuarios.PHP';
 
 
 session_start();
@@ -52,17 +52,17 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
   <meta name="author" content="" />
   <title>Dashboard - SB Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/font-awesome.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/elegant-icons.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/nice-select.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/jquery-ui.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/owl.carousel.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/slicknav.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/font-awesome.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/elegant-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/nice-select.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/jquery-ui.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/owl.carousel.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/slicknav.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" rel="stylesheet" />
 
 
-  <link href="css/styles.css" rel="stylesheet" />
+  <link href="../../css/styles.css" rel="stylesheet" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -197,21 +197,18 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
         <?php 
         
-        require_once 'Modelo/MySQL.PHP';
+        require_once '../../Modelo/MySQL.PHP';
         $mysql = new MySQL;
         $mysql->conectar();
 
         
-        $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos INNER
-              JOIN categoria ON categoria.idCategoria =
-              inventarioproductos.categoriaProducto WHERE
-              inventarioproductos.strockProducto > 0");
+        $consulta = $mysql->efectuarConsulta("SELECT nombreProducto FROM inventarioproductos ");
               echo '<input id="categorias"  type="hidden" value="';
               for ($i = 0; $i < mysqli_num_rows($consulta); $i++) {
                 $fila =  mysqli_fetch_array($consulta);
                 echo ','.$fila[0];
               }
-              echo '" <input/>';
+              echo '" input/>';
   
         
               $mysql->desconectar();
@@ -322,7 +319,7 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
 
                           <input id="productoshtml" type="hidden" name="productoshtml">
 
-                          <input id="arregloproductos" type="hidden" name="arregloproductos">
+                          <input id="arregloproductof" type="hidden" name="arregloproductof">
 
                           <input id="idcliente" type="hidden" name="idcliente" value="<?php echo $id; ?>">
 
@@ -396,23 +393,23 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
   </div>
   </div>
 
-  <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.nice-select.min.js"></script>
-  <script src="js/jquery-ui.min.js"></script>
-  <script src="js/jquery.slicknav.js"></script>
-  <script src="js/mixitup.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/carrito.js"></script>
+  <script src="../../js/jquery-3.3.1.min.js"></script>
+  <script src="../../js/bootstrap.min.js"></script>
+  <script src="../../js/jquery.nice-select.min.js"></script>
+  <script src="../../js/jquery-ui.min.js"></script>
+  <script src="../../js/jquery.slicknav.js"></script>
+  <script src="../../js/mixitup.min.js"></script>
+  <script src="../../js/owl.carousel.min.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/carrito.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
     crossorigin="anonymous"></script>
-  <script src="js/scripts.js"></script>
+  <script src="../../js/scripts.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
     crossorigin="anonymous"></script>
-  <script src="js/datatables-simple-demo.js"></script>
+  <script src="../../js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

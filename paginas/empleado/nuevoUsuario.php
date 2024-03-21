@@ -2,12 +2,14 @@
 include("../../modelo/mySQL2.php");
 
 if($_POST){
+  
     //recoleccion de datos 
+    
     $nombreEmpleado = (isset($_POST["txtNombre"])) ? $_POST["txtNombre"] :"";
     $apellidoEmpleado = (isset($_POST["txtApellido"])) ? $_POST["txtApellido"] :"";
     $cedulaEmpelado = (isset($_POST["txtCedula"])) ? $_POST["txtCedula"] :"";
     $emailEmpleado = (isset($_POST["txtEmail"])) ? $_POST["txtEmail"] :"";
-    $txtContrasena = (isset($_POST["txtContrasena"])) ? $_POST["txtContrasena"] :"";
+    $txtContrasena = (isset($_POST['txtContrasena'])) ? $_POST["txtContrasena"] :"";
     $cmbRol = (isset($_POST["cmbRol"])) ? $_POST["cmbRol"] :"";
     $cmbEstado = (isset($_POST["cmbEstado"])) ? $_POST["cmbEstado"] :"";
 
