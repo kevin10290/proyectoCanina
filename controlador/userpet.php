@@ -14,7 +14,7 @@ $tipo = $_POST['tipoMascota'];
 //genero un tiempo de cita
 
 $horafin = new DateTime($hora);
-$horafin->modify("+30 minutes");
+$horafin->modify("+60 minutes");
 $horaFinal = $horafin->format("H:i:s");
 
 $horaInicio = new DateTime($hora);
@@ -22,7 +22,7 @@ $horaInicial = $horaInicio->format("H:i:s");
 
 
 
-
+echo $horaFinal;
 
 if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) && !empty($_POST['hora'])
 && isset($_POST['nomMascota']) && !empty($_POST['nomMascota']) && isset($_POST['edadMascota']) && !empty($_POST['edadMascota'])
@@ -43,16 +43,20 @@ if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) &&
 
     $mysql->conectar();
  //consulta para saber si la fecha de la cita esta disponible, sino lo reenvia a pagina de inicio con alerta
-    $consulta = $mysql->efectuarConsulta("select * from bd_mascotas.cita 
-    where bd_mascotas.cita.horaCita BETWEEN '".$horaInicial."' and '".$horaFinal."' and bd_mascotas.cita.fechaCita = '".$fecha."';");
 
-    $mysql->desconectar();
+    $consulta = $mysql->efectuarConsulta("SELECT * FROM  bd_mascotas.cita WHERE
+     bd_mascotas.cita.horaCita BETWEEN '".$horaInicial."' and '".$horaFinal."' AND 
+     bd_mascotas.cita.fechaCita LIKE '".$fecha."' OR 
+     bd_mascotas.cita.horaFin BETWEEN '".$horaInicial."' and '".$horaFinal."' AND 
+     bd_mascotas.cita.fechaCita LIKE '".$fecha."';");
+
+    
 
     
 
     $num = mysqli_num_rows($consulta);
-    
 
+    $mysql->conectar();
  
    
 
@@ -89,7 +93,7 @@ $idMascota = $array['idMascota'];
 //inserto los datos para agendar cita 
 
 $consulta3 = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.cita VALUES (null,'".$idMascota."','".$id."','".$fecha."', 
-'".$horaInicial."', 'pendiente')");
+'".$horaInicial."', 'pendiente', '".$horaFinal.")");
 
 //lo envio a pagina userpet por agenda de cita existosa
 
@@ -117,7 +121,7 @@ $idMascota = $array['idMascota'];
 //inserto la data para agendar la cita 
 
 $consulta3 = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.cita VALUES (null,'".$idMascota."','".$id."','".$fecha."', 
-'".$horaInicial."', 'pendiente')");
+'".$horaInicial."', 'pendiente', '".$horaFinal."')");
 
 //lo envio a pagina userpet por agenda de cita existosa
 header("Location: ../userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente");

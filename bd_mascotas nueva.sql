@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-03-2024 a las 14:02:35
+-- Tiempo de generación: 21-03-2024 a las 15:35:24
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -53,15 +53,21 @@ CREATE TABLE `cita` (
   `registroCliente_idClientes` int(11) NOT NULL,
   `fechaCita` date NOT NULL,
   `horaCita` time DEFAULT NULL,
-  `estadoServicio` varchar(50) NOT NULL DEFAULT 'pendiente'
+  `estadoServicio` varchar(50) NOT NULL DEFAULT 'pendiente',
+  `horaFin` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Volcado de datos para la tabla `cita`
 --
 
-INSERT INTO `cita` (`idCita`, `resgistroMascota_idMascota`, `registroCliente_idClientes`, `fechaCita`, `horaCita`, `estadoServicio`) VALUES
-(1, 1, 2, '2024-02-29', '11:07:49', 'pendiente');
+INSERT INTO `cita` (`idCita`, `resgistroMascota_idMascota`, `registroCliente_idClientes`, `fechaCita`, `horaCita`, `estadoServicio`, `horaFin`) VALUES
+(6, 13, 7, '2028-05-28', '02:28:00', 'pendiente', NULL),
+(7, 14, 7, '2024-03-27', '20:57:00', 'pendiente', NULL),
+(10, 17, 7, '2024-03-05', '10:01:00', 'pendiente', NULL),
+(14, 23, 7, '2024-03-05', '01:34:00', 'pendiente', '02:04:00'),
+(17, 26, 7, '2024-03-05', '02:05:00', 'pendiente', '03:05:00'),
+(18, 27, 7, '2024-03-05', '18:16:00', 'pendiente', '19:16:00');
 
 -- --------------------------------------------------------
 
@@ -93,13 +99,6 @@ CREATE TABLE `detalleservicio` (
   `servicio_idservicio` int(11) NOT NULL,
   `cita_idCita` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Volcado de datos para la tabla `detalleservicio`
---
-
-INSERT INTO `detalleservicio` (`idservicioCita`, `servicio_idservicio`, `cita_idCita`) VALUES
-(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -164,13 +163,6 @@ CREATE TABLE `facturaservicio` (
   `notaFactura` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Volcado de datos para la tabla `facturaservicio`
---
-
-INSERT INTO `facturaservicio` (`idServicio`, `cita_idCita`, `totalServicio`, `modoPago`, `notaFactura`) VALUES
-(1, 1, 42342, 'Efectivo', 'fsdfsdf');
-
 -- --------------------------------------------------------
 
 --
@@ -219,7 +211,8 @@ INSERT INTO `registrocliente` (`idClientes`, `nombreCliente`, `apellidoCliente`,
 (2, 'fwerfer', 'htrytutyu', '2555445', 'qwerbe@gmail.com', '44436654', 'fwefw424234', 0),
 (3, 'Javier', 'asdasd', '142312', 'ffdsfs@gmail.com', '24124124', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa', 1),
 (4, 'Javier', 'asdasd', '142312', 'hola@gmail.com', '24124124', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa', 1),
-(6, 'Larz', 'asdasd', '123', 'wa@gmail.com', '123', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1);
+(6, 'Larz', 'asdasd', '123', 'wa@gmail.com', '123', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1),
+(7, 'Juan ', 'Montoya', '11111', 'Juan@gmail.com', '1113865899', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1);
 
 -- --------------------------------------------------------
 
@@ -241,7 +234,21 @@ CREATE TABLE `resgistromascota` (
 --
 
 INSERT INTO `resgistromascota` (`idMascota`, `nombreMascota`, `edadMascota`, `razaMascota`, `tipoMascota`, `IdCliente`) VALUES
-(1, 'fdgdfg', '5', 'grtgtrg', 'tertert', 2);
+(13, 'Juanchito Alimañita', '3', 'perro', 'Gatito', 7),
+(14, 'Hernando Fernandez', '2', 'Gaturro', 'Gaturrito', 7),
+(15, 'Kevi', '2', 'perro', 'Gaturro', 7),
+(16, 'Quinchio', '3', 'Pitbull', 'Perro', 7),
+(17, 'Fernan', '4', 'Ladrador', 'perro', 7),
+(18, 'Pepito', '4', 'pincher', 'Perro', 7),
+(19, 'Pepito', '3', 'gata', 'Gaturro', 7),
+(20, 'Pepito', '4', 'gata', 'Gaturro', 7),
+(21, 'Perri', '33', 'Ladrador', 'pendejo', 7),
+(22, 'Perri', '33', 'pincher', 'perro', 7),
+(23, 'Perri', '33', 'gata', 'pendejo', 7),
+(24, 'oewr', '3', 'Pitbull', 'pendejo', 7),
+(25, 'Juanchito', '4', 'perro', 'perro', 7),
+(26, 'oewr', '33', 'Pitbull', 'pendejo', 7),
+(27, 'Hernando', '4', 'perro', 'Gaturro', 7);
 
 -- --------------------------------------------------------
 
@@ -383,7 +390,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `cita`
 --
 ALTER TABLE `cita`
-  MODIFY `idCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `detalleprodcuto`
@@ -425,13 +432,13 @@ ALTER TABLE `inventarioproductos`
 -- AUTO_INCREMENT de la tabla `registrocliente`
 --
 ALTER TABLE `registrocliente`
-  MODIFY `idClientes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idClientes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `resgistromascota`
 --
 ALTER TABLE `resgistromascota`
-  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -505,3 +512,4 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
