@@ -56,7 +56,7 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Facturacion - SB Admin</title>
 
     <style>
       .inpusDatos {
@@ -454,7 +454,7 @@ let id = document.getElementById("idCita").value;
                         <th>Precio</th>
                         <th>Cantidad</th>
                         <th>Total</th>
-
+<th>Eliminar</th>
 
 
                       </tr>
@@ -649,7 +649,8 @@ let descrip = `<tr>
           <td>${dato.precioServicio}</td>
           <td>${dato.cantidad}</td>
           <td>${dato.total}</td>
-
+          <td><img onclick="func_eliminar('000','${dato.Servicio}')" src="./images/garbage_3587571.png" alt="iconoBorrar" srcset="./images/garbage_3587571.png">
+          </td>
         </tr>`;
 
         id_llenarTabla.innerHTML+=descrip;
@@ -679,6 +680,10 @@ local.setItem(
 
 });
 
+const func_llenarTable=()=>{
+
+}
+
 //aca voy a ver si tiene datos el localStore y comienzo a llenar la tabla si tiene productos
 let local2 = window.localStorage;
 id_llenarTabla.innerHTML = "";
@@ -695,6 +700,9 @@ id_llenarTabla.innerHTML = "";
     <td>${todosLosDatos.precio}</td>
     <td>${todosLosDatos.cantidad}</td>
     <td>${todosLosDatos.total}</td>
+    <td><img onclick="func_eliminar('${key}','${todosLosDatos.categoria}')" src="./images/garbage_3587571.png" alt="iconoBorrar" srcset="./images/garbage_3587571.png">
+</td>
+
 
   </tr>`;
 
@@ -776,6 +784,95 @@ const func_pagar = () => {
 
 //aca hare la funcion que se va ejecutar cuando le de click en el boton pagar definitiv
 
+
+
+
+
+
+//aca voy hacer la funcion donde se va eliminar el producto
+const func_eliminar = (key, servicio) => {
+  let datosLocal = window.localStorage;
+  if (servicio != "Servicio") {
+    let datos = JSON.parse(datosLocal.getItem(key));
+
+    let cantidadProducto = parseInt(datos.cantidad) - 1;
+    datos.cantidad = cantidadProducto;
+    if (cantidadProducto == 0) {
+      datosLocal.removeItem(key);
+    } else {
+      datosLocal.setItem(key, JSON.stringify(datos));
+
+    }
+
+
+      //aca voy a ver si tiene datos el localStore y comienzo a llenar la tabla si tiene productos
+
+let idTabla = document.getElementById("id_llenarTabla")
+      let local2 = window.localStorage;
+      idTabla.innerHTML = "";
+
+  let llavesNuevas = Object.keys(local2);
+
+  llavesNuevas.forEach((key) => {
+    let todosLosDatos = JSON.parse(local2.getItem(key));
+    
+      let descrip = `<tr>
+    <td>${todosLosDatos.id}</td>
+    <td>${todosLosDatos.venta}</td>
+    <td>${todosLosDatos.categoria}</td>
+    <td>${todosLosDatos.precio}</td>
+    <td>${todosLosDatos.cantidad}</td>
+    <td>${todosLosDatos.total}</td>
+    <td><img onclick="func_eliminar('${key}','${todosLosDatos.categoria}')" src="./images/garbage_3587571.png" alt="iconoBorrar" srcset="./images/garbage_3587571.png">
+</td>
+
+
+  </tr>`;
+
+  idTabla.innerHTML += descrip;
+    
+   
+  });
+  } else {
+    let llavesParaBorrar = Object.keys(datosLocal);
+
+    llavesParaBorrar.forEach((keyyy) => {
+      let datos = JSON.parse(datosLocal.getItem(keyyy));
+
+      if (datos.categoria == "Servicio") {
+        datosLocal.removeItem(keyyy);
+      }
+    });
+    //aca voy a ver si tiene datos el localStore y comienzo a llenar la tabla si tiene productos
+
+let idTabla = document.getElementById("id_llenarTabla")
+      let local2 = window.localStorage;
+      idTabla.innerHTML = "";
+
+  let llavesNuevas = Object.keys(local2);
+
+  llavesNuevas.forEach((key) => {
+    let todosLosDatos = JSON.parse(local2.getItem(key));
+    
+      let descrip = `<tr>
+    <td>${todosLosDatos.id}</td>
+    <td>${todosLosDatos.venta}</td>
+    <td>${todosLosDatos.categoria}</td>
+    <td>${todosLosDatos.precio}</td>
+    <td>${todosLosDatos.cantidad}</td>
+    <td>${todosLosDatos.total}</td>
+    <td><img onclick="func_eliminar('${key}','${todosLosDatos.categoria}')" src="./images/garbage_3587571.png" alt="iconoBorrar" srcset="./images/garbage_3587571.png">
+</td>
+
+
+  </tr>`;
+
+  idTabla.innerHTML += descrip;
+    
+   
+  });
+  }
+};
 
 
 

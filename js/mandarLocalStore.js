@@ -83,7 +83,8 @@ tabla.addEventListener("click", () => {
           <td>${todosLosDatos.precio}</td>
           <td>${todosLosDatos.cantidad}</td>
           <td>${todosLosDatos.total}</td>
-
+          <td><img onclick="func_eliminar('${key}','${todosLosDatos.categoria}')" src="./images/garbage_3587571.png" alt="iconoBorrar" srcset="./images/garbage_3587571.png">
+          </td>
         </tr>`;
 
           id_llenarTabla.innerHTML += descrip;
