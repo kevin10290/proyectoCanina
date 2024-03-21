@@ -176,7 +176,7 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
     </div>
     <div id="layoutSidenav_content">
       <main>
-        <form action="controlador/userpet.php" method="post">
+        <form action="../../controlador/userpet.php" method="post">
           <div class="col-12 py-xl-4">
             <br>
             <h1>Programación de citas</h1>
@@ -272,7 +272,7 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
                     </td>
 
                     <td class="bg-warning">
-                      <form action="controlador/cancelarUserpet.php? idCita=<?php echo $row['idCita'] ?>" method="post">
+                      <form action="../../controlador/cancelarUserpet.php? idCita=<?php echo $row['idCita'] ?>" method="post">
                         <button class="btn btn-danger" type="submit">Cancelar</button>
                       </form>
                     </td>

@@ -18,11 +18,11 @@ if(isset($_GET['idCita']) && !empty($_GET['idCita'])){
     $consulta1 = $mysql->efectuarConsulta("DELETE FROM bd_mascotas.cita WHERE idCita = ".$idCita."");
    
     
-   header("Location: ../userpet.php?eliminado=true&Mensaje=Cita Cancelada Correctamente");
+   header("Location: ../paginas/clientes/userpet.php?eliminado=true&Mensaje=Cita Cancelada Correctamente");
    
 }
 else{
-    header("Location: ../userpet.php");
+    header("Location: ../paginas/clientes/userpet.php");
 }
 
 ?>
