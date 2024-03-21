@@ -4,9 +4,7 @@ require_once 'modelo/Mysql.php';
 
  $mysql->conectar();
 
- $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.registrocliente INNER JOIN
-  bd_mascotas.resgistromascota ON bd_mascotas.resgistromascota.IdCliente = bd_mascotas.registrocliente.idClientes RIGHT JOIN bd_mascotas.cita ON
-  bd_mascotas.cita.registroCliente_idClientes = bd_mascotas.registrocliente.idClientes");
+ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN bd_mascotas.resgistromascota ON bd_mascotas.cita.resgistroMascota_idMascota = bd_mascotas.resgistromascota.idMascota RIGHT JOIN bd_mascotas.registrocliente ON bd_mascotas.cita.registroCliente_idClientes = bd_mascotas.registrocliente.idClientes WHERE idCita IS NOT NULL;");
 
  
 
@@ -17,6 +15,7 @@ require_once 'modelo/Mysql.php';
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
@@ -260,6 +259,8 @@ require_once 'modelo/Mysql.php';
           <th>Tipo</th>
           <th>Fecha Cita</th>
           <th>Hora</th>
+          <th>Editar Cita</th>
+          <th>Cancelar</th>
         </tr>
       </thead>
       <tbody>
@@ -273,6 +274,29 @@ require_once 'modelo/Mysql.php';
           <td><?php echo $row['tipoMascota'] ?></td>
           <td><?php echo $row['fechaCita'] ?></td>
           <td><?php echo $row['horaCita'] ?></td>
+          
+          <td class="bg-warning">
+          <! --Envio datos de la consulta para editarlos en editUserpet -->
+          <?php 
+     
+          
+          ?>
+          <form action="editUserpet.php? idCita=<?php echo $row['idCita'] ?>& 
+          fecha=<?php echo $row['fechaCita'] ?>&hora=<?php echo $row['horaCita'] ?>&
+          nombreMascota=<?php echo $row['nombreMascota'] ?>&
+          edad=<?php echo $row['edadMascota'] ?>&raza=<?php echo $row['razaMascota'] ?>&
+          tipo=<?php echo $row['tipoMascota'] ?>&" method="post">
+          <input type="hidden" name="idMascota" value="<?php echo $row['idMascota'] ?>">
+
+          <button class="btn btn-warning" type="submit">Editar</button>
+          </form>  
+          </td>
+
+          <td class="bg-warning">
+          <form action="controlador/cancelarUserpet.php? idCita=<?php echo $row['idCita'] ?>" method="post">
+          <button class="btn btn-danger" type="submit">Cancelar</button>
+          </form>  
+          </td>
         </tr>
       
        
@@ -336,5 +360,52 @@ require_once 'modelo/Mysql.php';
       crossorigin="anonymous"
     ></script>
     <script src="js/datatables-simple-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>
+<script>
+	if (<?php echo ($_GET['Error']) ?> == true) {
+		Swal.fire({
+			icon: "error",
+			title: "Oops...",
+			text: "<?php echo ($_GET['Mensaje']) ?>",
+
+		});
+
+	}
+</script>
+<script>
+	if (<?php echo ($_GET['Exito']) ?> == true) {
+		Swal.fire({
+			icon: "success",
+			title: "!Bien hecho...",
+			text: "<?php echo ($_GET['Mensaje']) ?>",
+
+		});
+
+	}
+</script>
+
+<script>
+	if (<?php echo ($_GET['editado']) ?> == true) {
+		Swal.fire({
+			icon: "success",
+			title: "!Bien hecho...",
+			text: "<?php echo ($_GET['Mensaje']) ?>",
+
+		});
+
+	}
+</script>
+
+<script>
+	if (<?php echo ($_GET['eliminado']) ?> == true) {
+		Swal.fire({
+			icon: "success",
+			title: "Se Cancelo Cita!",
+			text: "<?php echo ($_GET['Mensaje']) ?>",
+
+		});
+
+	}
+</script>

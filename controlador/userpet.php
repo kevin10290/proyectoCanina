@@ -11,6 +11,8 @@ $edad = $_POST['edadMascota'];
 $raza = $_POST['razaMascota'];
 $tipo = $_POST['tipoMascota'];
 
+//genero un tiempo de cita
+
 $horafin = new DateTime($hora);
 $horafin->modify("+30 minutes");
 $horaFinal = $horafin->format("H:i:s");
@@ -29,8 +31,7 @@ if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) &&
 
     require_once '../modelo/MySQL.php';
     require_once '../modelo/usuarios.php';
-
-
+//obtengo con la clase usuarios el id del usuario
     $usuarios = new usuarios();
 
     $mysql = new MySQL;
@@ -41,7 +42,7 @@ if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) &&
     echo $id;
 
     $mysql->conectar();
-
+ //consulta para saber si la fecha de la cita esta disponible, sino lo reenvia a pagina de inicio con alerta
     $consulta = $mysql->efectuarConsulta("select * from bd_mascotas.cita 
     where bd_mascotas.cita.horaCita BETWEEN '".$horaInicial."' and '".$horaFinal."' and bd_mascotas.cita.fechaCita = '".$fecha."';");
 
@@ -50,7 +51,7 @@ if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) &&
     
 
     $num = mysqli_num_rows($consulta);
-    echo $num;
+    
 
  
    
@@ -59,35 +60,70 @@ if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) &&
 
         //poner alerta de que ya hay cita agendada
 
+        header("Location: ../userpet.php?Error=true&Mensaje=Ya existe una cita agendada a esa hora");
+
         }
         else{
 
         $mysql->conectar();
-        $queryPet = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.resgistromascota VALUES (null, '".$nombre."','".$edad."',
-        '".$raza."','".$tipo."','".$id."')");
+      
+        //mostrar si la mascota ya existe con su identificacion 
+
+        $queryExistPet = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.resgistromascota
+        where bd_mascotas.resgistromascota.idCliente = '".$id."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombre."' and
+        bd_mascotas.resgistromascota.edadMascota = '".$edad."' and bd_mascotas.resgistromascota.razaMascota = '".$raza."' and
+        bd_mascotas.resgistromascota.tipoMascota = '".$tipo."'");
          
-        $queryIdMascota = $mysql->efectuarConsulta("SELECT bd_mascotas.resgistromascota.idMascota FROM bd_mascotas.resgistromascota
-        where bd_mascotas.resgistromascota.idCliente = '".$id."'");
-         
-        $array = mysqli_fetch_assoc($queryIdMascota);
+         //implemento una decision de existencia de mascota
 
-        $idMascota = $array['idMascota'];
-        echo $idMascota;
+         $numRowsExistPet = mysqli_num_rows($queryExistPet);
 
-        
- 
+          if($numRowsExistPet>0){
 
-   
-        $consulta3 = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.cita VALUES (null,'".$idMascota."','".$id."','".$fecha."', 
-        '".$horaInicial."')");
-        
-        //alerta de cita exitosa
-        $_SESSION['inserto']="inserto";
+// si existe se inserta en la cita 
 
-        echo $_SESSION['inserto'];
-        header("Location: ../userpet.php");
-        
+$array = mysqli_fetch_assoc($queryExistPet);
+  
+$idMascota = $array['idMascota'];
 
+//inserto los datos para agendar cita 
+
+$consulta3 = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.cita VALUES (null,'".$idMascota."','".$id."','".$fecha."', 
+'".$horaInicial."', 'pendiente')");
+
+//lo envio a pagina userpet por agenda de cita existosa
+
+header("Location: ../userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente");
+
+
+          }
+          else{
+
+ //insertar mascota si no existe en la base de datos y se quiere generar una cita
+ $queryPet = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.resgistromascota VALUES (null, '".$nombre."','".$edad."',
+ '".$raza."','".$tipo."','".$id."')");
+
+ //vuelvo a verificar en la base de datos la existencia  para obtener el id de la mascota
+
+ $queryIdMascota = $mysql->efectuarConsulta("SELECT bd_mascotas.resgistromascota.idMascota FROM bd_mascotas.resgistromascota
+ where bd_mascotas.resgistromascota.idCliente = '".$id."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombre."' and
+ bd_mascotas.resgistromascota.edadMascota = '".$edad."' and bd_mascotas.resgistromascota.razaMascota = '".$raza."' and
+ bd_mascotas.resgistromascota.tipoMascota = '".$tipo."'");
+
+ $array = mysqli_fetch_assoc($queryIdMascota);
+  
+$idMascota = $array['idMascota'];
+
+//inserto la data para agendar la cita 
+
+$consulta3 = $mysql->efectuarConsulta("INSERT INTO bd_mascotas.cita VALUES (null,'".$idMascota."','".$id."','".$fecha."', 
+'".$horaInicial."', 'pendiente')");
+
+//lo envio a pagina userpet por agenda de cita existosa
+header("Location: ../userpet.php?Exito=true&Mensaje=Cita Agendada Exitosamente");
+
+
+          }
         }
    
   
@@ -95,9 +131,9 @@ if(isset($_POST['fecha']) && !empty($_POST['fecha']) && isset($_POST['hora']) &&
  
 }
 else{
-    $_SESSION['datosIncompletos']=true;
-    header("Location: ../userpet.php");
-    // sweetalert campos incompletos
+  //sweetalert campos incompletos
+  header("Location: ../userpet.php?Error=true&Mensaje=Completa los campos");
+ 
 
 }
 
