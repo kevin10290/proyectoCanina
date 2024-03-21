@@ -1,46 +1,45 @@
 
+
 <?php
 include("../../modelo/mySQL2.php");
 
 if(isset($_GET['txtID'])){
     $txtID=(isset($_GET['txtID']))?$_GET['txtID']:"";
   
-    $sentencia =$conexion->prepare("SELECT * FROM empleado WHERE empleado.idEmpleado =:idEmpleado");
-    $sentencia->bindParam(":idEmpleado",$txtID);
+    $sentencia =$conexion->prepare("SELECT * FROM inventarioproductos WHERE inventarioproductos.idinventarioProducto =:idinventarioProducto");
+    $sentencia->bindParam(":idinventarioProducto",$txtID);
     $sentencia->execute();
     $registro= $sentencia->fetch(PDO::FETCH_LAZY);
-    $nombre =$registro["nombreEmpleado"];
-    $apellido =$registro["apellidoEmpleado"];
-    $cedula =$registro["cedulaEmpelado"];
-    $email =$registro["emailEmpleado"];
-    $contrasenaa =$registro["passEmpleado"];
+    $producto =$registro["nombreProducto"];
+    $precio =$registro["precioProducto"];
+    $stock =$registro["strockProducto"];
+    $categoria =$registro["categoriaProducto"];
+    $dirProducto =$registro["dirProducto"];
   }
 
   if ($_POST) {
     // Recolectamos datos 
     $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-    $nombreEmpleado = (isset($_POST["txtNombre"])) ? $_POST["txtNombre"] : "";
-    $apellidoEmpleado = (isset($_POST["txtApellido"])) ? $_POST["txtApellido"] : "";
-    $cedulaEmpelado = (isset($_POST["txtCedula"])) ? $_POST["txtCedula"] : "";
-    $emailEmpleado = (isset($_POST["txtEmail"])) ? $_POST["txtEmail"] : "";
-    $txtContrasena = (isset($_POST["txtContrasena"])) ? $_POST["txtContrasena"] : "";
-    $cmbRol = (isset($_POST["cmbRol"])) ? $_POST["cmbRol"] : "";
-    $cmbEstado = (isset($_POST["cmbEstado"])) ? $_POST["cmbEstado"] : "";
+    $nombreProducto = (isset($_POST["txtProducto"])) ? $_POST["txtProducto"] : "";
+    $precioProducto = (isset($_POST["txtPrecio"])) ? $_POST["txtPrecio"] : "";
+    $stockProducto = (isset($_POST["txtStock"])) ? $_POST["txtStock"] : "";
+    $categoriaProducto = (isset($_POST["txtCategoria"])) ? $_POST["txtCategoria"] : "";
+    $dirProducto = (isset($_POST["txtDirproducto"])) ? $_POST["txtDirproducto"] : "";
+    $cmbRol = (isset($_POST["cmbCategoria"])) ? $_POST["cmbCategoria"] : "";
 
     // Inserción de datos
-    $sentencia = $conexion->prepare("UPDATE empleado SET nombreEmpleado = :nombreEmpleado, apellidoEmpleado = :apellidoEmpleado, cedulaEmpelado = :cedulaEmpelado, emailEmpleado = :emailEmpleado, passEmpleado = :passEmpleado, rol_idRol = :rol_idRol, estadoEmpleado = :estadoEmpleado WHERE idEmpleado = :idEmpleado");
+    $sentencia = $conexion->prepare("UPDATE inventarioproductos SET nombreProducto = :nombreProducto, precioProducto = :precioProducto, strockProducto = :stockProducto, categoriaProducto = :categoriaProducto, dirProducto = :dirProducto WHERE idinventarioProducto = :idEmpleado");
     
     // Asignamos los valores que vienen desde el formulario
-    $sentencia->bindParam(":nombreEmpleado", $nombreEmpleado);
-    $sentencia->bindParam(":apellidoEmpleado", $apellidoEmpleado);
-    $sentencia->bindParam(":cedulaEmpelado", $cedulaEmpelado);
-    $sentencia->bindParam(":emailEmpleado", $emailEmpleado);
-    $sentencia->bindParam(":passEmpleado", $txtContrasena);
-    $sentencia->bindParam(":rol_idRol", $cmbRol); // Cambiado de :cmbRol a :rol_idRol
-    $sentencia->bindParam(":estadoEmpleado", $cmbEstado); // Cambiado de :cmbEstado a :estadoEmpleado
+    $sentencia->bindParam(":nombreProducto", $nombreProducto);
+    $sentencia->bindParam(":precioProducto", $precioProducto); 
+    $sentencia->bindParam(":stockProducto", $stockProducto); 
+    $sentencia->bindParam(":categoriaProducto", $categoriaProducto); 
+    $sentencia->bindParam(":dirProducto", $dirProducto); 
     $sentencia->bindParam(":idEmpleado", $txtID);
+    
     $sentencia->execute();
-    header("Location: indexListar.php");
+    header("Location: index.producto.php");
     exit(); // Agregado para asegurar que la ejecución del script finalice después de redireccionar
 }
 
@@ -66,7 +65,7 @@ if(isset($_GET['txtID'])){
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="../../index.html">Peluqueria Canina</a>
+        <a class="navbar-brand ps-3" href="../../index.php">Peluqueria Canina</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i>
@@ -102,11 +101,11 @@ if(isset($_GET['txtID'])){
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Empleados</div>
-                        <a class="nav-link" href="./indexListar.php">
+                        <a class="nav-link" href="./index.producto.php">
                             <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
                             Listar
                         </a>
-                        <a class="nav-link" href="./nuevoUsuario.php">
+                        <a class="nav-link" href="./crear.producto.php">
                             <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"></i>
 
                             Nuevo
@@ -163,7 +162,7 @@ if(isset($_GET['txtID'])){
             <div class="card text-center m-2 bg-dark">
 
                 <div class="card-body">
-                    <h4 class="card-title text-white">Editar empleado</h4>
+                    <h4 class="card-title text-white">Editar Producto</h4>
                     <p class="card-text"></p>
                 </div>
                 <!-- codigo de edicion -->
@@ -192,61 +191,52 @@ if(isset($_GET['txtID'])){
                 </div>
 
                         <div class="mb-3">
-                            <label for="" class="form-label">Nombre</label>
-                            <input type="text" value="<?php echo $nombre; ?>" class="form-control" name="txtNombre" id="txtNombre"
-                                placeholder="ingrese el nombre" />
+                            <label for="" class="form-label">Producto</label>
+                            <input type="text" value="<?php echo $producto; ?>" class="form-control" name="txtProducto" id="txtProducto"
+                                placeholder="ingrese el Producto" />
                         </div>
 
 
                         <div class="mb-3">
-                            <label for="" class="form-label">Apellido</label>
-                            <input type="text" value="<?php echo $apellido; ?>" class="form-control" name="txtApellido" id="txtApellido"
-                                placeholder="ingrese su Apellido" />
+                            <label for="" class="form-label">Precio</label>
+                            <input type="text" value="<?php echo $precio; ?>" class="form-control" name="txtPrecio" id="txtPrecio"
+                                placeholder="ingrese su Precio" />
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="form-label">Cedula</label>
-                            <input type="text" value="<?php echo $cedula; ?>" class="form-control" name="txtCedula" id="txtCedula"
-                                placeholder="ingrese su Cedula" />
+                            <label for="" class="form-label">stock</label>
+                            <input type="text" value="<?php echo $stock; ?>" class="form-control" name="txtStock" id="txtStock"
+                                placeholder="ingrese su Stock" />
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="form-label">Email</label>
-                            <input type="text" value="<?php echo $email; ?>" class="form-control" name="txtEmail" id="txtEmail"
-                                placeholder="ingrese su Email" />
+                            <label for="" class="form-label">Categoria</label>
+                            <input type="text" value="<?php echo $categoria; ?>" class="form-control" name="txtCategoria" id="txtCategoria"
+                                placeholder="ingrese su Categoria" />
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="form-label">contrasena</label>
-                            <input type="text" value="<?php echo $contrasenaa; ?>" class="form-control" name="txtContrasena" id="txtContrasena"
+                            <label for="" class="form-label">dirProducto</label>
+                            <input type="text" value="<?php echo $dirProducto; ?>" class="form-control" name="txtDirproducto" id="txtDirproducto"
                                 placeholder="ingrese su contrsena" />
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="form-label" >idRol</label>
-                            <select class="form-select form-select-lg mb-3" name="cmbRol" id="cmbRol">
+                            <label for="" class="form-label" >edit-categoria</label>
+                            <select class="form-select form-select-lg mb-3" name="cmbCategoria" id="cmbCategoria">
                                 <option selected>select</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Empleado</option>
-                                <option value="3">Cliente</option>
+                                <option value="1">limpieza</option>
+                                <option value="2">herramienta</option>
+                                <option value="3">juguete</option>
                             </select>
 
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="" class="form-label" >Estado</label>
-                            <select class="form-select form-select-lg mb-3" name="cmbEstado" id="cmbEstado">
-                                <option selected>select</option>
-                                <option value="1">Activo</option>
-                                <option value="0">Inactivo</option>
-                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-success">
-                                Registrar
+                                editar
                             </button>
 
-                            <a class="btn btn-warning" href="./indexListar.php" role="button">cancelar</a>
+                            <a class="btn btn-warning" href="./index.producto.php" role="button">cancelar</a>
 
 
 

@@ -159,6 +159,10 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
                 >
                 Gestion Empleados
               </a>
+              <a class="nav-link" href="./paginas/productos/index.producto.php">
+              <i class="fa-solid fa-inbox me-1"></i>
+                Gestion Productos
+              </a>
 
               <div
                 class="collapse"
