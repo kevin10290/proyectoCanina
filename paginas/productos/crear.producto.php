@@ -171,7 +171,7 @@ if ($_POST) {
                             <div class="m-1"><i class="fa-solid fa-list" style="font-size: 20px"></i></div>
                             Listar
                         </a>
-                        <a class="nav-link" href="./crear/producto.php">
+                        <a class="nav-link" href="./crear.producto.php">
                             <i class="fa-solid fa-user-plus m-1" style="font-size: 20px"></i>
 
                             Nuevo

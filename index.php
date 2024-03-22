@@ -113,6 +113,11 @@ $consultaProductos = $mysql->efectuarConsulta("SELECT  inventarioproductos.idinv
               <i class="fa-solid fa-shop me-1" style="font-size: 20px"></i>
               Carrito
             </a>
+
+            <a class="nav-link" href="./informes.php">
+              <i class="fa-solid fa-chart-line me-1"></i>
+              Informes y estadísticas
+            </a>
             <a class="nav-link" href="./paginas/empleado/indexListar.php">
               <i class="fa-solid fa-users me-1" style="font-size: 20px"></i>
               Gestion Empleados
