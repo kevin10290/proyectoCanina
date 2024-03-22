@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:4400
--- Tiempo de generación: 21-03-2024 a las 17:25:23
+-- Tiempo de generación: 22-03-2024 a las 01:24:05
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -64,7 +64,8 @@ INSERT INTO `cita` (`idCita`, `resgistroMascota_idMascota`, `registroCliente_idC
 (1, 1, 2, '2024-02-29', '11:07:49', 'pendiente'),
 (3, 3, 3, '2024-03-07', '10:35:00', 'pendiente'),
 (6, 6, 6, '2024-03-12', '10:54:00', 'pendiente'),
-(7, 7, 6, '2024-03-09', '10:55:00', 'pendiente');
+(7, 7, 6, '2024-03-09', '10:55:00', 'pendiente'),
+(8, 8, 6, '2024-05-14', '15:57:00', 'pendiente');
 
 -- --------------------------------------------------------
 
@@ -268,7 +269,23 @@ INSERT INTO `detalleprodcuto` (`iddetalleproducto`, `inventarioProductos_idinven
 (183, 2, 15),
 (184, 2, 16),
 (185, 1, 16),
-(186, 5, 16);
+(186, 5, 16),
+(187, 3, 17),
+(188, 4, 17),
+(189, 6, 17),
+(190, 6, 17),
+(191, 6, 17),
+(192, 6, 17),
+(193, 5, 17),
+(194, 5, 17),
+(195, 5, 17),
+(196, 5, 17),
+(197, 1, 17),
+(198, 1, 17),
+(199, 1, 17),
+(200, 1, 17),
+(201, 2, 17),
+(202, 3, 17);
 
 -- --------------------------------------------------------
 
@@ -351,7 +368,8 @@ INSERT INTO `facturaproducto` (`idfacturaProducto`, `total`, `fechaVenta`, `idEm
 (13, 238, '2024-03-21', NULL, 6, 'Crédito'),
 (14, 119, '2024-03-21', NULL, 6, 'Crédito'),
 (15, 119, '2024-03-21', NULL, 6, 'Crédito'),
-(16, 527, '2024-03-21', NULL, 6, 'Crédito');
+(16, 527, '2024-03-21', NULL, 6, 'Crédito'),
+(17, 4701, '2024-03-21', NULL, 6, 'Crédito');
 
 -- --------------------------------------------------------
 
@@ -394,12 +412,12 @@ CREATE TABLE `inventarioproductos` (
 --
 
 INSERT INTO `inventarioproductos` (`idinventarioProducto`, `nombreProducto`, `precioProducto`, `strockProducto`, `categoriaProducto`, `dirProducto`) VALUES
-(1, 'Jabon', 100, 11, 1, 'https://ahousewifewrites.com/wp-content/uploads/2018/07/blogsoap-435x435.jpg'),
-(2, 'Cepillo', 100, 7, 2, '../../Controlador//images/nod.png'),
-(3, 'asd', 432, 23, 1, 'https://th.bing.com/th/id/OIP.4uQ5LGiubfSR11i_RImFyQHaE7?rs=1&pid=ImgDetMain'),
-(4, 'gfssf', 322, 212, 2, '../../Controlador//images/tel.jpg'),
-(5, 'dasfsdgdsd', 243, 11, 3, '../../Controlador//images/decorac.jpg'),
-(6, 'dfgdg', 323, 12, 3, 'https://th.bing.com/th/id/OIP.2UMhyddroYEM0uSIO1suIAHaF6?rs=1&pid=ImgDetMain');
+(1, 'Jabon', 100, 7, 1, 'https://ahousewifewrites.com/wp-content/uploads/2018/07/blogsoap-435x435.jpg'),
+(2, 'Cepillo', 100, 6, 2, '../../Controlador//images/nod.png'),
+(3, 'asd', 432, 21, 1, 'https://th.bing.com/th/id/OIP.4uQ5LGiubfSR11i_RImFyQHaE7?rs=1&pid=ImgDetMain'),
+(4, 'gfssf', 322, 211, 2, '../../Controlador//images/tel.jpg'),
+(5, 'dasfsdgdsd', 243, 7, 3, '../../Controlador//images/decorac.jpg'),
+(6, 'dfgdg', 323, 8, 3, 'https://th.bing.com/th/id/OIP.2UMhyddroYEM0uSIO1suIAHaF6?rs=1&pid=ImgDetMain');
 
 -- --------------------------------------------------------
 
@@ -455,7 +473,8 @@ INSERT INTO `resgistromascota` (`idMascota`, `nombreMascota`, `edadMascota`, `ra
 (4, 'dsdds', '23', 'dsadda', 'dasddsd', 3),
 (5, 'dsddsdsd', '23', 'dsadda', 'dasddsd', 3),
 (6, 'asdaf', '23', 'sadasf', 'sadasd', 6),
-(7, 'dasd', '433', 'sada', 'fgsdgfd', 6);
+(7, 'dasd', '433', 'sada', 'fgsdgfd', 6),
+(8, 'sgs', '21', 'fdgdf', 'sddbd', 6);
 
 -- --------------------------------------------------------
 
@@ -599,13 +618,13 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `cita`
 --
 ALTER TABLE `cita`
-  MODIFY `idCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `detalleprodcuto`
 --
 ALTER TABLE `detalleprodcuto`
-  MODIFY `iddetalleproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+  MODIFY `iddetalleproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
 
 --
 -- AUTO_INCREMENT de la tabla `detalleservicio`
@@ -623,7 +642,7 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `facturaproducto`
 --
 ALTER TABLE `facturaproducto`
-  MODIFY `idfacturaProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idfacturaProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `facturaservicio`
@@ -647,7 +666,7 @@ ALTER TABLE `registrocliente`
 -- AUTO_INCREMENT de la tabla `resgistromascota`
 --
 ALTER TABLE `resgistromascota`
-  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
