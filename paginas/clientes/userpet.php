@@ -31,11 +31,12 @@ $mysql = new MySQL();
 
 $mysql->conectar();
 
+
 $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN bd_mascotas.resgistromascota ON bd_mascotas.cita.resgistroMascota_idMascota = bd_mascotas.resgistromascota.idMascota RIGHT JOIN bd_mascotas.registrocliente ON bd_mascotas.cita.registroCliente_idClientes = bd_mascotas.registrocliente.idClientes WHERE idCita IS NOT NULL;");
 
 
-
-
+$petSelect = $mysql->efectuarConsulta("SELECT 
+ bd_mascotas.resgistromascota.nombreMascota FROM bd_mascotas.resgistromascota WHERE bd_mascotas.resgistromascota.IdCliente = ".$id.";")
 
 ?>
 <!DOCTYPE html>
@@ -126,13 +127,25 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
               ⠀ Tienda
             </a>
 
-            <a class="nav-link" href="userpet.php">
-              <span class="material-symbols-outlined">
-                event
-              </span>
-              ⠀ Citas
-            </a>
-
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+           
+            <li class="nav-item">
+                <a class="nav-link collapsed d-flex pl-3" href="#" data-toggle="collapse" data-target="#collapseItem" aria-expanded="true" aria-controls="collapseItem">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span class="pl-4">Citas</span>
+                </a>
+                <div id="collapseItem" class="collapse" aria-labelledby="headingItem" data-parent="#accordionSidebar">
+                    <div class=" collapse-inner rounded d-flex">
+                    <span class="material-symbols-outlined pl-3 pt-3">
+                    library_add
+                    </span>
+                        <a class="collapse-item nav-link pl-3 pb-4 " href="addpet.php">Agregar mascota</a>
+                    
+                    </div>
+                </div>
+            </li>
+            </ul>
+          
 
 
 
@@ -177,53 +190,68 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
     <div id="layoutSidenav_content">
       <main>
         <form action="../../controlador/userpet.php" method="post">
-          <div class="col-12 py-xl-4">
+
+
+        <div class="col-12 py-xl-4">
             <br>
             <h1>Programación de citas</h1>
           </div>
           <div class="col-12 d-flex py-xl-2 formularios">
-            <div class="card d-block p-5 col-12 formCita">
+            <div class="card d-flex p-5 col-12 formCita ">
 
               <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Ingresa la fecha de tu cita</label>
                 <input type="date" class="form-control" id="exampleInputPassword1" name="fecha">
               </div>
-              <div class="mb-3">
+              <div class="mb-3 pb-3">
                 <label for="exampleInputPassword1" class="form-label">Ingresa hora de la cita</label>
                 <input type="time" class="form-control" id="exampleInputPassword1" name="hora">
               </div>
-              <p><strong>Ingrese los datos de su mascota</strong></p>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Nombre de la Mascota</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" name="nomMascota">
-              </div>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Edad</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" name="edadMascota">
-              </div>
+             
+              <select name="opciones" >
+              <option value="seleccion"  disabled selected hidden>Selecciona tu mascota</option>
+              <?php while ($rowPet = mysqli_fetch_array($petSelect)) { ?>
+              
+              <option value="<?php echo $rowPet['nombreMascota'] ?>"><?php echo $rowPet['nombreMascota'] ?></option>
+             
+              <?php } ?>
+              </select>
 
+              <!--Se agrega el select para mostrar mascotas existentes por identificacion-->
+             
+              <div class="col-12 mt-sm-4 botones d-flex justify-content-center">
 
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Raza</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" name="razaMascota">
-              </div>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Tipo</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" name="tipoMascota">
-              </div>
+              <div class="col-6 d-flex justify-content-end">
 
-
-              <div class="">
-                <button type="submit" class="btn btn-primary ">Establecer cita </button>
+                <button type="submit" class="btn btn-primary">Establecer cita </button>
               </div>
+        </form>
+
+        
+          
+
+             
+
+            <div class="col-6  d-flex justify-content-start">
+              <form action="addpet.php">
+            <button type="submit" class="btn btn-primary ">Agregar Mascota </button>
+
+              </form>
+
             </div>
+              </div>
+
+           
+              
+            </div>
+        
 
           </div>
 
 
 
 
-        </form>
+       
         <div class="col-12 p-4">
           <div class="card-body py-xl-4 ps-xl-3 ">
 
@@ -255,7 +283,8 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
                     <td><?php echo $row['horaCita'] ?></td>
 
                     <td class="bg-warning">
-                      <! --Envio datos de la consulta para editarlos en editUserpet -->
+
+                     <!--Envio datos de la tabla a editPet-->
                         <?php
 
 
@@ -372,6 +401,17 @@ $consulta = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.cita INNER JOIN 
     Swal.fire({
       icon: "success",
       title: "Se Cancelo Cita!",
+      text: "<?php echo ($_GET['Mensaje']) ?>",
+
+    });
+
+  }
+</script>
+<script>
+  if (<?php echo ($_GET['faltaNomMascota']) ?> == true) {
+    Swal.fire({
+      icon: "error",
+      title: "Oppss!",
       text: "<?php echo ($_GET['Mensaje']) ?>",
 
     });

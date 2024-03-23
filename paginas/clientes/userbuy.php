@@ -127,13 +127,24 @@ if ($_SESSION['acceso'] == true && $_SESSION['usuario'] != null && $_SESSION['ro
               ⠀ Tienda
             </a>
 
-            <a class="nav-link" href="userpet.php">
-              <span class="material-symbols-outlined">
-                event
-              </span>
-              ⠀ Citas
-            </a>
-
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+           
+           <li class="nav-item">
+               <a class="nav-link collapsed d-flex pl-3" href="#" data-toggle="collapse" data-target="#collapseItem" aria-expanded="true" aria-controls="collapseItem">
+                   <i class="fas fa-fw fa-cog"></i>
+                   <span class="pl-4">Citas</span>
+               </a>
+               <div id="collapseItem" class="collapse" aria-labelledby="headingItem" data-parent="#accordionSidebar">
+                   <div class=" collapse-inner rounded d-flex">
+                   <span class="material-symbols-outlined pl-3 pt-3">
+                   library_add
+                   </span>
+                       <a class="collapse-item nav-link pl-3 pb-4 " href="addpet.php">Agregar mascota</a>
+                   
+                   </div>
+               </div>
+           </li>
+           </ul>
 
 
 

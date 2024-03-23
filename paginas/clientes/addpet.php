@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Editar Mascota</title>
+	<title>Agregar Mascota</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
@@ -34,51 +34,32 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" action="../../controlador/editarUserpet.php" method="post">
+				<form class="login100-form validate-form" action="../../controlador/agregarMascota.php" method="post">
 					<span class="login100-form-title p-b-43">
-						Editar cita
+						Agregar Mascota
 					</span>
-                    <input  type="hidden" name="idMascota" value="<?php echo $_POST['idMascota']?>">
-                    
-						<input  type="hidden" name="idCita" value="<?php echo $_GET['idCita']?>">
 
-					<div class="wrap-input100 validate-input" data-validate="Fecha requerida">
-						<input required placeholder="fecha" class="input100" type="date" name="fecha" value="<?php echo $_GET['fecha']?>">
+					<div class="wrap-input100 validate-input" data-validate="Nombre Mascota">
+						<input required placeholder="Nombre de la mascota" class="input100" type="text" name="nombreMascota">
 
 					</div>
-					<div class="wrap-input100 validate-input" data-validate="Hora requerido">
-						<input required class="input100" placeholder="hora" type="time" name="hora" value="<?php echo $_GET['hora']?>">
-					</div>
-					<div class="wrap-input100 validate-input" data-validate="Nombre de Mascota">
-						<input required class="input100" type="text" placeholder="Nombre Mascota" name="nombreMascota" value="<?php echo $_GET['nombreMascota']?>">
+					<div class="wrap-input100 validate-input" data-validate="edad Mascota">
+						<input required placeholder="edad de la mascota" class="input100" type="number" name="edadMascota">
 
 					</div>
-					<div class="wrap-input100 validate-input" data-validate="Edad requerida">
-						<input required class="input100" type="text" placeholder="Edad Mascota" name="edadMascota" value="<?php echo $_GET['edad']?>">
+					<div class="wrap-input100 validate-input" data-validate="raza Mascota">
+						<input required placeholder="raza de la mascota" class="input100" type="text" name="razaMascota">
 
 					</div>
-					<div class="wrap-input100 validate-input" data-validate="Raza requerida">
-						<input required class="input100" type="text" placeholder="Raza" name="razaMascota" value="<?php echo $_GET['raza']?>">
-
-					</div>
-
 					<div class="wrap-input100 validate-input" data-validate="Tipo Mascota">
-						<input required class="input100" type="text" placeholder="Tipo Mascota" name="tipoMascota" value="<?php echo $_GET['tipo']?>">
+						<input required placeholder="Tipo de la mascota" class="input100" type="text" name="tipoMascota">
 
 					</div>
-				
-
-
-
-
-
-
-
 
 					<div class="col-12 d-flex pt-3 justify-content-center">
                         <div class="col-5">
                         <button class="btn btn-primary py-sm-4 px-sm-5 " type="submit">
-							Editar
+							Agregar
 						</button>
                         </div>
                     </form>
@@ -96,7 +77,7 @@
 
 				
 
-				<div class="login100-more" style="background-image: url('../../images/bgEditCita2.jpg');">
+                    <div class="login100-more" style="background-image: url('../../images/agregarMascota.jpg');">
 				</div>
 			</div>
 		</div>
