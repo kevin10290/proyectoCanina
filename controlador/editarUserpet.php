@@ -5,6 +5,7 @@ $idMascota = $_POST['idMascota'];
 $idCita = $_POST['idCita'];
 $fecha = $_POST['fecha'];
 $fechaAntigua = $_POST['fechaAntigua'];
+$horaAntigua = $_POST['horaAntigua'];
 $hora = $_POST['hora'];
 $nombreMascota = $_POST['nombreMascota'];
 $edadMascota = $_POST['edadMascota'];
@@ -49,7 +50,7 @@ isset($_POST['tipoMascota']) && !empty($_POST['tipoMascota']) ){
 
     $id = $usuarios->getId();
 
-    if($fechaAntigua != $fecha){
+    if($fechaAntigua != $fecha || $horaAntigua != $hora){
 
         $consultaHora = $mysql->efectuarConsulta("SELECT * FROM  bd_mascotas.cita WHERE
         bd_mascotas.cita.horaCita BETWEEN '".$horaInicial."' and '".$horaFinal."' AND 
