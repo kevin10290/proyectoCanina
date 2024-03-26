@@ -41,6 +41,7 @@
                     <input  type="hidden" name="idMascota" value="<?php echo $_POST['idMascota']?>">
                     
 						<input  type="hidden" name="idCita" value="<?php echo $_GET['idCita']?>">
+						<input  type="hidden" name="fechaAntigua" value="<?php echo $_GET['fecha']?>">
 
 					<div class="wrap-input100 validate-input" data-validate="Fecha requerida">
 						<input required placeholder="fecha" class="input100" type="date" name="fecha" value="<?php echo $_GET['fecha']?>">

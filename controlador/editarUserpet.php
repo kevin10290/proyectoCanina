@@ -4,6 +4,7 @@
 $idMascota = $_POST['idMascota'];
 $idCita = $_POST['idCita'];
 $fecha = $_POST['fecha'];
+$fechaAntigua = $_POST['fechaAntigua'];
 $hora = $_POST['hora'];
 $nombreMascota = $_POST['nombreMascota'];
 $edadMascota = $_POST['edadMascota'];
@@ -43,115 +44,147 @@ isset($_POST['tipoMascota']) && !empty($_POST['tipoMascota']) ){
     $usuarios = new usuarios();
     $usuarios= $_SESSION['usuario'];
 
+    
+    $mysql->conectar();
+
     $id = $usuarios->getId();
 
-    //verifico si la hora cambiada esta en disposicion 
+    if($fechaAntigua != $fecha){
 
-    $consultaHora = $mysql->efectuarConsulta("SELECT * FROM  bd_mascotas.cita WHERE
-    bd_mascotas.cita.horaCita BETWEEN '".$horaInicial."' and '".$horaFinal."' AND 
-    bd_mascotas.cita.fechaCita LIKE '".$fecha."' OR 
-    bd_mascotas.cita.horaFin BETWEEN '".$horaInicial."' and '".$horaFinal."' AND 
-    bd_mascotas.cita.fechaCita LIKE '".$fecha."';");
- 
-   
- 
-   
- 
-   $num = mysqli_num_rows($consultaHora);
+        $consultaHora = $mysql->efectuarConsulta("SELECT * FROM  bd_mascotas.cita WHERE
+        bd_mascotas.cita.horaCita BETWEEN '".$horaInicial."' and '".$horaFinal."' AND 
+        bd_mascotas.cita.fechaCita LIKE '".$fecha."' OR 
+        bd_mascotas.cita.horaFin BETWEEN '".$horaInicial."' and '".$horaFinal."' AND 
+        bd_mascotas.cita.fechaCita LIKE '".$fecha."';");
 
-   if($num>0){
+        $horaExist = mysqli_num_rows($consultaHora);
 
-    //poner alerta de que ya hay cita agendada
+        if($horaExist>0){
 
-    header("Location: ../paginas/clientes/userpet.php?Error=true&Mensaje=Ya existe una cita agendada a esa hora");
+            header("Location: ../paginas/clientes/userpet.php?Error=true&Mensaje=Ya esta Agendada la cita!!");
 
+        }
+        else{
+
+
+  //edita la cita
+     
+  $consulta1 = $mysql->efectuarConsulta("UPDATE bd_mascotas.cita SET bd_mascotas.cita.fechaCita = '".$fecha."',
+  bd_mascotas.cita.horaCita = '".$hora."' WHERE idCita = ".$idCita."");
+
+  //edita los datos de la mascota
+
+ $consulta2 = $mysql->efectuarConsulta("UPDATE bd_mascotas.resgistromascota SET bd_mascotas.resgistromascota.nombreMascota= '".$nombreMascota."',
+ bd_mascotas.resgistromascota.edadMascota= '".$edadMascota."', bd_mascotas.resgistromascota.razaMascota='".$razaMascota."',
+ bd_mascotas.resgistromascota.tipoMascota='".$tipoMascota."' WHERE idMascota = ".$idMascota."");
+
+
+
+header("Location: ../paginas/clientes/userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
+
+        }
     }
     else{
 
-
-
         $mysql->conectar();
-        //Verifico antes de editar si el nombre existe ya en la base de datos
+
+         //Verifico antes de editar si el nombre existe ya en la base de datos
     
-        $queryExistPet = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.resgistromascota
-        where bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' ");
-    
-        $numRowsExistPet = mysqli_num_rows($queryExistPet);
-    
-        if($numRowsExistPet>0){
-    
-            $cambioDatos = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.resgistromascota 
-            where bd_mascotas.resgistromascota.edadMascota = '".$edadMascota."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
-            and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota." 
-            or bd_mascotas.resgistromascota.razaMascota = '".$razaMascota."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
-            and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota." 
-            or bd_mascotas.resgistromascota.tipoMascota = '".$tipoMascota."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
-            and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota." ");
-    
-            $numRowsCambioDatos = mysqli_num_rows($cambioDatos);
-    
-            if($numRowsCambioDatos==0){
-                $consulta3 = $mysql->efectuarConsulta("UPDATE bd_mascotas.resgistromascota SET bd_mascotas.resgistromascota.nombreMascota= '".$nombreMascota."',
-                bd_mascotas.resgistromascota.edadMascota= '".$edadMascota."', bd_mascotas.resgistromascota.razaMascota='".$razaMascota."',
-                bd_mascotas.resgistromascota.tipoMascota='".$tipoMascota."' WHERE idMascota = ".$idMascota."  ");
-         
+         $queryExistPet = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.resgistromascota
+         where bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' ");
+     
+         $numRowsExistPet = mysqli_num_rows($queryExistPet);
+     
+         if($numRowsExistPet>0){
+     
+             $cambioDatos = $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.resgistromascota 
+             where bd_mascotas.resgistromascota.edadMascota = '".$edadMascota."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
+             and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota." 
+             or bd_mascotas.resgistromascota.razaMascota = '".$razaMascota."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
+             and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota." 
+             or bd_mascotas.resgistromascota.tipoMascota = '".$tipoMascota."' and bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
+             and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota." ");
+     
+             $numRowsCambioDatos = mysqli_num_rows($cambioDatos);
+     
+             if($numRowsCambioDatos==0){
+ 
+ 
+                 
+                 $consulta3 = $mysql->efectuarConsulta("UPDATE bd_mascotas.resgistromascota SET bd_mascotas.resgistromascota.nombreMascota= '".$nombreMascota."',
+                 bd_mascotas.resgistromascota.edadMascota= '".$edadMascota."', bd_mascotas.resgistromascota.razaMascota='".$razaMascota."',
+                 bd_mascotas.resgistromascota.tipoMascota='".$tipoMascota."' WHERE idMascota = ".$idMascota."  ");
           
-          
-               header("Location: ../paginas/clientes/userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
-         
-    
-            
-            }
-            else{
-                //verifico si no hizo ningun cambio y le dio al boton editar 
-    
-                $verificacion= $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.resgistromascota 
-                where bd_mascotas.resgistromascota.edadMascota = '".$edadMascota."' and bd_mascotas.resgistromascota.razaMascota = '".$razaMascota."'  
-                and bd_mascotas.resgistromascota.tipoMascota = '".$tipoMascota."' and  bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
-                and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota."");
-    
-                $numRowsNoCambioDatos = mysqli_num_rows($verificacion);
-    
-                if($numRowsNoCambioDatos>0){
-                    header("Location:../paginas/clientes/userpet.php?Error=true&Mensaje= Antes de editar debes de cambiar los campos");
-    
-                }
-                else{
-    
-                    $consulta4 = $mysql->efectuarConsulta("UPDATE bd_mascotas.resgistromascota SET bd_mascotas.resgistromascota.nombreMascota= '".$nombreMascota."',
-                    bd_mascotas.resgistromascota.edadMascota= '".$edadMascota."', bd_mascotas.resgistromascota.razaMascota='".$razaMascota."',
-                    bd_mascotas.resgistromascota.tipoMascota='".$tipoMascota."' WHERE idMascota = ".$idMascota."  ");
-    
-                }
-    
-                
-    
-            }
-    
            
-        }
-    
-        else{
-    
-        //edita la cita
-    
-        $consulta1 = $mysql->efectuarConsulta("UPDATE bd_mascotas.cita SET bd_mascotas.cita.fechaCita = '".$fecha."',
-        bd_mascotas.cita.horaCita = '".$hora."' WHERE idCita = ".$idCita."");
-    
-        //edita los datos de la mascota
-    
-       $consulta2 = $mysql->efectuarConsulta("UPDATE bd_mascotas.resgistromascota SET bd_mascotas.resgistromascota.nombreMascota= '".$nombreMascota."',
-       bd_mascotas.resgistromascota.edadMascota= '".$edadMascota."', bd_mascotas.resgistromascota.razaMascota='".$razaMascota."',
-       bd_mascotas.resgistromascota.tipoMascota='".$tipoMascota."' WHERE idMascota = ".$idMascota."");
-    
+           
+                header("Location: ../paginas/clientes/userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
+          
      
+             
+             }
+             else{
+                 //verifico si no hizo ningun cambio y le dio al boton editar 
      
-    header("Location: ../paginas/clientes/userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
-    
-        }
-        
+                 $verificacion= $mysql->efectuarConsulta("SELECT * FROM bd_mascotas.resgistromascota 
+                 where bd_mascotas.resgistromascota.edadMascota = '".$edadMascota."' and bd_mascotas.resgistromascota.razaMascota = '".$razaMascota."'  
+                 and bd_mascotas.resgistromascota.tipoMascota = '".$tipoMascota."' and  bd_mascotas.resgistromascota.nombreMascota = '".$nombreMascota."' 
+                 and bd_mascotas.resgistromascota.idCliente = ".$id." and bd_mascotas.resgistromascota.idMascota=".$idMascota."");
+     
+                 $numRowsNoCambioDatos = mysqli_num_rows($verificacion);
+     
+                 if($numRowsNoCambioDatos>0){
+                     header("Location:../paginas/clientes/userpet.php?Error=true&Mensaje= Antes de editar debes de cambiar los campos");
+     
+                 }
+                 else{
+     
+                     $consulta4 = $mysql->efectuarConsulta("UPDATE bd_mascotas.resgistromascota SET bd_mascotas.resgistromascota.nombreMascota= '".$nombreMascota."',
+                     bd_mascotas.resgistromascota.edadMascota= '".$edadMascota."', bd_mascotas.resgistromascota.razaMascota='".$razaMascota."',
+                     bd_mascotas.resgistromascota.tipoMascota='".$tipoMascota."' WHERE idMascota = ".$idMascota."  ");
+
+                     $consulta1 = $mysql->efectuarConsulta("UPDATE bd_mascotas.cita SET bd_mascotas.cita.fechaCita = '".$fecha."',
+                     bd_mascotas.cita.horaCita = '".$hora."' WHERE idCita = ".$idCita."");
+
+                     header("Location:../paginas/clientes/userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
+     
+                 }
+     
+                 
+     
+             }
+     
+            
+         }
+     
+         else{
+     
+         //edita la cita
+     
+         $consulta1 = $mysql->efectuarConsulta("UPDATE bd_mascotas.cita SET bd_mascotas.cita.fechaCita = '".$fecha."',
+         bd_mascotas.cita.horaCita = '".$hora."' WHERE idCita = ".$idCita."");
+     
+         //edita los datos de la mascota
+     
+        $consulta2 = $mysql->efectuarConsulta("UPDATE bd_mascotas.resgistromascota SET bd_mascotas.resgistromascota.nombreMascota= '".$nombreMascota."',
+        bd_mascotas.resgistromascota.edadMascota= '".$edadMascota."', bd_mascotas.resgistromascota.razaMascota='".$razaMascota."',
+        bd_mascotas.resgistromascota.tipoMascota='".$tipoMascota."' WHERE idMascota = ".$idMascota."");
+     
+      
+      
+     header("Location: ../paginas/clientes/userpet.php?editado=true&Mensaje=Cita Editada Exitosamente!!");
+     
+         }
+         
 
     }
+
+
+
+
+
+       
+
+    
 
 
 
